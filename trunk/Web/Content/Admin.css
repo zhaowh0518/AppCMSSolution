@@ -1,0 +1,137 @@
+﻿.menu
+{
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+}
+.menu li
+{
+    padding-bottom: 5px;
+    width: 150px;
+}
+.menu a
+{
+    display: block;
+    background-color: #eeeeee;
+    color: Black;
+    font-weight: bold;
+    padding: 4px;
+    border: solid 1px black;
+    text-decoration: none;
+    margin: 2px;
+}
+.selectedMenuItem a
+{
+    background-color: White;
+}
+#featureList
+{
+    float: left;
+    margin-right: 20px;
+    height: 100%;
+}
+.command
+{
+    float: right;
+}
+label
+{
+    float: left;
+    width: 100px;
+}
+.submit
+{
+    margin-left: 100px;
+    margin-top: 7px;
+}
+#mainContent
+{
+    float: left;
+}
+#mainContent table
+{
+    width: 800px;
+}
+#mainContent fieldset
+{
+    width: 800px;
+    font-size: 14px;
+}
+#menuList
+{
+    float: left;
+}
+/*TreeView*/
+.ulTreeview
+{
+}
+.liTreeNode
+{
+}
+.liTreeLeaf
+{
+    left: 10px;
+}
+
+.pagger
+{
+    list-style-type: none;
+    list-style-image: none;
+    float: left;
+    margin-left: 0px;
+}
+.pagger li
+{
+    float: left;
+    padding-right: 10px;
+}
+.pagger a
+{
+    text-decoration: none;
+}
+#imgFolderList
+{
+    float: left;
+    height: auto;
+    overflow: auto;
+    width: 600px;
+}
+# imgFolderList a
+{
+    border: 0px;
+}
+#imgFolderList img
+{
+    border: 0px;
+}
+#imgList
+{
+    float: left;
+    height: 300px;
+    overflow: auto;
+    width: 600px;
+}
+.imgListItem
+{
+    float: left;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+#foderSeperator
+{
+    float: none;
+    width: 100%;
+}
+.hidden
+{
+    display: none;
+}
+.editor-label
+{
+    height: 25px;
+}
+.editor-field input
+{
+    height: 25px;
+    width: 500px;
+}
