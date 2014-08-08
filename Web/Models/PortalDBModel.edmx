@@ -1,0 +1,625 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PortalDBModel.Store" Alias="Self" Provider="System.Data.SQLite" ProviderManifestToken="ISO8601" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="PortalDBModelStoreContainer">
+          <EntitySet Name="Album" EntityType="PortalDBModel.Store.Album" store:Type="Tables" store:Name="Album">
+            <DefiningQuery>SELECT 
+      [Album].[Id] AS [Id], 
+      [Album].[Name] AS [Name], 
+      [Album].[ImageUrl] AS [ImageUrl], 
+      [Album].[Url] AS [Url], 
+      [Album].[Description] AS [Description], 
+      [Album].[State] AS [State], 
+      [Album].[Creator] AS [Creator]
+      FROM [Album] AS [Album]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ClientUser" EntityType="PortalDBModel.Store.ClientUser" store:Type="Tables" store:Name="ClientUser">
+            <DefiningQuery>SELECT 
+      [ClientUser].[UserID] AS [UserID], 
+      [ClientUser].[UserName] AS [UserName], 
+      [ClientUser].[Pwd] AS [Pwd], 
+      [ClientUser].[NickName] AS [NickName], 
+      [ClientUser].[Phone] AS [Phone], 
+      [ClientUser].[DeviceNum] AS [DeviceNum], 
+      [ClientUser].[Score] AS [Score], 
+      [ClientUser].[CreateDate] AS [CreateDate]
+      FROM [ClientUser] AS [ClientUser]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ClientUserLogin" EntityType="PortalDBModel.Store.ClientUserLogin" store:Type="Tables" store:Name="ClientUserLogin">
+            <DefiningQuery>SELECT 
+      [ClientUserLogin].[UserID] AS [UserID], 
+      [ClientUserLogin].[CreateDate] AS [CreateDate], 
+      [ClientUserLogin].[IP] AS [IP], 
+      [ClientUserLogin].[DeviceNum] AS [DeviceNum]
+      FROM [ClientUserLogin] AS [ClientUserLogin]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="DBDictionary" EntityType="PortalDBModel.Store.DBDictionary" store:Type="Tables" store:Name="DBDictionary">
+            <DefiningQuery>SELECT 
+      [DBDictionary].[Id] AS [Id], 
+      [DBDictionary].[DKey] AS [DKey], 
+      [DBDictionary].[DValue] AS [DValue], 
+      [DBDictionary].[DType] AS [DType], 
+      [DBDictionary].[Description] AS [Description]
+      FROM [DBDictionary] AS [DBDictionary]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PortalDocument" EntityType="PortalDBModel.Store.PortalDocument" store:Type="Tables" store:Name="PortalDocument">
+            <DefiningQuery>SELECT 
+      [PortalDocument].[Id] AS [Id], 
+      [PortalDocument].[Name] AS [Name], 
+      [PortalDocument].[MenuId] AS [MenuId], 
+      [PortalDocument].[DisplayName] AS [DisplayName], 
+      [PortalDocument].[Url] AS [Url], 
+      [PortalDocument].[Description] AS [Description], 
+      [PortalDocument].[ImageUrl] AS [ImageUrl], 
+      [PortalDocument].[Sequence] AS [Sequence], 
+      [PortalDocument].[State] AS [State], 
+      [PortalDocument].[CreateDate] AS [CreateDate], 
+      [PortalDocument].[Extend1] AS [Extend1], 
+      [PortalDocument].[Extend2] AS [Extend2], 
+      [PortalDocument].[Extend3] AS [Extend3], 
+      [PortalDocument].[Extend4] AS [Extend4], 
+      [PortalDocument].[Extend5] AS [Extend5], 
+      [PortalDocument].[Extend6] AS [Extend6], 
+      [PortalDocument].[Extend7] AS [Extend7]
+      FROM [PortalDocument] AS [PortalDocument]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PortalInfo" EntityType="PortalDBModel.Store.PortalInfo" store:Type="Tables" store:Name="PortalInfo">
+            <DefiningQuery>SELECT 
+      [PortalInfo].[Id] AS [Id], 
+      [PortalInfo].[Name] AS [Name], 
+      [PortalInfo].[DisplayName] AS [DisplayName], 
+      [PortalInfo].[Keyword] AS [Keyword], 
+      [PortalInfo].[Url] AS [Url], 
+      [PortalInfo].[ImageUrl] AS [ImageUrl], 
+      [PortalInfo].[Description] AS [Description]
+      FROM [PortalInfo] AS [PortalInfo]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PortalMenu" EntityType="PortalDBModel.Store.PortalMenu" store:Type="Tables" store:Name="PortalMenu">
+            <DefiningQuery>SELECT 
+      [PortalMenu].[Id] AS [Id], 
+      [PortalMenu].[Name] AS [Name], 
+      [PortalMenu].[DisplayName] AS [DisplayName], 
+      [PortalMenu].[Keyword] AS [Keyword], 
+      [PortalMenu].[Description] AS [Description], 
+      [PortalMenu].[Type] AS [Type], 
+      [PortalMenu].[ParentMenu] AS [ParentMenu], 
+      [PortalMenu].[PortalId] AS [PortalId], 
+      [PortalMenu].[Url] AS [Url], 
+      [PortalMenu].[ImageUrl] AS [ImageUrl], 
+      [PortalMenu].[Sequence] AS [Sequence], 
+      [PortalMenu].[State] AS [State], 
+      [PortalMenu].[CreateDate] AS [CreateDate]
+      FROM [PortalMenu] AS [PortalMenu]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="UserInfo" EntityType="PortalDBModel.Store.UserInfo" store:Type="Tables" store:Name="UserInfo">
+            <DefiningQuery>SELECT 
+      [UserInfo].[UserId] AS [UserId], 
+      [UserInfo].[UserName] AS [UserName], 
+      [UserInfo].[Pwd] AS [Pwd], 
+      [UserInfo].[DisplayName] AS [DisplayName], 
+      [UserInfo].[Sex] AS [Sex], 
+      [UserInfo].[Phone] AS [Phone], 
+      [UserInfo].[Email] AS [Email], 
+      [UserInfo].[MSN] AS [MSN], 
+      [UserInfo].[QQ] AS [QQ], 
+      [UserInfo].[Address] AS [Address], 
+      [UserInfo].[PostCode] AS [PostCode], 
+      [UserInfo].[Birthdaty] AS [Birthdaty], 
+      [UserInfo].[Metier] AS [Metier], 
+      [UserInfo].[Office] AS [Office], 
+      [UserInfo].[CardNum] AS [CardNum], 
+      [UserInfo].[NativPlace] AS [NativPlace], 
+      [UserInfo].[Hobby] AS [Hobby], 
+      [UserInfo].[Description] AS [Description], 
+      [UserInfo].[Extend1] AS [Extend1], 
+      [UserInfo].[Extend2] AS [Extend2], 
+      [UserInfo].[Extend3] AS [Extend3], 
+      [UserInfo].[Extend4] AS [Extend4], 
+      [UserInfo].[Extend5] AS [Extend5], 
+      [UserInfo].[Extend6] AS [Extend6], 
+      [UserInfo].[Extend7] AS [Extend7], 
+      [UserInfo].[CreateDate] AS [CreateDate]
+      FROM [UserInfo] AS [UserInfo]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+        <!--生成过程中发现错误:
+      警告 6002: 表/视图“main.Album”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
+      -->
+        <EntityType Name="Album">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1024" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Url" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Description" Type="nvarchar" MaxLength="1024" />
+          <Property Name="State" Type="int" />
+          <Property Name="Creator" Type="int" />
+        </EntityType>
+        <!--生成过程中发现错误:
+      警告 6002: 表/视图“main.ClientUser”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
+      -->
+        <EntityType Name="ClientUser">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Pwd" Type="nvarchar" MaxLength="50" />
+          <Property Name="NickName" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="DeviceNum" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Score" Type="int" />
+          <Property Name="CreateDate" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--生成过程中发现错误:
+      警告 6002: 表/视图“main.ClientUserLogin”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
+      -->
+        <EntityType Name="ClientUserLogin">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="varchar" MaxLength="50" />
+          <Property Name="IP" Type="nvarchar" MaxLength="50" />
+          <Property Name="DeviceNum" Type="nvarchar" MaxLength="1024" />
+        </EntityType>
+        <!--生成过程中发现错误:
+      警告 6002: 表/视图“main.DBDictionary”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
+      -->
+        <EntityType Name="DBDictionary">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="DKey" />
+            <PropertyRef Name="DValue" />
+            <PropertyRef Name="DType" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="DKey" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="DValue" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="DType" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="1024" />
+        </EntityType>
+        <!--生成过程中发现错误:
+      警告 6002: 表/视图“main.PortalDocument”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
+      -->
+        <EntityType Name="PortalDocument">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="MenuId" />
+            <PropertyRef Name="Sequence" />
+            <PropertyRef Name="State" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="1024" />
+          <Property Name="MenuId" Type="int" Nullable="false" />
+          <Property Name="DisplayName" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Url" Type="nvarchar" MaxLength="2048" />
+          <Property Name="Description" Type="nvarchar" MaxLength="4000" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Sequence" Type="int" Nullable="false" />
+          <Property Name="State" Type="bit" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="Extend1" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Extend2" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Extend3" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Extend4" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Extend5" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Extend6" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Extend7" Type="nvarchar" MaxLength="1024" />
+        </EntityType>
+        <!--生成过程中发现错误:
+      警告 6002: 表/视图“main.PortalInfo”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
+      -->
+        <EntityType Name="PortalInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Keyword" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="DisplayName" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Keyword" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Url" Type="nvarchar" MaxLength="256" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="256" />
+          <Property Name="Description" Type="nvarchar" MaxLength="4000" />
+        </EntityType>
+        <!--生成过程中发现错误:
+      警告 6002: 表/视图“main.PortalMenu”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
+      -->
+        <EntityType Name="PortalMenu">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Keyword" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="PortalId" />
+            <PropertyRef Name="State" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="DisplayName" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Keyword" Type="nvarchar" Nullable="false" MaxLength="1024" />
+          <Property Name="Description" Type="nvarchar" MaxLength="4000" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="ParentMenu" Type="int" />
+          <Property Name="PortalId" Type="int" Nullable="false" />
+          <Property Name="Url" Type="nvarchar" MaxLength="1024" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Sequence" Type="int" />
+          <Property Name="State" Type="bit" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" />
+        </EntityType>
+        <!--生成过程中发现错误:
+      警告 6002: 表/视图“main.UserInfo”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
+      -->
+        <EntityType Name="UserInfo">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="CreateDate" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="Pwd" Type="nvarchar" MaxLength="256" />
+          <Property Name="DisplayName" Type="nvarchar" MaxLength="256" />
+          <Property Name="Sex" Type="bit" />
+          <Property Name="Phone" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="256" />
+          <Property Name="MSN" Type="varchar" MaxLength="256" />
+          <Property Name="QQ" Type="varchar" MaxLength="50" />
+          <Property Name="Address" Type="nvarchar" MaxLength="1024" />
+          <Property Name="PostCode" Type="varchar" MaxLength="50" />
+          <Property Name="Birthdaty" Type="datetime" />
+          <Property Name="Metier" Type="nvarchar" MaxLength="256" />
+          <Property Name="Office" Type="nvarchar" MaxLength="256" />
+          <Property Name="CardNum" Type="nvarchar" MaxLength="256" />
+          <Property Name="NativPlace" Type="nvarchar" MaxLength="256" />
+          <Property Name="Hobby" Type="nvarchar" MaxLength="256" />
+          <Property Name="Description" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Extend1" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Extend2" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Extend3" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Extend4" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Extend5" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Extend6" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Extend7" Type="nvarchar" MaxLength="1024" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PortalDBModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="Entities">
+          <EntitySet Name="DBDictionary" EntityType="PortalDBModel.DBDictionary" />
+          <EntitySet Name="PortalDocument" EntityType="PortalDBModel.PortalDocument" />
+          <EntitySet Name="PortalInfo" EntityType="PortalDBModel.PortalInfo" />
+          <EntitySet Name="PortalMenu" EntityType="PortalDBModel.PortalMenu" />
+          <EntitySet Name="UserInfo" EntityType="PortalDBModel.UserInfo" />
+          <EntitySet Name="Album" EntityType="PortalDBModel.Album" />
+          <EntitySet Name="ClientUser" EntityType="PortalDBModel.ClientUser" />
+          <EntitySet Name="ClientUserLogin" EntityType="PortalDBModel.ClientUserLogin" />
+        </EntityContainer>
+        <EntityType Name="DBDictionary">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="DKey" />
+            <PropertyRef Name="DValue" />
+            <PropertyRef Name="DType" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="DKey" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="DValue" Type="String" Nullable="false" MaxLength="256" Unicode="true" FixedLength="false" />
+          <Property Name="DType" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="PortalDocument">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="MenuId" />
+            <PropertyRef Name="Sequence" />
+            <PropertyRef Name="State" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="MenuId" Type="Int32" Nullable="false" />
+          <Property Name="DisplayName" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="Url" Type="String" MaxLength="2048" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="4000" Unicode="true" FixedLength="false" />
+          <Property Name="ImageUrl" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="Sequence" Type="Int32" Nullable="false" />
+          <Property Name="State" Type="Boolean" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" />
+          <Property Name="Extend1" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="Extend2" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="Extend3" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="Extend4" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="Extend5" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="Extend6" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="Extend7" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="PortalInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Keyword" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="DisplayName" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="Keyword" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Url" Type="String" MaxLength="256" Unicode="true" FixedLength="false" />
+          <Property Name="ImageUrl" Type="String" MaxLength="256" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="4000" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="PortalMenu">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Keyword" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="PortalId" />
+            <PropertyRef Name="State" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" Unicode="true" FixedLength="false" />
+          <Property Name="DisplayName" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="Keyword" Type="String" Nullable="false" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="4000" Unicode="true" FixedLength="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="ParentMenu" Type="Int32" />
+          <Property Name="PortalId" Type="Int32" Nullable="false" />
+          <Property Name="Url" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="ImageUrl" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="Sequence" Type="Int32" />
+          <Property Name="State" Type="Boolean" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="UserInfo">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="CreateDate" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" Unicode="true" FixedLength="false" />
+          <Property Name="Pwd" Type="String" MaxLength="256" Unicode="true" FixedLength="false" />
+          <Property Name="DisplayName" Type="String" MaxLength="256" Unicode="true" FixedLength="false" />
+          <Property Name="Sex" Type="Boolean" />
+          <Property Name="Phone" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Email" Type="String" MaxLength="256" Unicode="true" FixedLength="false" />
+          <Property Name="MSN" Type="String" MaxLength="256" Unicode="true" FixedLength="false" />
+          <Property Name="QQ" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Address" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="PostCode" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Birthdaty" Type="DateTime" />
+          <Property Name="Metier" Type="String" MaxLength="256" Unicode="true" FixedLength="false" />
+          <Property Name="Office" Type="String" MaxLength="256" Unicode="true" FixedLength="false" />
+          <Property Name="CardNum" Type="String" MaxLength="256" Unicode="true" FixedLength="false" />
+          <Property Name="NativPlace" Type="String" MaxLength="256" Unicode="true" FixedLength="false" />
+          <Property Name="Hobby" Type="String" MaxLength="256" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="Extend1" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="Extend2" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="Extend3" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="Extend4" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="Extend5" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="Extend6" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="Extend7" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Album">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageUrl" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Url" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="State" />
+          <Property Type="Int32" Name="Creator" />
+        </EntityType>
+        <EntityType Name="ClientUser">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Type="Int32" Name="UserID" Nullable="false" />
+          <Property Type="String" Name="UserName" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Pwd" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="NickName" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Phone" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="DeviceNum" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="Score" />
+          <Property Type="String" Name="CreateDate" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ClientUserLogin">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Type="Int32" Name="UserID" Nullable="false" />
+          <Property Type="String" Name="CreateDate" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="IP" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="DeviceNum" MaxLength="1024" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PortalDBModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="DBDictionary">
+            <EntityTypeMapping TypeName="IsTypeOf(PortalDBModel.DBDictionary)">
+              <MappingFragment StoreEntitySet="DBDictionary">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DKey" ColumnName="DKey" />
+                <ScalarProperty Name="DValue" ColumnName="DValue" />
+                <ScalarProperty Name="DType" ColumnName="DType" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PortalDocument">
+            <EntityTypeMapping TypeName="IsTypeOf(PortalDBModel.PortalDocument)">
+              <MappingFragment StoreEntitySet="PortalDocument">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="MenuId" ColumnName="MenuId" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="Sequence" ColumnName="Sequence" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Extend1" ColumnName="Extend1" />
+                <ScalarProperty Name="Extend2" ColumnName="Extend2" />
+                <ScalarProperty Name="Extend3" ColumnName="Extend3" />
+                <ScalarProperty Name="Extend4" ColumnName="Extend4" />
+                <ScalarProperty Name="Extend5" ColumnName="Extend5" />
+                <ScalarProperty Name="Extend6" ColumnName="Extend6" />
+                <ScalarProperty Name="Extend7" ColumnName="Extend7" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PortalInfo">
+            <EntityTypeMapping TypeName="IsTypeOf(PortalDBModel.PortalInfo)">
+              <MappingFragment StoreEntitySet="PortalInfo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="Keyword" ColumnName="Keyword" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PortalMenu">
+            <EntityTypeMapping TypeName="IsTypeOf(PortalDBModel.PortalMenu)">
+              <MappingFragment StoreEntitySet="PortalMenu">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="Keyword" ColumnName="Keyword" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ParentMenu" ColumnName="ParentMenu" />
+                <ScalarProperty Name="PortalId" ColumnName="PortalId" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="Sequence" ColumnName="Sequence" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserInfo">
+            <EntityTypeMapping TypeName="IsTypeOf(PortalDBModel.UserInfo)">
+              <MappingFragment StoreEntitySet="UserInfo">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Pwd" ColumnName="Pwd" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="MSN" ColumnName="MSN" />
+                <ScalarProperty Name="QQ" ColumnName="QQ" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+                <ScalarProperty Name="Birthdaty" ColumnName="Birthdaty" />
+                <ScalarProperty Name="Metier" ColumnName="Metier" />
+                <ScalarProperty Name="Office" ColumnName="Office" />
+                <ScalarProperty Name="CardNum" ColumnName="CardNum" />
+                <ScalarProperty Name="NativPlace" ColumnName="NativPlace" />
+                <ScalarProperty Name="Hobby" ColumnName="Hobby" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Extend1" ColumnName="Extend1" />
+                <ScalarProperty Name="Extend2" ColumnName="Extend2" />
+                <ScalarProperty Name="Extend3" ColumnName="Extend3" />
+                <ScalarProperty Name="Extend4" ColumnName="Extend4" />
+                <ScalarProperty Name="Extend5" ColumnName="Extend5" />
+                <ScalarProperty Name="Extend6" ColumnName="Extend6" />
+                <ScalarProperty Name="Extend7" ColumnName="Extend7" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Album">
+            <EntityTypeMapping TypeName="PortalDBModel.Album">
+              <MappingFragment StoreEntitySet="Album">
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClientUser">
+            <EntityTypeMapping TypeName="PortalDBModel.ClientUser">
+              <MappingFragment StoreEntitySet="ClientUser">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="DeviceNum" ColumnName="DeviceNum" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
+                <ScalarProperty Name="Pwd" ColumnName="Pwd" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClientUserLogin">
+            <EntityTypeMapping TypeName="PortalDBModel.ClientUserLogin">
+              <MappingFragment StoreEntitySet="ClientUserLogin">
+                <ScalarProperty Name="DeviceNum" ColumnName="DeviceNum" />
+                <ScalarProperty Name="IP" ColumnName="IP" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer>
+    <edmx:Connection>
+      <DesignerInfoPropertySet xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+        <DesignerProperty Name="ValidateOnBuild" Value="True" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram Name="PortalDBModel" xmlns="http://schemas.microsoft.com/ado/2008/10/edmx" ZoomLevel="100">
+        <EntityTypeShape EntityType="PortalDBModel.DBDictionary" Width="1.5" PointX="0.75" PointY="0.75" Height="1.9802864583333331" IsExpanded="true" />
+        <EntityTypeShape EntityType="PortalDBModel.PortalDocument" Width="1.5" PointX="2.75" PointY="0.75" Height="4.2879036458333326" IsExpanded="true" />
+        <EntityTypeShape EntityType="PortalDBModel.PortalInfo" Width="1.5" PointX="4.75" PointY="0.75" Height="2.3648893229166665" IsExpanded="true" />
+        <EntityTypeShape EntityType="PortalDBModel.PortalMenu" Width="1.5" PointX="4.75" PointY="4.75" Height="3.5186979166666674" IsExpanded="true" />
+        <EntityTypeShape EntityType="PortalDBModel.UserInfo" Width="1.5" PointX="6.75" PointY="0.75" Height="6.0186165364583326" IsExpanded="true" />
+        <EntityTypeShape EntityType="PortalDBModel.Album" Width="1.5" PointX="0.75" PointY="6.75" Height="2.3520719401041656" />
+        <EntityTypeShape EntityType="PortalDBModel.ClientUser" Width="1.5" PointX="7.375" PointY="7.75" Height="2.5430916341145817" />
+        <EntityTypeShape EntityType="PortalDBModel.ClientUserLogin" Width="1.5" PointX="9.375" PointY="0.75" Height="1.7790128580729174" />
+        </Diagram></edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
