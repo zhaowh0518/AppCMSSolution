@@ -6,17 +6,25 @@ using System.Web;
 namespace Disappearwind.PortalSolution.PortalWeb.Models
 {
     /// <summary>
-    /// 返回给服务端的消息
+    /// 返回给客户端的数据
     /// </summary>
-    public class ClientMessage
+    public class ServiceReturnData<T>
     {
+        /// <summary>
+        /// 返回数据编号：-1：出错；0：无数据；1：成功返回数据
+        /// </summary>
+        public int Code { get; set; }
+        /// <summary>
+        /// 返回的信息
+        /// </summary>
         public string Message { get; set; }
-        public string Data { get; set; }
-
-        public ClientMessage(string message, string data)
-        {
-            Message = message;
-            Data = data;
-        }
+        /// <summary>
+        /// 返回的字符数据
+        /// </summary>
+        public string StrData { get; set; }
+        /// <summary>
+        /// 返回列表数据
+        /// </summary>
+        public List<T> ListData { get; set; }
     }
 }
