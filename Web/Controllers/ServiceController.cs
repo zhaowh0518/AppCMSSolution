@@ -21,14 +21,45 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         ClientUserBusiness clientUserBusiness = new ClientUserBusiness();
 
         /// <summary>
+        /// 封装返回的数据为Json数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        private JsonResult ReturnJson<T>(ServiceReturnData<T> data)
+        {
+            if (string.IsNullOrEmpty(data.Message))
+            {
+                data.Message = "成功";
+            }
+            if (string.IsNullOrEmpty(data.StrData))
+            {
+                data.StrData = string.Empty;
+            }
+            return Json(data, Client_Content_Type, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
         /// 首页
         /// </summary>
         /// <returns></returns>
         public JsonResult Index()
         {
+            ServiceReturnData<Album> data = new ServiceReturnData<Album>();
             //获取首页照片墙
-            List<Album> albumList = albumBusiness.GetAlbumList();
-            return Json(albumList, Client_Content_Type, JsonRequestBehavior.AllowGet);
+            int pageNum = 1;
+            if (Request["pagenum"] != null)
+            {
+                pageNum = Convert.ToInt32(Request["pagenum"]);
+            }
+            int pageSize = 50;
+            List<Album> albumList = albumBusiness.GetAlbumList(pageNum, pageSize);
+            if (albumList.Count > 0)
+            {
+                data.Code = 1;
+                data.ListData = albumList;
+            }
+            return ReturnJson<Album>(data);
         }
         /// <summary>
         /// 专辑下的所有图片
@@ -38,13 +69,23 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         public JsonResult List()
         {
             string albumID = Request["aid"];
-            //string albumID = "1";
+            ServiceReturnData<string> data = new ServiceReturnData<string>();
             List<string> list = new List<string>();
             if (!string.IsNullOrEmpty(albumID))
             {
                 list = albumBusiness.GetAlbumContentList(Convert.ToInt32(albumID));
+                if (list.Count > 0)
+                {
+                    data.Code = 1;
+                    data.ListData = list;
+                }
             }
-            return Json(list, Client_Content_Type, JsonRequestBehavior.AllowGet);
+            else
+            {
+                data.Code = -1;
+                data.Message = "参数aid为空";
+            }
+            return ReturnJson<string>(data);
         }
         /// <summary>
         /// 用户注册
@@ -52,22 +93,42 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         /// <returns></returns>
         public JsonResult Register()
         {
-            //先判断用户是否存在
-            ClientUser userInfo = clientUserBusiness.GetClientUser(Request["username"]);
-            if (userInfo != null && userInfo.UserID != 0)
+            ServiceReturnData<string> data = new ServiceReturnData<string>();
+            if (string.IsNullOrEmpty(Request["username"]) || string.IsNullOrEmpty(Request["pwd"]))
             {
-                return Json(new ClientMessage("Repeat", "-1"), Client_Content_Type, JsonRequestBehavior.AllowGet);
+                data.Code = 0;
+                data.Message = "用户名或者密码不能为空";
             }
             else
             {
-                userInfo.DeviceNum = Request["devicenum"];
-                userInfo.NickName = Request["nickyname"];
-                userInfo.Phone = Request["phone"];
-                userInfo.Pwd = Request["pwd"];
-                userInfo.UserName = Request["username"];
-                int uid = clientUserBusiness.AddClientUser(userInfo);
-                return Json(new ClientMessage("OK", uid.ToString()), Client_Content_Type, JsonRequestBehavior.AllowGet);
+                //先判断用户是否存在
+                ClientUser userInfo = clientUserBusiness.GetClientUser(Request["username"]);
+                if (userInfo != null && userInfo.UserID != 0)
+                {
+                    data.Code = 0;
+                    data.Message = "用户名重复";
+                }
+                else
+                {
+                    userInfo.DeviceNum = Request["devicenum"];
+                    userInfo.NickName = Request["nickyname"];
+                    userInfo.Phone = Request["phone"];
+                    userInfo.Pwd = Request["pwd"];
+                    userInfo.UserName = Request["username"];
+                    int uid = clientUserBusiness.AddClientUser(userInfo);
+                    if (uid > 0)
+                    {
+                        data.Code = 1;
+                        data.StrData = string.Format("uid={0}", uid);
+                    }
+                    else
+                    {
+                        data.Code = -1;
+                        data.Message = "注册失败";
+                    }
+                }
             }
+            return ReturnJson<string>(data);
         }
         /// <summary>
         /// 用户登录
@@ -75,6 +136,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         /// <returns></returns>
         public JsonResult Login()
         {
+            ServiceReturnData<string> data = new ServiceReturnData<string>();
             string uid = Request["uid"];
             ClientUser userInfo = new ClientUser();
             if (!string.IsNullOrEmpty(uid))
@@ -84,8 +146,13 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 loginInfo.UserID = Convert.ToInt32(Request["uid"]);
                 clientUserBusiness.AddClientUserLogin(loginInfo);
                 userInfo = clientUserBusiness.GetClientUser(loginInfo.UserID);
+                data.Code = 1;
             }
-            return Json(new ClientMessage("OK", userInfo.Score.ToString()), Client_Content_Type, JsonRequestBehavior.AllowGet);
+            else
+            {
+                data.Message = "uid为空";
+            }
+            return ReturnJson<string>(data);
         }
         /// <summary>
         /// 获取静态页
@@ -120,10 +187,20 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         /// <returns></returns>
         public JsonResult UpdateUserScore()
         {
-            int uid = Convert.ToInt32(Request["uid"]);
-            int score = Convert.ToInt32(Request["score"]);
-            int resultScore = clientUserBusiness.UpdateClientUserScore(uid, score);
-            return Json(new ClientMessage("OK", resultScore.ToString()), Client_Content_Type, JsonRequestBehavior.AllowGet);
+            ServiceReturnData<string> data = new ServiceReturnData<string>();
+            if (string.IsNullOrEmpty(Request["uid"]) || string.IsNullOrEmpty(Request["score"]))
+            {
+                data.Code = 0;
+                data.Message = "uid和score都不能为空";
+            }
+            else
+            {
+                int uid = Convert.ToInt32(Request["uid"]);
+                int score = Convert.ToInt32(Request["score"]);
+                int resultScore = clientUserBusiness.UpdateClientUserScore(uid, score);
+                data.Code = 1;
+            }
+            return ReturnJson<string>(data);
         }
         /// <summary>
         /// Action测试
