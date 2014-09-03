@@ -107,6 +107,26 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
             return true;
         }
         /// <summary>
+        /// 根据用户名和密码登录，返回用户ID
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="pwd"></param>
+        /// <returns></returns>
+        public int UserLogin(string username, string pwd)
+        {
+            var c = from p in DBContext.ClientUser
+                    where p.UserName == username && p.Pwd == pwd
+                    select p;
+            if (c != null && c.Count() > 0)
+            {
+                return c.FirstOrDefault().UserID;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+        /// <summary>
         /// 更新用户的积分，并返回更新后的积分
         /// </summary>
         /// <param name="userid"></param>

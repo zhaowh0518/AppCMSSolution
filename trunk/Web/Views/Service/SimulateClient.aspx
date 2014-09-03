@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<dynamic>" %>
+﻿<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<dynamic>" ValidateRequest="false" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -7,7 +7,7 @@
 </head>
 <body>
     <div>
-        <form action="" method="post">
+        <form action="" method="post" enctype="multipart/form-data">
         <table>
             <tr>
                 <td>
@@ -21,13 +21,23 @@
             </tr>
             <tr>
                 <td>
+                    <input type="file" name="fileImage" />
+                </td>
+            </tr>
+            <tr>
+                <td>
                     选择请求的Action：&nbsp;&nbsp;
                     <select name="ddlAction">
+                        <option>
+                            <%=ViewData["ServiceAction"]%>
+                        </option>
                         <option>Index</option>
                         <option>List</option>
                         <option>Register</option>
                         <option>Login</option>
                         <option>Page</option>
+                        <option>AddAlbum</option>
+                        <option>UploadImage</option>
                     </select>
                     &nbsp;&nbsp;
                     <input type="submit" value="请求" />
