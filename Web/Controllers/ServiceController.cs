@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -137,20 +138,30 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         public JsonResult Login()
         {
             ServiceReturnData<string> data = new ServiceReturnData<string>();
-            string uid = Request["uid"];
-            ClientUser userInfo = new ClientUser();
-            if (!string.IsNullOrEmpty(uid))
+
+            string username = Request["username"];
+            string pwd = Request["pwd"];
+            string uid = "0";
+            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(pwd))
+            {
+                uid = clientUserBusiness.UserLogin(username, pwd).ToString();
+            }
+            else if (!string.IsNullOrEmpty(Request["uid"]))
+            {
+                uid = Request["uid"];
+            }
+            if (!string.IsNullOrEmpty(uid) && uid != "0" && uid != "-1")
             {
                 ClientUserLogin loginInfo = new ClientUserLogin();
                 loginInfo.DeviceNum = Request["devicenum"];
-                loginInfo.UserID = Convert.ToInt32(Request["uid"]);
+                loginInfo.UserID = Convert.ToInt32(uid);
                 clientUserBusiness.AddClientUserLogin(loginInfo);
-                userInfo = clientUserBusiness.GetClientUser(loginInfo.UserID);
                 data.Code = 1;
+                data.Message = "登录成功";
             }
             else
             {
-                data.Message = "uid为空";
+                data.Message = "用户不存在";
             }
             return ReturnJson<string>(data);
         }
@@ -203,6 +214,105 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             return ReturnJson<string>(data);
         }
         /// <summary>
+        /// 添加专辑
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult AddAlbum()
+        {
+            ServiceReturnData<string> data = new ServiceReturnData<string>();
+            Album album = new Album();
+            if (string.IsNullOrEmpty(Request["uid"]))
+            {
+                album.Creator = Convert.ToInt32(Request["uid"]);
+            }
+            album.Name = Request["aname"];
+            string imagePath = string.Format("{0}/{1}/{2}.jpg",
+                AppDomain.CurrentDomain.BaseDirectory, AlbumBusiness.Resource_Dir, Guid.NewGuid());
+            int imgWidth = 0;
+            if (string.IsNullOrEmpty(Request["width"]))
+            {
+                imgWidth = Convert.ToInt32(Request["width"]);
+            }
+            if (GetImageInRequest(imagePath, imgWidth))
+            {
+                album.ImageUrl = imagePath.Replace(AppDomain.CurrentDomain.BaseDirectory, string.Empty).Replace("\\", "/");
+            }
+            else
+            {
+                data.Code = 0;
+                data.Message = "专辑图片保存失败！";
+            }
+            int aid = albumBusiness.AddAlbum(album);
+            data.StrData = string.Format("aid={0}", aid);
+            data.Message += "添加成功！";
+            return ReturnJson<string>(data);
+        }
+        /// <summary>
+        /// 上传图片
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult UploadImage()
+        {
+            ServiceReturnData<string> data = new ServiceReturnData<string>();
+            string uid = Request["uid"];
+            string aid = Request["aid"];
+            string imagePath = string.Format("{0}/{1}/{2}/{3}.jpg",
+               AppDomain.CurrentDomain.BaseDirectory, AlbumBusiness.Resource_Dir, aid, Guid.NewGuid());
+            if (GetImageInRequest(imagePath))
+            {
+                data.Message = "上传成功";
+                data.Code = 1;
+            }
+            else
+            {
+                data.Message = "上传失败";
+                data.Code = 0;
+            }
+            return ReturnJson<string>(data);
+        }
+        /// <summary>
+        /// 从Request中取客户端传过来的图片并把图片保存到指定的位置
+        /// <param name="width">如果宽度不为0，图片按宽度裁减</param>
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private bool GetImageInRequest(string path, int width = 0)
+        {
+            if (Request.InputStream != null && Request.InputStream.Length > 0)
+            {
+                try
+                {
+                    byte[] data = new byte[Request.InputStream.Length];
+                    Request.InputStream.Read(data, 0, data.Length);
+
+                    System.Drawing.Image img = System.Drawing.Bitmap.FromStream(Request.InputStream);
+                    Bitmap bmp = new Bitmap(img);
+                    MemoryStream bmpStream = new MemoryStream();
+                    if (width > 0)
+                    {
+                        Graphics g = Graphics.FromImage(bmp);
+                        Rectangle rect = new Rectangle(0, (int)bmp.Height / 4, width, (int)bmp.Height / 2);
+                        g.DrawImage(bmp, rect);
+                    }
+                    bmp.Save(bmpStream, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    FileStream fs = new FileStream(path, FileMode.Create);
+                    bmpStream.WriteTo(fs);
+                    bmpStream.Close();
+                    fs.Close();
+                    bmpStream.Dispose();
+                    fs.Dispose();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
+
+        #region Testor
+        /// <summary>
         /// Action测试
         /// </summary>
         public void Testor()
@@ -233,13 +343,23 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         {
             if (Request.Form.Count > 0)
             {
-                string url = Request.Url.AbsoluteUri.Replace("SimulateClient", Request.Form["ddlAction"]);
+                string url = Request.Url.AbsoluteUri.ToLower().Replace("simulateclient", Request.Form["ddlAction"]);
+                url = string.Format("{0}?{1}", url, Request.Form["txtData"]);
+                string fileData = string.Empty;
+                if (Request.Files != null && Request.Files.Count > 0)
+                {
+                    byte[] data = new byte[Request.Files[0].InputStream.Length];
+                    Request.Files[0].InputStream.Read(data, 0, data.Length);
+                    fileData = System.Text.Encoding.UTF8.GetString(data);
+                }
                 string str = string.Empty;
-                str = WebAccessUtility.Request(url, Request.Form["txtData"], Client_Content_Type);
+                str = WebAccessUtility.Request(url, fileData, Client_Content_Type);
                 ViewData["ServiceRequest"] = Request.Form["txtData"];
+                ViewData["ServiceAction"] = Request.Form["ddlAction"];
                 ViewData["ServiceResponse"] = str;
             }
             return View();
         }
+        #endregion
     }
 }

@@ -12,7 +12,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
     /// </summary>
     public class AlbumBusiness : BaseBusiness
     {
-        const string Resource_Dir = "Resource/DocImages";
+        public static readonly string Resource_Dir = "Resource/DocImages";
         /// <summary>
         /// 获取一系列的专辑
         /// </summary>
