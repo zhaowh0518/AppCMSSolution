@@ -157,6 +157,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 loginInfo.UserID = Convert.ToInt32(uid);
                 clientUserBusiness.AddClientUserLogin(loginInfo);
                 data.Code = 1;
+                data.StrData = string.Format("uid={0}", uid);
                 data.Message = "登录成功";
             }
             else
