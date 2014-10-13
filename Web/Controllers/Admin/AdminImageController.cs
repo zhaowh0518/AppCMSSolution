@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using Disappearwind.PortalSolution.PortalWeb.Utility;
-using System.IO;
 
 namespace Disappearwind.PortalSolution.PortalWeb.Controllers.Admin
 {
@@ -75,6 +75,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers.Admin
             {
                 floderList.Add(item.Name);
             }
+
             string currentRootUrl = CommonUtility.DocImageURL;
             if (!string.IsNullOrEmpty(SubDirectory))
             {

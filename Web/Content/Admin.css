@@ -91,10 +91,9 @@ label
 }
 #imgFolderList
 {
-    float: left;
     height: auto;
     overflow: auto;
-    width: 600px;
+    width: 800px;
 }
 # imgFolderList a
 {
