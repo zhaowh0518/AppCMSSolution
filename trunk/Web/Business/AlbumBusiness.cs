@@ -50,6 +50,27 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
             }
         }
         /// <summary>
+        /// 取某个用户的专辑
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public List<Album> GetUserAlbumList(int userID, int? state)
+        {
+            var c = from p in DBContext.Album
+                    where p.Creator == userID && (p.State == state || state == null)
+                    orderby p.Id descending
+                    select p;
+            if (c != null && c.Count() > 0)
+            {
+                return c.ToList();
+            }
+            else
+            {
+                return new List<Album>();
+            }
+        }
+        /// <summary>
         /// 获取专辑下的图片列表
         /// </summary>
         /// <param name="albumID"></param>

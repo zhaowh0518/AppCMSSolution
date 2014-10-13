@@ -63,6 +63,37 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             return ReturnJson<Album>(data);
         }
         /// <summary>
+        /// 获取用户自己的专辑
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetUserAlbumList()
+        {
+            ServiceReturnData<Album> data = new ServiceReturnData<Album>();
+            //获取首页照片墙
+            int userid = 0;
+            if (Request["uid"] == null)
+            {
+                data.Code = 0;
+                data.Message = "uid不能为空";
+            }
+            else
+            {
+                int? state = null;
+                if (Request["state"] == null)
+                {
+                    state = Convert.ToInt32(Request["state"]);
+                }
+                userid = Convert.ToInt32(Request["uid"]);
+                List<Album> albumList = albumBusiness.GetUserAlbumList(userid, state);
+                if (albumList.Count > 0)
+                {
+                    data.Code = 1;
+                    data.ListData = albumList;
+                }
+            }
+            return ReturnJson<Album>(data);
+        }
+        /// <summary>
         /// 专辑下的所有图片
         /// [{"uid":1,"aid":1}]
         /// </summary>
