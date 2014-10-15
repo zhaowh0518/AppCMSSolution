@@ -95,6 +95,25 @@
       [PortalMenu].[CreateDate] AS [CreateDate]
       FROM [PortalMenu] AS [PortalMenu]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="PurchaseOrder" EntityType="PortalDBModel.Store.PurchaseOrder" store:Type="Tables" store:Name="PurchaseOrder">
+            <DefiningQuery>SELECT 
+      [PurchaseOrder].[ProductID] AS [ProductID], 
+      [PurchaseOrder].[UserID] AS [UserID], 
+      [PurchaseOrder].[CreateDate] AS [CreateDate], 
+      [PurchaseOrder].[TransactionID] AS [TransactionID]
+      FROM [PurchaseOrder] AS [PurchaseOrder]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PurchaseProduct" EntityType="PortalDBModel.Store.PurchaseProduct" store:Type="Tables" store:Name="PurchaseProduct">
+            <DefiningQuery>SELECT 
+      [PurchaseProduct].[ID] AS [ID], 
+      [PurchaseProduct].[ProductID] AS [ProductID], 
+      [PurchaseProduct].[ProductName] AS [ProductName], 
+      [PurchaseProduct].[State] AS [State], 
+      [PurchaseProduct].[Description] AS [Description], 
+      [PurchaseProduct].[AppID] AS [AppID], 
+      [PurchaseProduct].[OrderCount] AS [OrderCount]
+      FROM [PurchaseProduct] AS [PurchaseProduct]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="UserInfo" EntityType="PortalDBModel.Store.UserInfo" store:Type="Tables" store:Name="UserInfo">
             <DefiningQuery>SELECT 
       [UserInfo].[UserId] AS [UserId], 
@@ -258,6 +277,42 @@
           <Property Name="CreateDate" Type="datetime" />
         </EntityType>
         <!--生成过程中发现错误:
+      警告 6002: 表/视图“main.PurchaseOrder”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
+      -->
+        <EntityType Name="PurchaseOrder">
+          <Key>
+            <PropertyRef Name="ProductID" />
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="CreateDate" />
+            <PropertyRef Name="TransactionID" />
+          </Key>
+          <Property Name="ProductID" Type="varchar" Nullable="false" MaxLength="1024" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="TransactionID" Type="varchar" Nullable="false" MaxLength="1024" />
+        </EntityType>
+        <!--生成过程中发现错误:
+      警告 6002: 表/视图“main.PurchaseProduct”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
+      -->
+        <EntityType Name="PurchaseProduct">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ProductID" />
+            <PropertyRef Name="ProductName" />
+            <PropertyRef Name="State" />
+            <PropertyRef Name="Description" />
+            <PropertyRef Name="AppID" />
+            <PropertyRef Name="OrderCount" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ProductID" Type="varchar" Nullable="false" MaxLength="256" />
+          <Property Name="ProductName" Type="nvarchar" Nullable="false" MaxLength="1024" />
+          <Property Name="State" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" Nullable="false" MaxLength="1024" />
+          <Property Name="AppID" Type="int" Nullable="false" />
+          <Property Name="OrderCount" Type="int" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
       警告 6002: 表/视图“main.UserInfo”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
       -->
         <EntityType Name="UserInfo">
@@ -306,6 +361,8 @@
           <EntitySet Name="Album" EntityType="PortalDBModel.Album" />
           <EntitySet Name="ClientUser" EntityType="PortalDBModel.ClientUser" />
           <EntitySet Name="ClientUserLogin" EntityType="PortalDBModel.ClientUserLogin" />
+          <EntitySet Name="PurchaseOrder" EntityType="PortalDBModel.PurchaseOrder" />
+          <EntitySet Name="PurchaseProduct" EntityType="PortalDBModel.PurchaseProduct" />
         </EntityContainer>
         <EntityType Name="DBDictionary">
           <Key>
@@ -450,6 +507,36 @@
           <Property Type="String" Name="IP" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="DeviceNum" MaxLength="1024" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="PurchaseOrder">
+          <Key>
+            <PropertyRef Name="ProductID" />
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="CreateDate" />
+            <PropertyRef Name="TransactionID" />
+          </Key>
+          <Property Type="String" Name="ProductID" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="UserID" Nullable="false" />
+          <Property Type="DateTime" Name="CreateDate" Nullable="false" />
+          <Property Type="String" Name="TransactionID" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="PurchaseProduct">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ProductID" />
+            <PropertyRef Name="ProductName" />
+            <PropertyRef Name="State" />
+            <PropertyRef Name="Description" />
+            <PropertyRef Name="AppID" />
+            <PropertyRef Name="OrderCount" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="ProductID" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ProductName" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="State" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="AppID" Nullable="false" />
+          <Property Type="Int32" Name="OrderCount" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -591,6 +678,29 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="PurchaseOrder">
+            <EntityTypeMapping TypeName="PortalDBModel.PurchaseOrder">
+              <MappingFragment StoreEntitySet="PurchaseOrder">
+                <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PurchaseProduct">
+            <EntityTypeMapping TypeName="PortalDBModel.PurchaseProduct">
+              <MappingFragment StoreEntitySet="PurchaseProduct">
+                <ScalarProperty Name="OrderCount" ColumnName="OrderCount" />
+                <ScalarProperty Name="AppID" ColumnName="AppID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -620,6 +730,8 @@
         <EntityTypeShape EntityType="PortalDBModel.Album" Width="1.5" PointX="0.75" PointY="6.75" Height="2.3520719401041656" />
         <EntityTypeShape EntityType="PortalDBModel.ClientUser" Width="1.5" PointX="7.375" PointY="7.75" Height="2.5430916341145817" />
         <EntityTypeShape EntityType="PortalDBModel.ClientUserLogin" Width="1.5" PointX="9.375" PointY="0.75" Height="1.7790128580729174" />
+        <EntityTypeShape EntityType="PortalDBModel.PurchaseOrder" Width="1.5" PointX="9.375" PointY="3.75" Height="1.7790128580729174" />
+        <EntityTypeShape EntityType="PortalDBModel.PurchaseProduct" Width="1.5" PointX="3.375" PointY="9.75" Height="2.3520719401041674" />
         </Diagram></edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

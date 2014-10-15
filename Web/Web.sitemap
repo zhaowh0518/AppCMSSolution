@@ -9,6 +9,7 @@
     -->
     <siteMapNode resourceKey="Album" url="~/AdminAlbum/Index" title="专辑管理"  description="专辑管理" />
     <siteMapNode resourceKey="Image" url="~/AdminImage/Index" title="图片管理"  description="about image" />
+    <siteMapNode resourceKey="Purchase" url="~/AdminPurchase/Index" title="订购管理"  description="订购管理" />
     <siteMapNode resourceKey="UserInfo" url="~/AdminUserInfo/Index" title="系统用户管理"  description="about user" />
     <siteMapNode resourceKey="ClientUserInfo" url="~/Admin/ClientUser" title="用户管理"  description="用户管理" />
   </siteMapNode>

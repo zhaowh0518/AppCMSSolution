@@ -189,6 +189,38 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
             }
         }
         private ObjectSet<ClientUserLogin> _ClientUserLogin;
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        public ObjectSet<PurchaseOrder> PurchaseOrder
+        {
+            get
+            {
+                if ((_PurchaseOrder == null))
+                {
+                    _PurchaseOrder = base.CreateObjectSet<PurchaseOrder>("PurchaseOrder");
+                }
+                return _PurchaseOrder;
+            }
+        }
+        private ObjectSet<PurchaseOrder> _PurchaseOrder;
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        public ObjectSet<PurchaseProduct> PurchaseProduct
+        {
+            get
+            {
+                if ((_PurchaseProduct == null))
+                {
+                    _PurchaseProduct = base.CreateObjectSet<PurchaseProduct>("PurchaseProduct");
+                }
+                return _PurchaseProduct;
+            }
+        }
+        private ObjectSet<PurchaseProduct> _PurchaseProduct;
 
         #endregion
 
@@ -256,6 +288,22 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         public void AddToClientUserLogin(ClientUserLogin clientUserLogin)
         {
             base.AddObject("ClientUserLogin", clientUserLogin);
+        }
+    
+        /// <summary>
+        /// 用于向 PurchaseOrder EntitySet 添加新对象的方法，已弃用。请考虑改用关联的 ObjectSet&lt;T&gt; 属性的 .Add 方法。
+        /// </summary>
+        public void AddToPurchaseOrder(PurchaseOrder purchaseOrder)
+        {
+            base.AddObject("PurchaseOrder", purchaseOrder);
+        }
+    
+        /// <summary>
+        /// 用于向 PurchaseProduct EntitySet 添加新对象的方法，已弃用。请考虑改用关联的 ObjectSet&lt;T&gt; 属性的 .Add 方法。
+        /// </summary>
+        public void AddToPurchaseProduct(PurchaseProduct purchaseProduct)
+        {
+            base.AddObject("PurchaseProduct", purchaseProduct);
         }
 
         #endregion
@@ -2025,6 +2073,381 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         private Nullable<global::System.DateTime> _CreateDate;
         partial void OnCreateDateChanging(Nullable<global::System.DateTime> value);
         partial void OnCreateDateChanged();
+
+        #endregion
+
+    
+    }
+    
+    /// <summary>
+    /// 没有元数据文档可用。
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="PortalDBModel", Name="PurchaseOrder")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class PurchaseOrder : EntityObject
+    {
+        #region 工厂方法
+    
+        /// <summary>
+        /// 创建新的 PurchaseOrder 对象。
+        /// </summary>
+        /// <param name="productID">ProductID 属性的初始值。</param>
+        /// <param name="userID">UserID 属性的初始值。</param>
+        /// <param name="createDate">CreateDate 属性的初始值。</param>
+        /// <param name="transactionID">TransactionID 属性的初始值。</param>
+        public static PurchaseOrder CreatePurchaseOrder(global::System.String productID, global::System.Int32 userID, global::System.DateTime createDate, global::System.String transactionID)
+        {
+            PurchaseOrder purchaseOrder = new PurchaseOrder();
+            purchaseOrder.ProductID = productID;
+            purchaseOrder.UserID = userID;
+            purchaseOrder.CreateDate = createDate;
+            purchaseOrder.TransactionID = transactionID;
+            return purchaseOrder;
+        }
+
+        #endregion
+
+        #region 基元属性
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String ProductID
+        {
+            get
+            {
+                return _ProductID;
+            }
+            set
+            {
+                if (_ProductID != value)
+                {
+                    OnProductIDChanging(value);
+                    ReportPropertyChanging("ProductID");
+                    _ProductID = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("ProductID");
+                    OnProductIDChanged();
+                }
+            }
+        }
+        private global::System.String _ProductID;
+        partial void OnProductIDChanging(global::System.String value);
+        partial void OnProductIDChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 UserID
+        {
+            get
+            {
+                return _UserID;
+            }
+            set
+            {
+                if (_UserID != value)
+                {
+                    OnUserIDChanging(value);
+                    ReportPropertyChanging("UserID");
+                    _UserID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("UserID");
+                    OnUserIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _UserID;
+        partial void OnUserIDChanging(global::System.Int32 value);
+        partial void OnUserIDChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreateDate
+        {
+            get
+            {
+                return _CreateDate;
+            }
+            set
+            {
+                if (_CreateDate != value)
+                {
+                    OnCreateDateChanging(value);
+                    ReportPropertyChanging("CreateDate");
+                    _CreateDate = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("CreateDate");
+                    OnCreateDateChanged();
+                }
+            }
+        }
+        private global::System.DateTime _CreateDate;
+        partial void OnCreateDateChanging(global::System.DateTime value);
+        partial void OnCreateDateChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String TransactionID
+        {
+            get
+            {
+                return _TransactionID;
+            }
+            set
+            {
+                if (_TransactionID != value)
+                {
+                    OnTransactionIDChanging(value);
+                    ReportPropertyChanging("TransactionID");
+                    _TransactionID = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("TransactionID");
+                    OnTransactionIDChanged();
+                }
+            }
+        }
+        private global::System.String _TransactionID;
+        partial void OnTransactionIDChanging(global::System.String value);
+        partial void OnTransactionIDChanged();
+
+        #endregion
+
+    
+    }
+    
+    /// <summary>
+    /// 没有元数据文档可用。
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="PortalDBModel", Name="PurchaseProduct")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class PurchaseProduct : EntityObject
+    {
+        #region 工厂方法
+    
+        /// <summary>
+        /// 创建新的 PurchaseProduct 对象。
+        /// </summary>
+        /// <param name="id">ID 属性的初始值。</param>
+        /// <param name="productID">ProductID 属性的初始值。</param>
+        /// <param name="productName">ProductName 属性的初始值。</param>
+        /// <param name="state">State 属性的初始值。</param>
+        /// <param name="description">Description 属性的初始值。</param>
+        /// <param name="appID">AppID 属性的初始值。</param>
+        /// <param name="orderCount">OrderCount 属性的初始值。</param>
+        public static PurchaseProduct CreatePurchaseProduct(global::System.Int32 id, global::System.String productID, global::System.String productName, global::System.Int32 state, global::System.String description, global::System.Int32 appID, global::System.Int32 orderCount)
+        {
+            PurchaseProduct purchaseProduct = new PurchaseProduct();
+            purchaseProduct.ID = id;
+            purchaseProduct.ProductID = productID;
+            purchaseProduct.ProductName = productName;
+            purchaseProduct.State = state;
+            purchaseProduct.Description = description;
+            purchaseProduct.AppID = appID;
+            purchaseProduct.OrderCount = orderCount;
+            return purchaseProduct;
+        }
+
+        #endregion
+
+        #region 基元属性
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ID
+        {
+            get
+            {
+                return _ID;
+            }
+            set
+            {
+                if (_ID != value)
+                {
+                    OnIDChanging(value);
+                    ReportPropertyChanging("ID");
+                    _ID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ID");
+                    OnIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ID;
+        partial void OnIDChanging(global::System.Int32 value);
+        partial void OnIDChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String ProductID
+        {
+            get
+            {
+                return _ProductID;
+            }
+            set
+            {
+                if (_ProductID != value)
+                {
+                    OnProductIDChanging(value);
+                    ReportPropertyChanging("ProductID");
+                    _ProductID = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("ProductID");
+                    OnProductIDChanged();
+                }
+            }
+        }
+        private global::System.String _ProductID;
+        partial void OnProductIDChanging(global::System.String value);
+        partial void OnProductIDChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String ProductName
+        {
+            get
+            {
+                return _ProductName;
+            }
+            set
+            {
+                if (_ProductName != value)
+                {
+                    OnProductNameChanging(value);
+                    ReportPropertyChanging("ProductName");
+                    _ProductName = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("ProductName");
+                    OnProductNameChanged();
+                }
+            }
+        }
+        private global::System.String _ProductName;
+        partial void OnProductNameChanging(global::System.String value);
+        partial void OnProductNameChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 State
+        {
+            get
+            {
+                return _State;
+            }
+            set
+            {
+                if (_State != value)
+                {
+                    OnStateChanging(value);
+                    ReportPropertyChanging("State");
+                    _State = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("State");
+                    OnStateChanged();
+                }
+            }
+        }
+        private global::System.Int32 _State;
+        partial void OnStateChanging(global::System.Int32 value);
+        partial void OnStateChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Description
+        {
+            get
+            {
+                return _Description;
+            }
+            set
+            {
+                if (_Description != value)
+                {
+                    OnDescriptionChanging(value);
+                    ReportPropertyChanging("Description");
+                    _Description = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("Description");
+                    OnDescriptionChanged();
+                }
+            }
+        }
+        private global::System.String _Description;
+        partial void OnDescriptionChanging(global::System.String value);
+        partial void OnDescriptionChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 AppID
+        {
+            get
+            {
+                return _AppID;
+            }
+            set
+            {
+                if (_AppID != value)
+                {
+                    OnAppIDChanging(value);
+                    ReportPropertyChanging("AppID");
+                    _AppID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("AppID");
+                    OnAppIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _AppID;
+        partial void OnAppIDChanging(global::System.Int32 value);
+        partial void OnAppIDChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 OrderCount
+        {
+            get
+            {
+                return _OrderCount;
+            }
+            set
+            {
+                if (_OrderCount != value)
+                {
+                    OnOrderCountChanging(value);
+                    ReportPropertyChanging("OrderCount");
+                    _OrderCount = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("OrderCount");
+                    OnOrderCountChanged();
+                }
+            }
+        }
+        private global::System.Int32 _OrderCount;
+        partial void OnOrderCountChanging(global::System.Int32 value);
+        partial void OnOrderCountChanged();
 
         #endregion
 

@@ -38,6 +38,8 @@
                         <option>Page</option>
                         <option>AddAlbum</option>
                         <option>UploadImage</option>
+                        <option>GetPurchaseProductList</option>
+                        <option>AddPurchaseOrder</option>
                     </select>
                     &nbsp;&nbsp;
                     <input type="submit" value="请求" />
