@@ -20,6 +20,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
 
         AlbumBusiness albumBusiness = new AlbumBusiness();
         ClientUserBusiness clientUserBusiness = new ClientUserBusiness();
+        PurchaseBusiness purchaseBusiness = new PurchaseBusiness();
 
         /// <summary>
         /// 封装返回的数据为Json数据
@@ -391,6 +392,52 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 ViewData["ServiceResponse"] = str;
             }
             return View();
+        }
+        #endregion
+
+        #region Purchase
+        /// <summary>
+        /// 获取订购产品的列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetPurchaseProductList()
+        {
+            ServiceReturnData<PurchaseProduct> data = new ServiceReturnData<PurchaseProduct>();
+            List<PurchaseProduct> productList = purchaseBusiness.GetProductList();
+            if (productList.Count > 0)
+            {
+                data.Code = 1;
+                data.ListData = productList;
+            }
+            return ReturnJson<PurchaseProduct>(data);
+        }
+        /// <summary>
+        /// 同步客户端的订购产生的订单
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult AddPurchaseOrder()
+        {
+            ServiceReturnData<string> data = new ServiceReturnData<string>();
+            if (string.IsNullOrEmpty(Request["productid"]) || string.IsNullOrEmpty(Request["uid"]))
+            {
+                data.Code = 0;
+                data.Message = "产品ID和用户ID不能为空";
+            }
+            else
+            {
+                PurchaseOrder order = new PurchaseOrder();
+                order.ProductID = Request["productid"];
+                order.UserID = Convert.ToInt32(Request["uid"]);
+                order.TransactionID = Request["transactionid"];
+
+                if (purchaseBusiness.AddOrder(order))
+                {
+                    purchaseBusiness.UpdateProductOrder(order.ProductID);
+                    data.Code = 1;
+                    data.StrData = string.Format("订单添加成功！");
+                }
+            }
+            return ReturnJson<string>(data);
         }
         #endregion
     }

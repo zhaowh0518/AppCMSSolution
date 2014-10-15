@@ -24,6 +24,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Utility
         PortalListPageNum,
         AlbumListPageNum,
         PicListPageNum,
-        ClientUserPageNum
+        ClientUserPageNum,
+        PurchasePageNum
     }
 }

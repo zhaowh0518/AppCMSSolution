@@ -81,6 +81,7 @@
     <Compile Include="Business\UserInfoBusiness.cs" />
     <Compile Include="Business\AlbumBusiness.cs" />
     <Compile Include="Business\ClientUserBusiness.cs" />
+    <Compile Include="Business\PurchaseBusiness.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Admin\AdminAlbumController.cs" />
     <Compile Include="Controllers\Admin\AdminImageController.cs" />
@@ -90,6 +91,7 @@
     </Compile>
     <Compile Include="Controllers\Admin\AdminPortalMenuController.cs" />
     <Compile Include="Controllers\Admin\AdminPortalInfoController.cs" />
+    <Compile Include="Controllers\Admin\AdminPurchaseController.cs" />
     <Compile Include="Controllers\Admin\AdminUserInfoController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -135,6 +137,9 @@
     <Content Include="Views\AdminAlbum\Create.aspx" />
     <Content Include="Views\AdminAlbum\Edit.aspx" />
     <Content Include="Views\AdminAlbum\Index.aspx" />
+    <Content Include="Views\AdminPurchase\Create.aspx" />
+    <Content Include="Views\AdminPurchase\Edit.aspx" />
+    <Content Include="Views\AdminPurchase\Index.aspx" />
     <Content Include="Views\Admin\ClientUser.aspx" />
     <Content Include="Views\Admin\Manager.aspx" />
     <Content Include="Views\Service\SimulateClient.aspx" />
