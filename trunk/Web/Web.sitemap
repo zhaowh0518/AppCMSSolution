@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
   <siteMapNode url="~/" title="SiteAdmin"  description="Administrate the site">
-    <siteMapNode resourceKey="PortalInfo" url="~/AdminPortalInfo/Index" title="站点管理"  description="about portal information" />
+    <siteMapNode resourceKey="AppInfo" url="~/AdminAppInfo/Index" title="app管理"  description="app管理" />
     <!--
     <siteMapNode resourceKey="Menu" url="~/AdminPortalMenu/Index" title="菜单管理"  description="about menu" />
     <siteMapNode resourceKey="Document" url="~/AdminPortalDocument/Index" title="文档管理"  description="about document" />
