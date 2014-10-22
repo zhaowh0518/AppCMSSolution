@@ -21,6 +21,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         AlbumBusiness albumBusiness = new AlbumBusiness();
         ClientUserBusiness clientUserBusiness = new ClientUserBusiness();
         PurchaseBusiness purchaseBusiness = new PurchaseBusiness();
+        AppInfoBusiness appInfoBusiness = new AppInfoBusiness();
 
         /// <summary>
         /// 封装返回的数据为Json数据
@@ -195,6 +196,22 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             else
             {
                 data.Message = "用户不存在";
+            }
+
+            //加入应用的信息，主要是版本
+            AppInfo appInfo = appInfoBusiness.GetAppInfo(1);
+            string strVersion = string.Empty;
+            if (appInfo != null && appInfo.ID != 0)
+            {
+                strVersion = string.Format("version={0},upgrade={1}", appInfo.Version, appInfo.VersionUpgrade);
+                if (string.IsNullOrEmpty(data.StrData))
+                {
+                    data.StrData = strVersion;
+                }
+                else
+                {
+                    data.StrData += "," + strVersion;
+                }
             }
             return ReturnJson<string>(data);
         }

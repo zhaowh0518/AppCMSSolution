@@ -17,6 +17,16 @@
       [Album].[Creator] AS [Creator]
       FROM [Album] AS [Album]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="AppInfo" EntityType="PortalDBModel.Store.AppInfo" store:Type="Tables" store:Name="AppInfo">
+            <DefiningQuery>SELECT 
+      [AppInfo].[ID] AS [ID], 
+      [AppInfo].[Name] AS [Name], 
+      [AppInfo].[Keyword] AS [Keyword], 
+      [AppInfo].[Version] AS [Version], 
+      [AppInfo].[VersionUpgrade] AS [VersionUpgrade], 
+      [AppInfo].[Description] AS [Description]
+      FROM [AppInfo] AS [AppInfo]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="ClientUser" EntityType="PortalDBModel.Store.ClientUser" store:Type="Tables" store:Name="ClientUser">
             <DefiningQuery>SELECT 
       [ClientUser].[UserID] AS [UserID], 
@@ -159,6 +169,25 @@
           <Property Name="Description" Type="nvarchar" MaxLength="1024" />
           <Property Name="State" Type="int" />
           <Property Name="Creator" Type="int" />
+        </EntityType>
+        <!--生成过程中发现错误:
+      警告 6002: 表/视图“main.AppInfo”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
+      -->
+        <EntityType Name="AppInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Keyword" />
+            <PropertyRef Name="Version" />
+            <PropertyRef Name="VersionUpgrade" />
+            <PropertyRef Name="Description" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" Nullable="false" MaxLength="1024" />
+          <Property Name="Keyword" Type="varchar" Nullable="false" MaxLength="1024" />
+          <Property Name="Version" Type="varchar" Nullable="false" MaxLength="1024" />
+          <Property Name="VersionUpgrade" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" Nullable="false" MaxLength="2048" />
         </EntityType>
         <!--生成过程中发现错误:
       警告 6002: 表/视图“main.ClientUser”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
@@ -363,6 +392,7 @@
           <EntitySet Name="ClientUserLogin" EntityType="PortalDBModel.ClientUserLogin" />
           <EntitySet Name="PurchaseOrder" EntityType="PortalDBModel.PurchaseOrder" />
           <EntitySet Name="PurchaseProduct" EntityType="PortalDBModel.PurchaseProduct" />
+          <EntitySet Name="AppInfo" EntityType="PortalDBModel.AppInfo" />
         </EntityContainer>
         <EntityType Name="DBDictionary">
           <Key>
@@ -537,6 +567,22 @@
           <Property Type="Int32" Name="AppID" Nullable="false" />
           <Property Type="Int32" Name="OrderCount" Nullable="false" />
         </EntityType>
+        <EntityType Name="AppInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Version" />
+            <PropertyRef Name="VersionUpgrade" />
+            <PropertyRef Name="Description" />
+            <PropertyRef Name="Keyword" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Version" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="VersionUpgrade" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="2048" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Keyword" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -701,6 +747,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="AppInfo">
+            <EntityTypeMapping TypeName="PortalDBModel.AppInfo">
+              <MappingFragment StoreEntitySet="AppInfo">
+                <ScalarProperty Name="Keyword" ColumnName="Keyword" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="VersionUpgrade" ColumnName="VersionUpgrade" />
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -732,6 +790,7 @@
         <EntityTypeShape EntityType="PortalDBModel.ClientUserLogin" Width="1.5" PointX="9.375" PointY="0.75" Height="1.7790128580729174" />
         <EntityTypeShape EntityType="PortalDBModel.PurchaseOrder" Width="1.5" PointX="9.375" PointY="3.75" Height="1.7790128580729174" />
         <EntityTypeShape EntityType="PortalDBModel.PurchaseProduct" Width="1.5" PointX="3.375" PointY="9.75" Height="2.3520719401041674" />
+        <EntityTypeShape EntityType="PortalDBModel.AppInfo" Width="1.5" PointX="9.375" PointY="6.75" Height="1.9700325520833353" />
         </Diagram></edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

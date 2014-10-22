@@ -221,6 +221,22 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
             }
         }
         private ObjectSet<PurchaseProduct> _PurchaseProduct;
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        public ObjectSet<AppInfo> AppInfo
+        {
+            get
+            {
+                if ((_AppInfo == null))
+                {
+                    _AppInfo = base.CreateObjectSet<AppInfo>("AppInfo");
+                }
+                return _AppInfo;
+            }
+        }
+        private ObjectSet<AppInfo> _AppInfo;
 
         #endregion
 
@@ -304,6 +320,14 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         public void AddToPurchaseProduct(PurchaseProduct purchaseProduct)
         {
             base.AddObject("PurchaseProduct", purchaseProduct);
+        }
+    
+        /// <summary>
+        /// 用于向 AppInfo EntitySet 添加新对象的方法，已弃用。请考虑改用关联的 ObjectSet&lt;T&gt; 属性的 .Add 方法。
+        /// </summary>
+        public void AddToAppInfo(AppInfo appInfo)
+        {
+            base.AddObject("AppInfo", appInfo);
         }
 
         #endregion
@@ -509,6 +533,208 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         private Nullable<global::System.Int32> _Creator;
         partial void OnCreatorChanging(Nullable<global::System.Int32> value);
         partial void OnCreatorChanged();
+
+        #endregion
+
+    
+    }
+    
+    /// <summary>
+    /// 没有元数据文档可用。
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="PortalDBModel", Name="AppInfo")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class AppInfo : EntityObject
+    {
+        #region 工厂方法
+    
+        /// <summary>
+        /// 创建新的 AppInfo 对象。
+        /// </summary>
+        /// <param name="id">ID 属性的初始值。</param>
+        /// <param name="name">Name 属性的初始值。</param>
+        /// <param name="version">Version 属性的初始值。</param>
+        /// <param name="versionUpgrade">VersionUpgrade 属性的初始值。</param>
+        /// <param name="description">Description 属性的初始值。</param>
+        /// <param name="keyword">Keyword 属性的初始值。</param>
+        public static AppInfo CreateAppInfo(global::System.Int32 id, global::System.String name, global::System.String version, global::System.Int32 versionUpgrade, global::System.String description, global::System.String keyword)
+        {
+            AppInfo appInfo = new AppInfo();
+            appInfo.ID = id;
+            appInfo.Name = name;
+            appInfo.Version = version;
+            appInfo.VersionUpgrade = versionUpgrade;
+            appInfo.Description = description;
+            appInfo.Keyword = keyword;
+            return appInfo;
+        }
+
+        #endregion
+
+        #region 基元属性
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ID
+        {
+            get
+            {
+                return _ID;
+            }
+            set
+            {
+                if (_ID != value)
+                {
+                    OnIDChanging(value);
+                    ReportPropertyChanging("ID");
+                    _ID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ID");
+                    OnIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ID;
+        partial void OnIDChanging(global::System.Int32 value);
+        partial void OnIDChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                if (_Name != value)
+                {
+                    OnNameChanging(value);
+                    ReportPropertyChanging("Name");
+                    _Name = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("Name");
+                    OnNameChanged();
+                }
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Version
+        {
+            get
+            {
+                return _Version;
+            }
+            set
+            {
+                if (_Version != value)
+                {
+                    OnVersionChanging(value);
+                    ReportPropertyChanging("Version");
+                    _Version = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("Version");
+                    OnVersionChanged();
+                }
+            }
+        }
+        private global::System.String _Version;
+        partial void OnVersionChanging(global::System.String value);
+        partial void OnVersionChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 VersionUpgrade
+        {
+            get
+            {
+                return _VersionUpgrade;
+            }
+            set
+            {
+                if (_VersionUpgrade != value)
+                {
+                    OnVersionUpgradeChanging(value);
+                    ReportPropertyChanging("VersionUpgrade");
+                    _VersionUpgrade = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("VersionUpgrade");
+                    OnVersionUpgradeChanged();
+                }
+            }
+        }
+        private global::System.Int32 _VersionUpgrade;
+        partial void OnVersionUpgradeChanging(global::System.Int32 value);
+        partial void OnVersionUpgradeChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Description
+        {
+            get
+            {
+                return _Description;
+            }
+            set
+            {
+                if (_Description != value)
+                {
+                    OnDescriptionChanging(value);
+                    ReportPropertyChanging("Description");
+                    _Description = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("Description");
+                    OnDescriptionChanged();
+                }
+            }
+        }
+        private global::System.String _Description;
+        partial void OnDescriptionChanging(global::System.String value);
+        partial void OnDescriptionChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Keyword
+        {
+            get
+            {
+                return _Keyword;
+            }
+            set
+            {
+                if (_Keyword != value)
+                {
+                    OnKeywordChanging(value);
+                    ReportPropertyChanging("Keyword");
+                    _Keyword = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("Keyword");
+                    OnKeywordChanged();
+                }
+            }
+        }
+        private global::System.String _Keyword;
+        partial void OnKeywordChanging(global::System.String value);
+        partial void OnKeywordChanged();
 
         #endregion
 
