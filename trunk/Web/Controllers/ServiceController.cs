@@ -153,12 +153,15 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                     if (uid > 0)
                     {
                         data.Code = 1;
-                        data.StrData = string.Format("uid={0}", uid);
+                        clientUserBusiness.UserLogin(userInfo.UserName, userInfo.Pwd);
+                        string appVersion = GetAppInfo();
+                        data.StrData = string.Format("uid:{0},{1}", uid, appVersion);
+                        data.Message = "注册失败";
                     }
                     else
                     {
                         data.Code = -1;
-                        data.Message = "注册失败";
+                        data.Message = "注册成功";
                     }
                 }
             }
@@ -199,20 +202,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             }
 
             //加入应用的信息，主要是版本
-            AppInfo appInfo = appInfoBusiness.GetAppInfo(1);
-            string strVersion = string.Empty;
-            if (appInfo != null && appInfo.ID != 0)
-            {
-                strVersion = string.Format("version={0},upgrade={1}", appInfo.Version, appInfo.VersionUpgrade);
-                if (string.IsNullOrEmpty(data.StrData))
-                {
-                    data.StrData = strVersion;
-                }
-                else
-                {
-                    data.StrData += "," + strVersion;
-                }
-            }
+            data.StrData = GetAppInfo();
             return ReturnJson<string>(data);
         }
         /// <summary>
@@ -328,14 +318,11 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         /// <returns></returns>
         private bool GetImageInRequest(string path, int width = 0)
         {
-            if (Request.InputStream != null && Request.InputStream.Length > 0)
+            if (Request.Files != null && Request.Files.Count > 0 && Request.Files[0].InputStream != null)
             {
                 try
                 {
-                    byte[] data = new byte[Request.InputStream.Length];
-                    Request.InputStream.Read(data, 0, data.Length);
-
-                    System.Drawing.Image img = System.Drawing.Bitmap.FromStream(Request.InputStream);
+                    System.Drawing.Image img = System.Drawing.Bitmap.FromStream(Request.Files[0].InputStream);
                     Bitmap bmp = new Bitmap(img);
                     MemoryStream bmpStream = new MemoryStream();
                     if (width > 0)
@@ -455,6 +442,23 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 }
             }
             return ReturnJson<string>(data);
+        }
+        #endregion
+
+        #region Private Method
+        /// <summary>
+        /// 获取应用的信息
+        /// </summary>
+        /// <returns></returns>
+        private string GetAppInfo()
+        {
+            AppInfo appInfo = appInfoBusiness.GetAppInfo(1);
+            string strVersion = string.Empty;
+            if (appInfo != null && appInfo.ID != 0)
+            {
+                strVersion = string.Format("version:{0},upgrade:{1}", appInfo.Version, appInfo.VersionUpgrade);
+            }
+            return strVersion;
         }
         #endregion
     }
