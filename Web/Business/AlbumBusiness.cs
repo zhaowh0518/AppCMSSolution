@@ -24,7 +24,12 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
                     select p;
             if (c != null && c.Count() > 0)
             {
-                return c.Take(200).ToList();
+                List<Album> albumList = c.Take(200).ToList();
+                foreach (Album album in albumList)
+                {
+                    album.PicList = GetAlbumContentList(album.Id);
+                }
+                return albumList;
             }
             else
             {
@@ -42,7 +47,12 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
                     select p;
             if (c != null && c.Count() > 0)
             {
-                return c.Skip((pageNum - 1) * pageSize).Take(pageSize).ToList();
+                List<Album> albumList = c.Skip((pageNum - 1) * pageSize).Take(pageSize).ToList();
+                foreach (Album album in albumList)
+                {
+                    album.PicList = GetAlbumContentList(album.Id);
+                }
+                return albumList;
             }
             else
             {
@@ -85,7 +95,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
             {
                 if (fileList[i].Extension.ToLower().Contains("jpg") || fileList[i].Extension.ToLower().Contains("png"))
                 {
-                    list.Add(string.Format("/{0}/{1}", Resource_Dir, fileList[i].Name));
+                    list.Add(string.Format("/{0}/{1}/{2}", Resource_Dir, albumID, fileList[i].Name));
                 }
             }
             return list;
