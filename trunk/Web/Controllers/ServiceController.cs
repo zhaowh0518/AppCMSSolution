@@ -206,6 +206,36 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             return ReturnJson<string>(data);
         }
         /// <summary>
+        /// 上传用户头像
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult UploadUserHead()
+        {
+            ServiceReturnData<string> data = new ServiceReturnData<string>();
+            if (string.IsNullOrEmpty(Request["uid"]))
+            {
+                data.Code = 0;
+                data.Message = "uid不能为空";
+            }
+            else
+            {
+                string uid = Request["uid"];
+                string imgHeadPath = string.Format("{0}/{1}/UserHead/{2}.jpg",
+                    AppDomain.CurrentDomain.BaseDirectory, AlbumBusiness.Resource_Dir, uid);
+                if (GetImageInRequest(imgHeadPath))
+                {
+                    data.Code = 1;
+                    data.Message = "上传成功！";
+                }
+                else
+                {
+                    data.Code = 0;
+                    data.Message = "上传失败！";
+                }
+            }
+            return ReturnJson<string>(data);
+        }
+        /// <summary>
         /// 获取静态页
         /// </summary>
         /// <returns></returns>
