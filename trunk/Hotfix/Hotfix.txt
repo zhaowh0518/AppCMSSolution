@@ -1,0 +1,7 @@
+1.登录接口返回的StrData包含uid
+2.增加接口GetUserAlbumList，获取用户的所有专辑，参数为uid,如果传递参数state=1/0,则根据状态取
+3.调整图片管理的界面，优化显示
+4.增加订购相关功能，接口：GetPurchaseProductList获取订购产品列表，无特殊参数；AddPurchaseOrder同步AppStore的订单，参数：uid,productid,transactionid
+5.增加App管理，可以管理App的版本号，登录时在strData中返回版本信息：uid=1,version=1,upgrade=0
+6.增加用户上传头像
+7.打开认证，必须登录才能进后台
