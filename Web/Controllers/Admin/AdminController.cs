@@ -53,10 +53,10 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
 
         public AdminController()
         {
-            if (System.Web.HttpContext.Current.Session["UserName"] == null || !System.Web.HttpContext.Current.Session["UserName"].Equals("admin"))
+            if (System.Web.HttpContext.Current.Session["UserName"] == null)
             {
-                //System.Web.HttpContext.Current.Response.Redirect("/Home/Index");
-
+                System.Web.HttpContext.Current.Response.Redirect("/Home/Index");
+                return;
             }
             //PortalInfo
             ViewData["PortalInfo"] = ConfigUtility.PortalInfo;
