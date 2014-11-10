@@ -31,10 +31,6 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         /// <returns></returns>
         private JsonResult ReturnJson<T>(ServiceReturnData<T> data)
         {
-            if (string.IsNullOrEmpty(data.Message))
-            {
-                data.Message = "成功";
-            }
             if (string.IsNullOrEmpty(data.StrData))
             {
                 data.StrData = string.Empty;
@@ -60,6 +56,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             if (albumList.Count > 0)
             {
                 data.Code = 1;
+                data.Message = "加载成功！";
                 data.ListData = albumList;
             }
             return ReturnJson<Album>(data);
@@ -193,7 +190,6 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 loginInfo.UserID = Convert.ToInt32(uid);
                 clientUserBusiness.AddClientUserLogin(loginInfo);
                 data.Code = 1;
-                data.StrData = string.Format("uid={0}", uid);
                 data.Message = "登录成功";
             }
             else
@@ -202,7 +198,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             }
 
             //加入应用的信息，主要是版本
-            data.StrData = GetAppInfo();
+            data.StrData = string.Format("uid={0},{1}", uid, GetAppInfo());
             return ReturnJson<string>(data);
         }
         /// <summary>
