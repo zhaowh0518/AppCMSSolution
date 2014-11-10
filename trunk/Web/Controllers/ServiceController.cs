@@ -31,6 +31,10 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         /// <returns></returns>
         private JsonResult ReturnJson<T>(ServiceReturnData<T> data)
         {
+            if (string.IsNullOrEmpty(data.Message))
+            {
+                data.Message = string.Empty;
+            }
             if (string.IsNullOrEmpty(data.StrData))
             {
                 data.StrData = string.Empty;
@@ -153,12 +157,12 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                         clientUserBusiness.UserLogin(userInfo.UserName, userInfo.Pwd);
                         string appVersion = GetAppInfo();
                         data.StrData = string.Format("uid:{0},{1}", uid, appVersion);
-                        data.Message = "注册失败";
+                        data.Message = "注册成功";
                     }
                     else
                     {
                         data.Code = -1;
-                        data.Message = "注册成功";
+                        data.Message = "注册失败";
                     }
                 }
             }
@@ -194,6 +198,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             }
             else
             {
+                data.Code = 0;
                 data.Message = "用户不存在";
             }
 
@@ -275,7 +280,9 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 int uid = Convert.ToInt32(Request["uid"]);
                 int score = Convert.ToInt32(Request["score"]);
                 int resultScore = clientUserBusiness.UpdateClientUserScore(uid, score);
+                data.StrData = resultScore.ToString();
                 data.Code = 1;
+                data.Message = "更新成功！";
             }
             return ReturnJson<string>(data);
         }
@@ -437,6 +444,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             if (productList.Count > 0)
             {
                 data.Code = 1;
+                data.Message = "获取成功！";
                 data.ListData = productList;
             }
             return ReturnJson<PurchaseProduct>(data);
@@ -464,7 +472,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 {
                     purchaseBusiness.UpdateProductOrder(order.ProductID);
                     data.Code = 1;
-                    data.StrData = string.Format("订单添加成功！");
+                    data.Message = "订单添加成功！";
                 }
             }
             return ReturnJson<string>(data);
