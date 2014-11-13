@@ -56,6 +56,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
 
         [AcceptVerbs(HttpVerbs.Post)]
         [ValidateInput(false)]
+        [Authorize]
         public ActionResult Create(PortalMenu portalMenuToCreate)
         {
             try
@@ -93,6 +94,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
 
         [AcceptVerbs(HttpVerbs.Post)]
         [ValidateInput(false)]
+        [Authorize]
         public ActionResult Edit(PortalMenu portalMenuToEdit)
         {
             try
@@ -115,6 +117,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 return View(portalMenuToEdit);
             }
         }
+        [Authorize]
         public ActionResult Delete(int id)
         {
             try

@@ -47,6 +47,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers.Admin
             return View();
         }
         [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize]
         public ActionResult Index(FormCollection collection)
         {
             if (Request.Files.Count == 0)
