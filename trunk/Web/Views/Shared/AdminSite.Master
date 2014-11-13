@@ -34,7 +34,7 @@
         </div>
         <div id="main">
             <div id="featureList">
-                <%= Html.FeatureList(ViewData[PortalSessionKey.FeatureSelected.ToString()].ToString()) %>
+                <%= Html.FeatureList(Convert.ToString(ViewData[PortalSessionKey.FeatureSelected.ToString()])) %>
             </div>
             <div id="mainContent">
                 <asp:ContentPlaceHolder ID="MainContent" runat="server" />

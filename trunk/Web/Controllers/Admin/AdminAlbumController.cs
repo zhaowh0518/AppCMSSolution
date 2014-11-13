@@ -56,6 +56,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers.Admin
         // POST: /AdminAlbum/Create
 
         [HttpPost]
+        [Authorize]
         public ActionResult Create(Album album)
         {
             try
@@ -90,6 +91,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers.Admin
         // POST: /AdminAlbum/Edit/5
 
         [HttpPost]
+        [Authorize]
         public ActionResult Edit(Album album)
         {
             try
@@ -113,7 +115,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers.Admin
 
         //
         // GET: /AdminAlbum/Delete/5
-
+        [Authorize]
         public ActionResult Delete(int id)
         {
             try

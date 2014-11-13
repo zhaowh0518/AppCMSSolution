@@ -30,12 +30,13 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         public ActionResult Create()
         {
             return View();
-        } 
+        }
 
         //
         // POST: /AdminPortalInfo/Create
 
         [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize]
         public ActionResult Create(PortalInfo portalInfoToCreate)
         {
             try
@@ -49,7 +50,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                     return View(portalInfoToCreate);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogUtility.WriteLog("AdminPortalInfoController.Create", ex.Message);
                 ModelState.AddModelError("Exception", ex.Message);
@@ -59,7 +60,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
 
         //
         // GET: /AdminPortalInfo/Edit/5
- 
+
         public ActionResult Edit(int id)
         {
             PortalInfo portalInfo = BusinessPortalInfo.GetPortalInfo(id);
@@ -70,6 +71,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         // POST: /AdminPortalInfo/Edit/5
 
         [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize]
         public ActionResult Edit(PortalInfo portalInfoToEdit)
         {
             try
@@ -77,7 +79,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 BusinessPortalInfo.UpdatePortalInfo(portalInfoToEdit);
                 return RedirectToAction("Index");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogUtility.WriteLog("AdminPortalInfoController.Edit", ex.Message);
                 ModelState.AddModelError("Exception", ex.Message);
@@ -90,7 +92,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             PortalInfo portalInfo = BusinessPortalInfo.GetPortalInfo(id);
             return View(portalInfo);
         }
-
+        [Authorize]
         public ActionResult Delete(int id)
         {
             try

@@ -56,6 +56,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             if (System.Web.HttpContext.Current.Session["UserName"] == null)
             {
                 System.Web.HttpContext.Current.Response.Redirect("/Home/Index");
+                Redirect("/Home/Index");
                 return;
             }
             //PortalInfo
@@ -91,11 +92,13 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             ViewData[PortalSessionKey.ClientUserPageNum.ToString()] = 1;
         }
 
+        [Authorize]
         public ActionResult Manager()
         {
             ViewData[PortalSessionKey.Message.ToString()] = string.Empty;
             return View();
         }
+        [Authorize]
         public ActionResult ClientUser(int? pageNum)
         {
             if (pageNum == null || pageNum < 1)

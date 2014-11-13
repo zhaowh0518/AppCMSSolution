@@ -56,6 +56,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers.Admin
         // POST: /AdminPurchase/Create
 
         [HttpPost]
+        [Authorize]
         public ActionResult Create(PurchaseProduct product)
         {
             try
@@ -90,6 +91,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers.Admin
         // POST: /AdminPurchase/Edit/5
 
         [HttpPost]
+        [Authorize]
         public ActionResult Edit(PurchaseProduct product)
         {
             try
@@ -113,7 +115,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers.Admin
 
         //
         // GET: /AdminPurchase/Delete/5
-
+        [Authorize]
         public ActionResult Delete(int id)
         {
             try
@@ -133,6 +135,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers.Admin
         // POST: /AdminPurchase/Delete/5
 
         [HttpPost]
+        [Authorize]
         public ActionResult UpdateProductState(string idList, bool state)
         {
             try
