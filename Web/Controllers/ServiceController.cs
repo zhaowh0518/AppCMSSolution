@@ -17,6 +17,10 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
     public class ServiceController : Controller
     {
         public const string Client_Content_Type = "text/json;charset=UTF-8";
+        /// <summary>
+        /// ID，用于标识App
+        /// </summary>
+        public const int APP_ID = 1;
 
         AlbumBusiness albumBusiness = new AlbumBusiness();
         ClientUserBusiness clientUserBusiness = new ClientUserBusiness();
@@ -155,8 +159,13 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                     {
                         data.Code = 1;
                         clientUserBusiness.UserLogin(userInfo.UserName, userInfo.Pwd);
-                        string appVersion = GetAppInfo();
-                        data.StrData = string.Format("uid:{0},{1}", uid, appVersion);
+                        data.DictData.Add("uid", uid.ToString());
+                        AppInfo appInfo = appInfoBusiness.GetAppInfo(APP_ID);
+                        if (appInfo != null && appInfo.ID != 0)
+                        {
+                            data.DictData.Add("version", appInfo.Version);
+                            data.DictData.Add("upgrade", appInfo.VersionUpgrade.ToString());
+                        }
                         data.Message = "注册成功";
                     }
                     else
@@ -202,8 +211,13 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 data.Message = "用户不存在";
             }
 
-            //加入应用的信息，主要是版本
-            data.StrData = string.Format("uid={0},{1}", uid, GetAppInfo());
+            data.DictData.Add("uid", uid.ToString());
+            AppInfo appInfo = appInfoBusiness.GetAppInfo(APP_ID);
+            if (appInfo != null && appInfo.ID != 0)
+            {
+                data.DictData.Add("version", appInfo.Version);
+                data.DictData.Add("upgrade", appInfo.VersionUpgrade.ToString());
+            }
             return ReturnJson<string>(data);
         }
         /// <summary>
@@ -476,23 +490,6 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 }
             }
             return ReturnJson<string>(data);
-        }
-        #endregion
-
-        #region Private Method
-        /// <summary>
-        /// 获取应用的信息
-        /// </summary>
-        /// <returns></returns>
-        private string GetAppInfo()
-        {
-            AppInfo appInfo = appInfoBusiness.GetAppInfo(1);
-            string strVersion = string.Empty;
-            if (appInfo != null && appInfo.ID != 0)
-            {
-                strVersion = string.Format("version:{0},upgrade:{1}", appInfo.Version, appInfo.VersionUpgrade);
-            }
-            return strVersion;
         }
         #endregion
     }
