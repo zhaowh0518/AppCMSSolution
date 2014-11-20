@@ -10,6 +10,13 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
     /// </summary>
     public class ServiceReturnData<T>
     {
+        public ServiceReturnData()
+        {
+            if (DictData == null)
+            {
+                DictData = new Dictionary<string, string>();
+            }
+        }
         /// <summary>
         /// 返回数据编号：-1：出错；0：无数据；1：成功返回数据
         /// </summary>
@@ -26,5 +33,9 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         /// 返回列表数据
         /// </summary>
         public List<T> ListData { get; set; }
+        /// <summary>
+        /// Key Value数据，最后以JSON格式返回
+        /// </summary>
+        public Dictionary<string, string> DictData { get; set; }
     }
 }
