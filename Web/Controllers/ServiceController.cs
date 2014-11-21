@@ -59,13 +59,21 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             {
                 pageNum = Convert.ToInt32(Request["pagenum"]);
             }
-            int pageSize = 50;
+            int pageSize = 30;
+            if (Request["pagesize"] != null)
+            {
+                pageSize = Convert.ToInt32(Request["pagesize"]);
+            }
             List<Album> albumList = albumBusiness.GetAlbumList(pageNum, pageSize);
+            data.Code = 1;
             if (albumList.Count > 0)
             {
-                data.Code = 1;
                 data.Message = "加载成功！";
                 data.ListData = albumList;
+            }
+            else
+            {
+                data.Message = "无数据！";
             }
             return ReturnJson<Album>(data);
         }

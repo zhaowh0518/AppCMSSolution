@@ -51,6 +51,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
                 foreach (Album album in albumList)
                 {
                     album.PicList = GetAlbumContentList(album.Id);
+                    album.Gold = GetAlbumGold(album.PicList.Count);
                 }
                 return albumList;
             }
@@ -90,15 +91,40 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
             List<string> list = new List<string>();
             string albumPath = string.Format("{0}/{1}/{2}", AppDomain.CurrentDomain.BaseDirectory, Resource_Dir, albumID);
             DirectoryInfo dirInfo = new DirectoryInfo(albumPath);
-            FileInfo[] fileList = dirInfo.GetFiles();
-            for (int i = 0; i < fileList.Length; i++)
+            if (dirInfo != null && dirInfo.Exists)
             {
-                if (fileList[i].Extension.ToLower().Contains("jpg") || fileList[i].Extension.ToLower().Contains("png"))
+                FileInfo[] fileList = dirInfo.GetFiles();
+                if (fileList != null & fileList.Length > 0)
                 {
-                    list.Add(string.Format("/{0}/{1}/{2}", Resource_Dir, albumID, fileList[i].Name));
+                    for (int i = 0; i < fileList.Length; i++)
+                    {
+                        if (fileList[i].Extension.ToLower().Contains("jpg") || fileList[i].Extension.ToLower().Contains("png"))
+                        {
+                            list.Add(string.Format("/{0}/{1}/{2}", Resource_Dir, albumID, fileList[i].Name));
+                        }
+                    }
                 }
             }
             return list;
+        }
+        /// <summary>
+        /// 根据图片的个数获取金币数
+        /// 3张以下1个金币6张以下2个金币10张以下3个金币
+        /// </summary>
+        /// <param name="picCount"></param>
+        /// <returns></returns>
+        public int GetAlbumGold(int picCount)
+        {
+            int gold = 1;
+            if (picCount > 3 && picCount <= 6)
+            {
+                gold = 2;
+            }
+            else if (picCount > 6)
+            {
+                gold = 3;
+            }
+            return gold;
         }
         /// <summary>
         /// Get Album by id,if not exist return a empty Album object

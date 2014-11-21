@@ -5,8 +5,18 @@ using System.Web;
 
 namespace Disappearwind.PortalSolution.PortalWeb.Models
 {
+    /// <summary>
+    /// 专辑的非持久化属性
+    /// </summary>
     public partial class Album
     {
+        /// <summary>
+        /// 专辑中的图片
+        /// </summary>
         public List<string> PicList { get; set; }
+        /// <summary>
+        /// 浏览专辑所消耗的金币
+        /// </summary>
+        public int Gold;
     }
 }
