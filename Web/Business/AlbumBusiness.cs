@@ -64,12 +64,12 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
         /// 取某个用户的专辑
         /// </summary>
         /// <param name="userID"></param>
-        /// <param name="state"></param>
+        /// <param name="state">-1：审核未通过；0：未审核；1：审核通过；2：审核未通过+未审核</param>
         /// <returns></returns>
         public List<Album> GetUserAlbumList(int userID, int? state)
         {
             var c = from p in DBContext.Album
-                    where p.Creator == userID && (p.State == state || state == null)
+                    where p.Creator == userID && (p.State == state || state == null) || (state == 2 && p.State < 1)
                     orderby p.Id descending
                     select p;
             if (c != null && c.Count() > 0)
