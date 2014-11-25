@@ -161,7 +161,10 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
             {
                 album.Id = c.Id + 1;
             }
-            //album.State = true;
+            if (album.State == null)
+            {
+                album.State = 0;//默认未审核
+            }
             if (album.Creator == null)
             {
                 album.Creator = 1;
