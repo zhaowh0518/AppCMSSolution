@@ -53,27 +53,35 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         public JsonResult Index()
         {
             ServiceReturnData<Album> data = new ServiceReturnData<Album>();
-            //获取首页照片墙
-            int pageNum = 1;
-            if (Request["pagenum"] != null)
+            try
             {
-                pageNum = Convert.ToInt32(Request["pagenum"]);
+                //获取首页照片墙
+                int pageNum = 1;
+                if (Request["pagenum"] != null)
+                {
+                    pageNum = Convert.ToInt32(Request["pagenum"]);
+                }
+                int pageSize = 30;
+                if (Request["pagesize"] != null)
+                {
+                    pageSize = Convert.ToInt32(Request["pagesize"]);
+                }
+                List<Album> albumList = albumBusiness.GetAlbumList(pageNum, pageSize);
+                data.Code = 1;
+                if (albumList.Count > 0)
+                {
+                    data.Message = "加载成功！";
+                    data.ListData = albumList;
+                }
+                else
+                {
+                    data.Message = "无数据！";
+                }
             }
-            int pageSize = 30;
-            if (Request["pagesize"] != null)
+            catch (Exception ex)
             {
-                pageSize = Convert.ToInt32(Request["pagesize"]);
-            }
-            List<Album> albumList = albumBusiness.GetAlbumList(pageNum, pageSize);
-            data.Code = 1;
-            if (albumList.Count > 0)
-            {
-                data.Message = "加载成功！";
-                data.ListData = albumList;
-            }
-            else
-            {
-                data.Message = "无数据！";
+                data.Code = 0;
+                data.Message = ex.Message;
             }
             return ReturnJson<Album>(data);
         }
@@ -84,27 +92,35 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         public JsonResult GetUserAlbumList()
         {
             ServiceReturnData<Album> data = new ServiceReturnData<Album>();
-            //获取首页照片墙
-            int userid = 0;
-            if (Request["uid"] == null)
+            try
+            {
+                //获取首页照片墙
+                int userid = 0;
+                if (Request["uid"] == null)
+                {
+                    data.Code = 0;
+                    data.Message = "uid不能为空";
+                }
+                else
+                {
+                    int? state = null;
+                    if (Request["state"] == null)
+                    {
+                        state = Convert.ToInt32(Request["state"]);
+                    }
+                    userid = Convert.ToInt32(Request["uid"]);
+                    List<Album> albumList = albumBusiness.GetUserAlbumList(userid, state);
+                    if (albumList.Count > 0)
+                    {
+                        data.Code = 1;
+                        data.ListData = albumList;
+                    }
+                }
+            }
+            catch (Exception ex)
             {
                 data.Code = 0;
-                data.Message = "uid不能为空";
-            }
-            else
-            {
-                int? state = null;
-                if (Request["state"] == null)
-                {
-                    state = Convert.ToInt32(Request["state"]);
-                }
-                userid = Convert.ToInt32(Request["uid"]);
-                List<Album> albumList = albumBusiness.GetUserAlbumList(userid, state);
-                if (albumList.Count > 0)
-                {
-                    data.Code = 1;
-                    data.ListData = albumList;
-                }
+                data.Message = ex.Message;
             }
             return ReturnJson<Album>(data);
         }
@@ -115,22 +131,30 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         /// <returns></returns>
         public JsonResult List()
         {
-            string albumID = Request["aid"];
             ServiceReturnData<string> data = new ServiceReturnData<string>();
-            List<string> list = new List<string>();
-            if (!string.IsNullOrEmpty(albumID))
+            try
             {
-                list = albumBusiness.GetAlbumContentList(Convert.ToInt32(albumID));
-                if (list.Count > 0)
+                string albumID = Request["aid"];
+                List<string> list = new List<string>();
+                if (!string.IsNullOrEmpty(albumID))
                 {
-                    data.Code = 1;
-                    data.ListData = list;
+                    list = albumBusiness.GetAlbumContentList(Convert.ToInt32(albumID));
+                    if (list.Count > 0)
+                    {
+                        data.Code = 1;
+                        data.ListData = list;
+                    }
+                }
+                else
+                {
+                    data.Code = -1;
+                    data.Message = "参数aid为空";
                 }
             }
-            else
+            catch (Exception ex)
             {
-                data.Code = -1;
-                data.Message = "参数aid为空";
+                data.Code = 0;
+                data.Message = ex.Message;
             }
             return ReturnJson<string>(data);
         }
@@ -141,47 +165,55 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         public JsonResult Register()
         {
             ServiceReturnData<string> data = new ServiceReturnData<string>();
-            if (string.IsNullOrEmpty(Request["username"]) || string.IsNullOrEmpty(Request["pwd"]))
+            try
             {
-                data.Code = 0;
-                data.Message = "用户名或者密码不能为空";
-            }
-            else
-            {
-                //先判断用户是否存在
-                ClientUser userInfo = clientUserBusiness.GetClientUser(Request["username"]);
-                if (userInfo != null && userInfo.UserID != 0)
+                if (string.IsNullOrEmpty(Request["username"]) || string.IsNullOrEmpty(Request["pwd"]))
                 {
                     data.Code = 0;
-                    data.Message = "用户名重复";
+                    data.Message = "用户名或者密码不能为空";
                 }
                 else
                 {
-                    userInfo.DeviceNum = Request["devicenum"];
-                    userInfo.NickName = Request["nickyname"];
-                    userInfo.Phone = Request["phone"];
-                    userInfo.Pwd = Request["pwd"];
-                    userInfo.UserName = Request["username"];
-                    int uid = clientUserBusiness.AddClientUser(userInfo);
-                    if (uid > 0)
+                    //先判断用户是否存在
+                    ClientUser userInfo = clientUserBusiness.GetClientUser(Request["username"]);
+                    if (userInfo != null && userInfo.UserID != 0)
                     {
-                        data.Code = 1;
-                        clientUserBusiness.UserLogin(userInfo.UserName, userInfo.Pwd);
-                        data.DictData.Add("uid", uid.ToString());
-                        AppInfo appInfo = appInfoBusiness.GetAppInfo(APP_ID);
-                        if (appInfo != null && appInfo.ID != 0)
-                        {
-                            data.DictData.Add("version", appInfo.Version);
-                            data.DictData.Add("upgrade", appInfo.VersionUpgrade.ToString());
-                        }
-                        data.Message = "注册成功";
+                        data.Code = 0;
+                        data.Message = "用户名重复";
                     }
                     else
                     {
-                        data.Code = -1;
-                        data.Message = "注册失败";
+                        userInfo.DeviceNum = Request["devicenum"];
+                        userInfo.NickName = Request["nickyname"];
+                        userInfo.Phone = Request["phone"];
+                        userInfo.Pwd = Request["pwd"];
+                        userInfo.UserName = Request["username"];
+                        int uid = clientUserBusiness.AddClientUser(userInfo);
+                        if (uid > 0)
+                        {
+                            data.Code = 1;
+                            clientUserBusiness.UserLogin(userInfo.UserName, userInfo.Pwd);
+                            data.DictData.Add("uid", uid.ToString());
+                            AppInfo appInfo = appInfoBusiness.GetAppInfo(APP_ID);
+                            if (appInfo != null && appInfo.ID != 0)
+                            {
+                                data.DictData.Add("version", appInfo.Version);
+                                data.DictData.Add("upgrade", appInfo.VersionUpgrade.ToString());
+                            }
+                            data.Message = "注册成功";
+                        }
+                        else
+                        {
+                            data.Code = -1;
+                            data.Message = "注册失败";
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                data.Code = 0;
+                data.Message = ex.Message;
             }
             return ReturnJson<string>(data);
         }
@@ -192,39 +224,46 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         public JsonResult Login()
         {
             ServiceReturnData<string> data = new ServiceReturnData<string>();
+            try
+            {
+                string username = Request["username"];
+                string pwd = Request["pwd"];
+                string uid = "0";
+                if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(pwd))
+                {
+                    uid = clientUserBusiness.UserLogin(username, pwd).ToString();
+                }
+                else if (!string.IsNullOrEmpty(Request["uid"]))
+                {
+                    uid = Request["uid"];
+                }
+                if (!string.IsNullOrEmpty(uid) && uid != "0" && uid != "-1")
+                {
+                    ClientUserLogin loginInfo = new ClientUserLogin();
+                    loginInfo.DeviceNum = Request["devicenum"];
+                    loginInfo.UserID = Convert.ToInt32(uid);
+                    clientUserBusiness.AddClientUserLogin(loginInfo);
+                    data.Code = 1;
+                    data.Message = "登录成功";
+                }
+                else
+                {
+                    data.Code = 0;
+                    data.Message = "用户不存在";
+                }
 
-            string username = Request["username"];
-            string pwd = Request["pwd"];
-            string uid = "0";
-            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(pwd))
-            {
-                uid = clientUserBusiness.UserLogin(username, pwd).ToString();
+                data.DictData.Add("uid", uid.ToString());
+                AppInfo appInfo = appInfoBusiness.GetAppInfo(APP_ID);
+                if (appInfo != null && appInfo.ID != 0)
+                {
+                    data.DictData.Add("version", appInfo.Version);
+                    data.DictData.Add("upgrade", appInfo.VersionUpgrade.ToString());
+                }
             }
-            else if (!string.IsNullOrEmpty(Request["uid"]))
-            {
-                uid = Request["uid"];
-            }
-            if (!string.IsNullOrEmpty(uid) && uid != "0" && uid != "-1")
-            {
-                ClientUserLogin loginInfo = new ClientUserLogin();
-                loginInfo.DeviceNum = Request["devicenum"];
-                loginInfo.UserID = Convert.ToInt32(uid);
-                clientUserBusiness.AddClientUserLogin(loginInfo);
-                data.Code = 1;
-                data.Message = "登录成功";
-            }
-            else
+            catch (Exception ex)
             {
                 data.Code = 0;
-                data.Message = "用户不存在";
-            }
-
-            data.DictData.Add("uid", uid.ToString());
-            AppInfo appInfo = appInfoBusiness.GetAppInfo(APP_ID);
-            if (appInfo != null && appInfo.ID != 0)
-            {
-                data.DictData.Add("version", appInfo.Version);
-                data.DictData.Add("upgrade", appInfo.VersionUpgrade.ToString());
+                data.Message = ex.Message;
             }
             return ReturnJson<string>(data);
         }
@@ -235,26 +274,34 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         public JsonResult UploadUserHead()
         {
             ServiceReturnData<string> data = new ServiceReturnData<string>();
-            if (string.IsNullOrEmpty(Request["uid"]))
+            try
             {
-                data.Code = 0;
-                data.Message = "uid不能为空";
-            }
-            else
-            {
-                string uid = Request["uid"];
-                string imgHeadPath = string.Format("{0}/{1}/UserHead/{2}.jpg",
-                    AppDomain.CurrentDomain.BaseDirectory, AlbumBusiness.Resource_Dir, uid);
-                if (GetImageInRequest(imgHeadPath))
+                if (string.IsNullOrEmpty(Request["uid"]))
                 {
-                    data.Code = 1;
-                    data.Message = "上传成功！";
+                    data.Code = 0;
+                    data.Message = "uid不能为空";
                 }
                 else
                 {
-                    data.Code = 0;
-                    data.Message = "上传失败！";
+                    string uid = Request["uid"];
+                    string imgHeadPath = string.Format("{0}/{1}/UserHead/{2}.jpg",
+                        AppDomain.CurrentDomain.BaseDirectory, AlbumBusiness.Resource_Dir, uid);
+                    if (GetImageInRequest(imgHeadPath))
+                    {
+                        data.Code = 1;
+                        data.Message = "上传成功！";
+                    }
+                    else
+                    {
+                        data.Code = 0;
+                        data.Message = "上传失败！";
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                data.Code = 0;
+                data.Message = ex.Message;
             }
             return ReturnJson<string>(data);
         }
@@ -292,19 +339,27 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         public JsonResult UpdateUserScore()
         {
             ServiceReturnData<string> data = new ServiceReturnData<string>();
-            if (string.IsNullOrEmpty(Request["uid"]) || string.IsNullOrEmpty(Request["score"]))
+            try
+            {
+                if (string.IsNullOrEmpty(Request["uid"]) || string.IsNullOrEmpty(Request["score"]))
+                {
+                    data.Code = 0;
+                    data.Message = "uid和score都不能为空";
+                }
+                else
+                {
+                    int uid = Convert.ToInt32(Request["uid"]);
+                    int score = Convert.ToInt32(Request["score"]);
+                    int resultScore = clientUserBusiness.UpdateClientUserScore(uid, score);
+                    data.StrData = resultScore.ToString();
+                    data.Code = 1;
+                    data.Message = "更新成功！";
+                }
+            }
+            catch (Exception ex)
             {
                 data.Code = 0;
-                data.Message = "uid和score都不能为空";
-            }
-            else
-            {
-                int uid = Convert.ToInt32(Request["uid"]);
-                int score = Convert.ToInt32(Request["score"]);
-                int resultScore = clientUserBusiness.UpdateClientUserScore(uid, score);
-                data.StrData = resultScore.ToString();
-                data.Code = 1;
-                data.Message = "更新成功！";
+                data.Message = ex.Message;
             }
             return ReturnJson<string>(data);
         }
@@ -315,31 +370,39 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         public JsonResult AddAlbum()
         {
             ServiceReturnData<string> data = new ServiceReturnData<string>();
-            Album album = new Album();
-            if (string.IsNullOrEmpty(Request["uid"]))
+            try
             {
-                album.Creator = Convert.ToInt32(Request["uid"]);
+                Album album = new Album();
+                if (string.IsNullOrEmpty(Request["uid"]))
+                {
+                    album.Creator = Convert.ToInt32(Request["uid"]);
+                }
+                album.Name = Request["aname"];
+                string imagePath = string.Format("{0}/{1}/{2}.jpg",
+                    AppDomain.CurrentDomain.BaseDirectory, AlbumBusiness.Resource_Dir, Guid.NewGuid());
+                int imgWidth = 0;
+                if (string.IsNullOrEmpty(Request["width"]))
+                {
+                    imgWidth = Convert.ToInt32(Request["width"]);
+                }
+                if (GetImageInRequest(imagePath, imgWidth))
+                {
+                    album.ImageUrl = imagePath.Replace(AppDomain.CurrentDomain.BaseDirectory, string.Empty).Replace("\\", "/");
+                }
+                else
+                {
+                    data.Code = 0;
+                    data.Message = "专辑图片保存失败！";
+                }
+                int aid = albumBusiness.AddAlbum(album);
+                data.StrData = string.Format("aid={0}", aid);
+                data.Message += "添加成功！";
             }
-            album.Name = Request["aname"];
-            string imagePath = string.Format("{0}/{1}/{2}.jpg",
-                AppDomain.CurrentDomain.BaseDirectory, AlbumBusiness.Resource_Dir, Guid.NewGuid());
-            int imgWidth = 0;
-            if (string.IsNullOrEmpty(Request["width"]))
-            {
-                imgWidth = Convert.ToInt32(Request["width"]);
-            }
-            if (GetImageInRequest(imagePath, imgWidth))
-            {
-                album.ImageUrl = imagePath.Replace(AppDomain.CurrentDomain.BaseDirectory, string.Empty).Replace("\\", "/");
-            }
-            else
+            catch (Exception ex)
             {
                 data.Code = 0;
-                data.Message = "专辑图片保存失败！";
+                data.Message = ex.Message;
             }
-            int aid = albumBusiness.AddAlbum(album);
-            data.StrData = string.Format("aid={0}", aid);
-            data.Message += "添加成功！";
             return ReturnJson<string>(data);
         }
         /// <summary>
@@ -349,19 +412,27 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         public JsonResult UploadImage()
         {
             ServiceReturnData<string> data = new ServiceReturnData<string>();
-            string uid = Request["uid"];
-            string aid = Request["aid"];
-            string imagePath = string.Format("{0}/{1}/{2}/{3}.jpg",
-               AppDomain.CurrentDomain.BaseDirectory, AlbumBusiness.Resource_Dir, aid, Guid.NewGuid());
-            if (GetImageInRequest(imagePath))
+            try
             {
-                data.Message = "上传成功";
-                data.Code = 1;
+                string uid = Request["uid"];
+                string aid = Request["aid"];
+                string imagePath = string.Format("{0}/{1}/{2}/{3}.jpg",
+                   AppDomain.CurrentDomain.BaseDirectory, AlbumBusiness.Resource_Dir, aid, Guid.NewGuid());
+                if (GetImageInRequest(imagePath))
+                {
+                    data.Message = "上传成功";
+                    data.Code = 1;
+                }
+                else
+                {
+                    data.Message = "上传失败";
+                    data.Code = 0;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                data.Message = "上传失败";
                 data.Code = 0;
+                data.Message = ex.Message;
             }
             return ReturnJson<string>(data);
         }
@@ -462,12 +533,20 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         public JsonResult GetPurchaseProductList()
         {
             ServiceReturnData<PurchaseProduct> data = new ServiceReturnData<PurchaseProduct>();
-            List<PurchaseProduct> productList = purchaseBusiness.GetProductList();
-            if (productList.Count > 0)
+            try
             {
-                data.Code = 1;
-                data.Message = "获取成功！";
-                data.ListData = productList;
+                List<PurchaseProduct> productList = purchaseBusiness.GetProductList();
+                if (productList.Count > 0)
+                {
+                    data.Code = 1;
+                    data.Message = "获取成功！";
+                    data.ListData = productList;
+                }
+            }
+            catch (Exception ex)
+            {
+                data.Code = 0;
+                data.Message = ex.Message;
             }
             return ReturnJson<PurchaseProduct>(data);
         }
@@ -478,24 +557,34 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         public JsonResult AddPurchaseOrder()
         {
             ServiceReturnData<string> data = new ServiceReturnData<string>();
-            if (string.IsNullOrEmpty(Request["productid"]) || string.IsNullOrEmpty(Request["uid"]))
+            try
+            {
+                if (string.IsNullOrEmpty(Request["productid"]) || string.IsNullOrEmpty(Request["uid"]))
+                {
+                    data.Code = 0;
+                    data.Message = "产品ID和用户ID不能为空";
+                }
+                else
+                {
+                    PurchaseOrder order = new PurchaseOrder();
+                    order.ProductID = Request["productid"];
+                    order.UserID = Convert.ToInt32(Request["uid"]);
+                    order.TransactionID = Request["transactionid"];
+
+                    if (purchaseBusiness.AddOrder(order))
+                    {
+                        purchaseBusiness.UpdateProductOrder(order.ProductID);
+                        data.Code = 1;
+                        data.Message = "订单添加成功！";
+                    }
+
+                    //需要和苹果服务器做验证
+                }
+            }
+            catch (Exception ex)
             {
                 data.Code = 0;
-                data.Message = "产品ID和用户ID不能为空";
-            }
-            else
-            {
-                PurchaseOrder order = new PurchaseOrder();
-                order.ProductID = Request["productid"];
-                order.UserID = Convert.ToInt32(Request["uid"]);
-                order.TransactionID = Request["transactionid"];
-
-                if (purchaseBusiness.AddOrder(order))
-                {
-                    purchaseBusiness.UpdateProductOrder(order.ProductID);
-                    data.Code = 1;
-                    data.Message = "订单添加成功！";
-                }
+                data.Message = ex.Message;
             }
             return ReturnJson<string>(data);
         }
