@@ -26,6 +26,9 @@
                 产品名称
             </th>
             <th>
+                金币数量
+            </th>
+            <th>
                 产品描述
             </th>
             <th>
@@ -53,6 +56,9 @@
                 <%: item.ProductName %>
             </td>
             <td>
+                <%: item.Gold %>
+            </td>
+            <td>
                 <%: item.Description %>
             </td>
             <td>
@@ -61,7 +67,7 @@
         </tr>
         <% } %>
         <tr>
-            <td colspan="7">
+            <td colspan="8">
                 <div class="divPager">
                     <%
                         int pageNum = (int)ViewData[PortalSessionKey.PurchasePageNum.ToString()]; %>

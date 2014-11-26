@@ -209,6 +209,22 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         /// <summary>
         /// 没有元数据文档可用。
         /// </summary>
+        public ObjectSet<AppInfo> AppInfo
+        {
+            get
+            {
+                if ((_AppInfo == null))
+                {
+                    _AppInfo = base.CreateObjectSet<AppInfo>("AppInfo");
+                }
+                return _AppInfo;
+            }
+        }
+        private ObjectSet<AppInfo> _AppInfo;
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
         public ObjectSet<PurchaseProduct> PurchaseProduct
         {
             get
@@ -225,18 +241,18 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         /// <summary>
         /// 没有元数据文档可用。
         /// </summary>
-        public ObjectSet<AppInfo> AppInfo
+        public ObjectSet<AlbumView> AlbumView
         {
             get
             {
-                if ((_AppInfo == null))
+                if ((_AlbumView == null))
                 {
-                    _AppInfo = base.CreateObjectSet<AppInfo>("AppInfo");
+                    _AlbumView = base.CreateObjectSet<AlbumView>("AlbumView");
                 }
-                return _AppInfo;
+                return _AlbumView;
             }
         }
-        private ObjectSet<AppInfo> _AppInfo;
+        private ObjectSet<AlbumView> _AlbumView;
 
         #endregion
 
@@ -315,6 +331,14 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         }
     
         /// <summary>
+        /// 用于向 AppInfo EntitySet 添加新对象的方法，已弃用。请考虑改用关联的 ObjectSet&lt;T&gt; 属性的 .Add 方法。
+        /// </summary>
+        public void AddToAppInfo(AppInfo appInfo)
+        {
+            base.AddObject("AppInfo", appInfo);
+        }
+    
+        /// <summary>
         /// 用于向 PurchaseProduct EntitySet 添加新对象的方法，已弃用。请考虑改用关联的 ObjectSet&lt;T&gt; 属性的 .Add 方法。
         /// </summary>
         public void AddToPurchaseProduct(PurchaseProduct purchaseProduct)
@@ -323,11 +347,11 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         }
     
         /// <summary>
-        /// 用于向 AppInfo EntitySet 添加新对象的方法，已弃用。请考虑改用关联的 ObjectSet&lt;T&gt; 属性的 .Add 方法。
+        /// 用于向 AlbumView EntitySet 添加新对象的方法，已弃用。请考虑改用关联的 ObjectSet&lt;T&gt; 属性的 .Add 方法。
         /// </summary>
-        public void AddToAppInfo(AppInfo appInfo)
+        public void AddToAlbumView(AlbumView albumView)
         {
-            base.AddObject("AppInfo", appInfo);
+            base.AddObject("AlbumView", albumView);
         }
 
         #endregion
@@ -533,6 +557,179 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         private Nullable<global::System.Int32> _Creator;
         partial void OnCreatorChanging(Nullable<global::System.Int32> value);
         partial void OnCreatorChanged();
+
+        #endregion
+
+    
+    }
+    
+    /// <summary>
+    /// 没有元数据文档可用。
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="PortalDBModel", Name="AlbumView")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class AlbumView : EntityObject
+    {
+        #region 工厂方法
+    
+        /// <summary>
+        /// 创建新的 AlbumView 对象。
+        /// </summary>
+        /// <param name="id">ID 属性的初始值。</param>
+        /// <param name="albumID">AlbumID 属性的初始值。</param>
+        /// <param name="userID">UserID 属性的初始值。</param>
+        /// <param name="gold">Gold 属性的初始值。</param>
+        /// <param name="createDate">CreateDate 属性的初始值。</param>
+        public static AlbumView CreateAlbumView(global::System.Int32 id, global::System.Int32 albumID, global::System.Int32 userID, global::System.Int32 gold, global::System.String createDate)
+        {
+            AlbumView albumView = new AlbumView();
+            albumView.ID = id;
+            albumView.AlbumID = albumID;
+            albumView.UserID = userID;
+            albumView.Gold = gold;
+            albumView.CreateDate = createDate;
+            return albumView;
+        }
+
+        #endregion
+
+        #region 基元属性
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ID
+        {
+            get
+            {
+                return _ID;
+            }
+            set
+            {
+                if (_ID != value)
+                {
+                    OnIDChanging(value);
+                    ReportPropertyChanging("ID");
+                    _ID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ID");
+                    OnIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ID;
+        partial void OnIDChanging(global::System.Int32 value);
+        partial void OnIDChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 AlbumID
+        {
+            get
+            {
+                return _AlbumID;
+            }
+            set
+            {
+                if (_AlbumID != value)
+                {
+                    OnAlbumIDChanging(value);
+                    ReportPropertyChanging("AlbumID");
+                    _AlbumID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("AlbumID");
+                    OnAlbumIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _AlbumID;
+        partial void OnAlbumIDChanging(global::System.Int32 value);
+        partial void OnAlbumIDChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 UserID
+        {
+            get
+            {
+                return _UserID;
+            }
+            set
+            {
+                if (_UserID != value)
+                {
+                    OnUserIDChanging(value);
+                    ReportPropertyChanging("UserID");
+                    _UserID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("UserID");
+                    OnUserIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _UserID;
+        partial void OnUserIDChanging(global::System.Int32 value);
+        partial void OnUserIDChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Gold
+        {
+            get
+            {
+                return _Gold;
+            }
+            set
+            {
+                if (_Gold != value)
+                {
+                    OnGoldChanging(value);
+                    ReportPropertyChanging("Gold");
+                    _Gold = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Gold");
+                    OnGoldChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Gold;
+        partial void OnGoldChanging(global::System.Int32 value);
+        partial void OnGoldChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String CreateDate
+        {
+            get
+            {
+                return _CreateDate;
+            }
+            set
+            {
+                if (_CreateDate != value)
+                {
+                    OnCreateDateChanging(value);
+                    ReportPropertyChanging("CreateDate");
+                    _CreateDate = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("CreateDate");
+                    OnCreateDateChanged();
+                }
+            }
+        }
+        private global::System.String _CreateDate;
+        partial void OnCreateDateChanging(global::System.String value);
+        partial void OnCreateDateChanged();
 
         #endregion
 
@@ -2674,6 +2871,30 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         private global::System.Int32 _OrderCount;
         partial void OnOrderCountChanging(global::System.Int32 value);
         partial void OnOrderCountChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> Gold
+        {
+            get
+            {
+                return _Gold;
+            }
+            set
+            {
+                OnGoldChanging(value);
+                ReportPropertyChanging("Gold");
+                _Gold = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Gold");
+                OnGoldChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _Gold;
+        partial void OnGoldChanging(Nullable<global::System.Int32> value);
+        partial void OnGoldChanged();
 
         #endregion
 

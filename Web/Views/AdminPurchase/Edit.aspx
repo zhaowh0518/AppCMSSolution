@@ -20,6 +20,13 @@
             <%: Html.ValidationMessageFor(model => model.ProductName) %>
         </div>
         <div class="editor-label">
+            金币数量：
+        </div>
+        <div class="editor-field">
+            <%: Html.TextBoxFor(model => model.Gold) %>
+            <%: Html.ValidationMessageFor(model => model.Gold) %>
+        </div>
+        <div class="editor-label">
             产品描述：
         </div>
         <div class="editor-field">

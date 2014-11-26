@@ -27,6 +27,44 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         PurchaseBusiness purchaseBusiness = new PurchaseBusiness();
         AppInfoBusiness appInfoBusiness = new AppInfoBusiness();
 
+        #region Private
+        /// <summary>
+        /// 从Request中取客户端传过来的图片并把图片保存到指定的位置
+        /// <param name="width">如果宽度不为0，图片按宽度裁减</param>
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private bool GetImageInRequest(string path, int width = 0)
+        {
+            if (Request.Files != null && Request.Files.Count > 0 && Request.Files[0].InputStream != null)
+            {
+                try
+                {
+                    System.Drawing.Image img = System.Drawing.Bitmap.FromStream(Request.Files[0].InputStream);
+                    Bitmap bmp = new Bitmap(img);
+                    MemoryStream bmpStream = new MemoryStream();
+                    if (width > 0)
+                    {
+                        Graphics g = Graphics.FromImage(bmp);
+                        Rectangle rect = new Rectangle(0, (int)bmp.Height / 4, width, (int)bmp.Height / 2);
+                        g.DrawImage(bmp, rect);
+                    }
+                    bmp.Save(bmpStream, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    FileStream fs = new FileStream(path, FileMode.Create);
+                    bmpStream.WriteTo(fs);
+                    bmpStream.Close();
+                    fs.Close();
+                    bmpStream.Dispose();
+                    fs.Dispose();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
         /// <summary>
         /// 封装返回的数据为Json数据
         /// </summary>
@@ -45,6 +83,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             }
             return Json(data, Client_Content_Type, JsonRequestBehavior.AllowGet);
         }
+        #endregion
 
         /// <summary>
         /// 首页
@@ -159,6 +198,109 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             return ReturnJson<string>(data);
         }
         /// <summary>
+        /// 添加专辑
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult AddAlbum()
+        {
+            ServiceReturnData<string> data = new ServiceReturnData<string>();
+            try
+            {
+                Album album = new Album();
+                if (string.IsNullOrEmpty(Request["uid"]))
+                {
+                    album.Creator = Convert.ToInt32(Request["uid"]);
+                }
+                album.Name = Request["aname"];
+                string imagePath = string.Format("{0}/{1}/{2}.jpg",
+                    AppDomain.CurrentDomain.BaseDirectory, AlbumBusiness.Resource_Dir, Guid.NewGuid());
+                int imgWidth = 0;
+                if (string.IsNullOrEmpty(Request["width"]))
+                {
+                    imgWidth = Convert.ToInt32(Request["width"]);
+                }
+                if (GetImageInRequest(imagePath, imgWidth))
+                {
+                    album.ImageUrl = imagePath.Replace(AppDomain.CurrentDomain.BaseDirectory, string.Empty).Replace("\\", "/");
+                }
+                else
+                {
+                    data.Code = 0;
+                    data.Message = "专辑图片保存失败！";
+                }
+                int aid = albumBusiness.AddAlbum(album);
+                data.StrData = string.Format("aid={0}", aid);
+                data.Message += "添加成功！";
+            }
+            catch (Exception ex)
+            {
+                data.Code = 0;
+                data.Message = ex.Message;
+            }
+            return ReturnJson<string>(data);
+        }
+        /// <summary>
+        /// 上传图片
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult UploadImage()
+        {
+            ServiceReturnData<string> data = new ServiceReturnData<string>();
+            try
+            {
+                string uid = Request["uid"];
+                string aid = Request["aid"];
+                string imagePath = string.Format("{0}/{1}/{2}/{3}.jpg",
+                   AppDomain.CurrentDomain.BaseDirectory, AlbumBusiness.Resource_Dir, aid, Guid.NewGuid());
+                if (GetImageInRequest(imagePath))
+                {
+                    data.Message = "上传成功";
+                    data.Code = 1;
+                }
+                else
+                {
+                    data.Message = "上传失败";
+                    data.Code = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                data.Code = 0;
+                data.Message = ex.Message;
+            }
+            return ReturnJson<string>(data);
+        }
+        /// <summary>
+        /// 获取静态页
+        /// </summary>
+        /// <returns></returns>
+        public string Page()
+        {
+            string result = string.Empty;
+            string pageName = Request["pname"];
+            //pageName = "1.txt";
+            string pageFileName = string.Format("{0}/Resource/Pages/{1}", AppDomain.CurrentDomain.BaseDirectory, pageName);
+            if (HttpRuntime.Cache.Get(pageFileName) == null || string.IsNullOrEmpty(HttpRuntime.Cache.Get(pageFileName).ToString()))
+            {
+                System.Web.Caching.CacheDependency depe = new System.Web.Caching.CacheDependency(pageFileName);
+                using (FileStream fs = new FileStream(pageFileName, FileMode.Open))
+                {
+                    using (StreamReader reader = new StreamReader(fs, System.Text.UTF8Encoding.UTF8))
+                    {
+                        result = reader.ReadToEnd();
+                        reader.Close();
+                    }
+                    fs.Close();
+                }
+                HttpRuntime.Cache.Insert(pageFileName, result, depe);
+            }
+            result = HttpRuntime.Cache.Get(pageFileName).ToString();
+            return result;
+        }
+
+        #region User
+
+        /// <summary>
         /// 用户注册
         /// </summary>
         /// <returns></returns>
@@ -184,7 +326,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                     else
                     {
                         userInfo.DeviceNum = Request["devicenum"];
-                        userInfo.NickName = Request["nickyname"];
+                        userInfo.NickName = Request["nickname"];
                         userInfo.Phone = Request["phone"];
                         userInfo.Pwd = Request["pwd"];
                         userInfo.UserName = Request["username"];
@@ -268,6 +410,40 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             return ReturnJson<string>(data);
         }
         /// <summary>
+        /// 获得用户的信息：头像、金币、昵称
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetUserInfo()
+        {
+            ServiceReturnData<string> data = new ServiceReturnData<string>();
+            try
+            {
+                if (string.IsNullOrEmpty(Request["uid"]))
+                {
+                    data.Code = 0;
+                    data.Message = "uid不能为空";
+                }
+                else
+                {
+                    string uid = Request["uid"];
+                    ClientUser userInfo = clientUserBusiness.GetClientUser(uid);
+                    if (userInfo != null)
+                    {
+                        data.DictData.Add("headurl", string.Format("{0}/{1}/UserHead/{2}.jpg",
+                        AppDomain.CurrentDomain.BaseDirectory, AlbumBusiness.Resource_Dir, uid));
+                        data.DictData.Add("nickname", userInfo.NickName);
+                        data.DictData.Add("gold", userInfo.Score == null ? "0" : userInfo.Score.ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                data.Code = 0;
+                data.Message = ex.Message;
+            }
+            return ReturnJson<string>(data);
+        }
+        /// <summary>
         /// 上传用户头像
         /// </summary>
         /// <returns></returns>
@@ -306,33 +482,6 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             return ReturnJson<string>(data);
         }
         /// <summary>
-        /// 获取静态页
-        /// </summary>
-        /// <returns></returns>
-        public string Page()
-        {
-            string result = string.Empty;
-            string pageName = Request["pname"];
-            //pageName = "1.txt";
-            string pageFileName = string.Format("{0}/Resource/Pages/{1}", AppDomain.CurrentDomain.BaseDirectory, pageName);
-            if (HttpRuntime.Cache.Get(pageFileName) == null || string.IsNullOrEmpty(HttpRuntime.Cache.Get(pageFileName).ToString()))
-            {
-                System.Web.Caching.CacheDependency depe = new System.Web.Caching.CacheDependency(pageFileName);
-                using (FileStream fs = new FileStream(pageFileName, FileMode.Open))
-                {
-                    using (StreamReader reader = new StreamReader(fs, System.Text.UTF8Encoding.UTF8))
-                    {
-                        result = reader.ReadToEnd();
-                        reader.Close();
-                    }
-                    fs.Close();
-                }
-                HttpRuntime.Cache.Insert(pageFileName, result, depe);
-            }
-            result = HttpRuntime.Cache.Get(pageFileName).ToString();
-            return result;
-        }
-        /// <summary>
         /// 更新积分
         /// </summary>
         /// <returns></returns>
@@ -341,16 +490,17 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             ServiceReturnData<string> data = new ServiceReturnData<string>();
             try
             {
-                if (string.IsNullOrEmpty(Request["uid"]) || string.IsNullOrEmpty(Request["score"]))
+                if (string.IsNullOrEmpty(Request["uid"]) || string.IsNullOrEmpty(Request["gold"]))
                 {
                     data.Code = 0;
-                    data.Message = "uid和score都不能为空";
+                    data.Message = "uid和gold都不能为空";
                 }
                 else
                 {
                     int uid = Convert.ToInt32(Request["uid"]);
-                    int score = Convert.ToInt32(Request["score"]);
-                    int resultScore = clientUserBusiness.UpdateClientUserScore(uid, score);
+                    int score = Convert.ToInt32(Request["gold"]);
+                    int aid = Convert.ToInt32(Request["aid"]);
+                    int resultScore = clientUserBusiness.UpdateClientUserScore(aid, uid, score);
                     data.StrData = resultScore.ToString();
                     data.Code = 1;
                     data.Message = "更新成功！";
@@ -364,69 +514,26 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             return ReturnJson<string>(data);
         }
         /// <summary>
-        /// 添加专辑
+        /// 更新用户昵称
         /// </summary>
         /// <returns></returns>
-        public JsonResult AddAlbum()
+        public JsonResult UpdateUserNickName()
         {
             ServiceReturnData<string> data = new ServiceReturnData<string>();
             try
             {
-                Album album = new Album();
-                if (string.IsNullOrEmpty(Request["uid"]))
+                if (string.IsNullOrEmpty(Request["uid"]) || string.IsNullOrEmpty(Request["nickname"]))
                 {
-                    album.Creator = Convert.ToInt32(Request["uid"]);
-                }
-                album.Name = Request["aname"];
-                string imagePath = string.Format("{0}/{1}/{2}.jpg",
-                    AppDomain.CurrentDomain.BaseDirectory, AlbumBusiness.Resource_Dir, Guid.NewGuid());
-                int imgWidth = 0;
-                if (string.IsNullOrEmpty(Request["width"]))
-                {
-                    imgWidth = Convert.ToInt32(Request["width"]);
-                }
-                if (GetImageInRequest(imagePath, imgWidth))
-                {
-                    album.ImageUrl = imagePath.Replace(AppDomain.CurrentDomain.BaseDirectory, string.Empty).Replace("\\", "/");
+                    data.Code = 0;
+                    data.Message = "uid和nickname都不能为空";
                 }
                 else
                 {
-                    data.Code = 0;
-                    data.Message = "专辑图片保存失败！";
-                }
-                int aid = albumBusiness.AddAlbum(album);
-                data.StrData = string.Format("aid={0}", aid);
-                data.Message += "添加成功！";
-            }
-            catch (Exception ex)
-            {
-                data.Code = 0;
-                data.Message = ex.Message;
-            }
-            return ReturnJson<string>(data);
-        }
-        /// <summary>
-        /// 上传图片
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult UploadImage()
-        {
-            ServiceReturnData<string> data = new ServiceReturnData<string>();
-            try
-            {
-                string uid = Request["uid"];
-                string aid = Request["aid"];
-                string imagePath = string.Format("{0}/{1}/{2}/{3}.jpg",
-                   AppDomain.CurrentDomain.BaseDirectory, AlbumBusiness.Resource_Dir, aid, Guid.NewGuid());
-                if (GetImageInRequest(imagePath))
-                {
-                    data.Message = "上传成功";
+                    int uid = Convert.ToInt32(Request["uid"]);
+                    string nickname = Request["nickname"];
+                    clientUserBusiness.UpdateNickName(uid, nickname);
                     data.Code = 1;
-                }
-                else
-                {
-                    data.Message = "上传失败";
-                    data.Code = 0;
+                    data.Message = "更新成功！";
                 }
             }
             catch (Exception ex)
@@ -435,93 +542,6 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 data.Message = ex.Message;
             }
             return ReturnJson<string>(data);
-        }
-        /// <summary>
-        /// 从Request中取客户端传过来的图片并把图片保存到指定的位置
-        /// <param name="width">如果宽度不为0，图片按宽度裁减</param>
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        private bool GetImageInRequest(string path, int width = 0)
-        {
-            if (Request.Files != null && Request.Files.Count > 0 && Request.Files[0].InputStream != null)
-            {
-                try
-                {
-                    System.Drawing.Image img = System.Drawing.Bitmap.FromStream(Request.Files[0].InputStream);
-                    Bitmap bmp = new Bitmap(img);
-                    MemoryStream bmpStream = new MemoryStream();
-                    if (width > 0)
-                    {
-                        Graphics g = Graphics.FromImage(bmp);
-                        Rectangle rect = new Rectangle(0, (int)bmp.Height / 4, width, (int)bmp.Height / 2);
-                        g.DrawImage(bmp, rect);
-                    }
-                    bmp.Save(bmpStream, System.Drawing.Imaging.ImageFormat.Jpeg);
-                    FileStream fs = new FileStream(path, FileMode.Create);
-                    bmpStream.WriteTo(fs);
-                    bmpStream.Close();
-                    fs.Close();
-                    bmpStream.Dispose();
-                    fs.Dispose();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
-            }
-            return false;
-        }
-
-        #region Testor
-        /// <summary>
-        /// Action测试
-        /// </summary>
-        public void Testor()
-        {
-            //string sqlText = "";    //"ALTER TABLE AppuserLogin RENAME TO ClientUserLogin;";
-            //Disappearwind.PortalSolution.PortalWeb.Models.DataAccess da = new DataAccess();
-            //da.ExcuteSQLText(sqlText);
-            //BatchAdd();
-        }
-        private void BatchAdd()
-        {
-            Album a = new Album();
-            a.Name = "测试";
-            a.ImageUrl = "/resource/docimages/1.png";
-            a.Url = "/resource/docimages/1/";
-            a.Creator = 1;
-            for (int i = 0; i < 1000; i++)
-            {
-                a.Name = "测试" + (i + 1).ToString();
-                albumBusiness.AddAlbum(a);
-            }
-        }
-        /// <summary>
-        /// 模拟客户端的行为
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult SimulateClient()
-        {
-            if (Request.Form.Count > 0)
-            {
-                string url = Request.Url.AbsoluteUri.ToLower().Replace("simulateclient", Request.Form["ddlAction"]);
-                url = string.Format("{0}?{1}", url, Request.Form["txtData"]);
-                string fileData = string.Empty;
-                if (Request.Files != null && Request.Files.Count > 0)
-                {
-                    byte[] data = new byte[Request.Files[0].InputStream.Length];
-                    Request.Files[0].InputStream.Read(data, 0, data.Length);
-                    fileData = System.Text.Encoding.UTF8.GetString(data);
-                }
-                string str = string.Empty;
-                str = WebAccessUtility.Request(url, fileData, Client_Content_Type);
-                ViewData["ServiceRequest"] = Request.Form["txtData"];
-                ViewData["ServiceAction"] = Request.Form["ddlAction"];
-                ViewData["ServiceResponse"] = str;
-            }
-            return View();
         }
         #endregion
 
@@ -573,7 +593,6 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
 
                     if (purchaseBusiness.AddOrder(order))
                     {
-                        purchaseBusiness.UpdateProductOrder(order.ProductID);
                         data.Code = 1;
                         data.Message = "订单添加成功！";
                     }
@@ -587,6 +606,57 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 data.Message = ex.Message;
             }
             return ReturnJson<string>(data);
+        }
+        #endregion
+
+        #region Testor
+        /// <summary>
+        /// Action测试
+        /// </summary>
+        public void Testor()
+        {
+            //string sqlText = "";    //"ALTER TABLE AppuserLogin RENAME TO ClientUserLogin;";
+            //Disappearwind.PortalSolution.PortalWeb.Models.DataAccess da = new DataAccess();
+            //da.ExcuteSQLText(sqlText);
+            //BatchAdd();
+        }
+        private void BatchAdd()
+        {
+            Album a = new Album();
+            a.Name = "测试";
+            a.ImageUrl = "/resource/docimages/1.png";
+            a.Url = "/resource/docimages/1/";
+            a.Creator = 1;
+            for (int i = 0; i < 1000; i++)
+            {
+                a.Name = "测试" + (i + 1).ToString();
+                albumBusiness.AddAlbum(a);
+            }
+        }
+        /// <summary>
+        /// 模拟客户端的行为
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SimulateClient()
+        {
+            if (Request.Form.Count > 0)
+            {
+                string url = Request.Url.AbsoluteUri.ToLower().Replace("simulateclient", Request.Form["ddlAction"]);
+                url = string.Format("{0}?{1}", url, Request.Form["txtData"]);
+                string fileData = string.Empty;
+                if (Request.Files != null && Request.Files.Count > 0)
+                {
+                    byte[] data = new byte[Request.Files[0].InputStream.Length];
+                    Request.Files[0].InputStream.Read(data, 0, data.Length);
+                    fileData = System.Text.Encoding.UTF8.GetString(data);
+                }
+                string str = string.Empty;
+                str = WebAccessUtility.Request(url, fileData, Client_Content_Type);
+                ViewData["ServiceRequest"] = Request.Form["txtData"];
+                ViewData["ServiceAction"] = Request.Form["ddlAction"];
+                ViewData["ServiceResponse"] = str;
+            }
+            return View();
         }
         #endregion
     }

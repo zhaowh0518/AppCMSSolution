@@ -181,6 +181,24 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
             }
             return album.Id;
         }
+        public int AddAlbumView(AlbumView view)
+        {
+            var c = DBContext.AlbumView.OrderByDescending(p => p.ID).FirstOrDefault();
+            if (c == null)
+            {
+                view.ID = 1;
+            }
+            else
+            {
+                view.ID = view.ID + 1;
+            }
+            string sqlText = string.Empty;
+            sqlText = string.Format(@"insert into AlbumView ( ID , AlbumID , UserID ,Gold, CreateDate) 
+                                                  values ( {0} , '{1}' , '{2}' , '{3}' , '{4}')",
+               view.ID, view.AlbumID, view.UserID, view.Gold, DateTime.Now.ToShortDateString());
+            ExecuteSQLiteSql(sqlText);
+            return view.ID;
+        }
         /// <summary>
         /// Update a Album
         /// </summary>
