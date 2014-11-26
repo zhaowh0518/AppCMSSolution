@@ -81,6 +81,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             if (userInfoBusiness.Login(userName, password))
             {
                 Session["UserName"] = userName;
+                FormsAuthentication.SetAuthCookie(userName, true);
                 return RedirectToAction("Index", "Home");
             }
             else
