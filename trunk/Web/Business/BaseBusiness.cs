@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
-using Disappearwind.PortalSolution.PortalWeb.Models;
 using System.Web.Mvc;
-using System.Data.SqlClient;
+using Disappearwind.PortalSolution.PortalWeb.Models;
 
 namespace Disappearwind.PortalSolution.PortalWeb.Business
 {
@@ -45,7 +45,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
         /// <param name="connStr">connection string</param>
         /// <param name="sqlText">sql text to be executed</param>
         /// <returns></returns>
-        public bool ExecuteSQLServerSql(string connStr,string sqlText)
+        public bool ExecuteSQLServerSql(string connStr, string sqlText)
         {
             SqlConnection conn = new SqlConnection();
             try
@@ -73,9 +73,25 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
         }
         public bool ExecuteSQLiteSql(string sqlText)
         {
+            sqlText = EscapeSQLiteText(sqlText);
             DataAccess da = new DataAccess();
             da.ExcuteSQLText(sqlText);
             return true;
+        }
+        /// <summary>
+        /// 处理SQL语句中的转义字符
+        /// </summary>
+        /// <param name="sqlText"></param>
+        /// <returns></returns>
+        private string EscapeSQLiteText(string sqlText)
+        {
+            return sqlText
+                .Replace("/", "//")
+                .Replace("[", "/[")
+                .Replace("]", "/]")
+                .Replace("%", "/%")
+                .Replace("&", "/&")
+                .Replace("_", "/_");
         }
     }
 }
