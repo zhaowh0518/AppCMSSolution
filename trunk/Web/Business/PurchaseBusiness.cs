@@ -69,6 +69,25 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
             }
         }
         /// <summary>
+        /// Get PurchaseProduct by proiduct id,if not exist return a empty PurchaseProduct object
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public PurchaseProduct GetProduct(string productid)
+        {
+            var c = from p in DBContext.PurchaseProduct
+                    where p.ProductID == productid
+                    select p;
+            if (c != null && c.Count() > 0)
+            {
+                return c.FirstOrDefault();
+            }
+            else
+            {
+                return new PurchaseProduct();
+            }
+        }
+        /// <summary>
         /// Add a new PurchaseProduct to database
         /// </summary>
         /// <param name="product"></param>
@@ -87,10 +106,14 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
             product.AppID = 1;
             product.State = 0; //默认状态是0
             product.OrderCount = 0; //新增加的产品订单数为0
+            if (product.Gold == null) //金币数默认为0
+            {
+                product.Gold = 0;
+            }
             string sqlText = string.Empty;
-            sqlText = string.Format(@"insert into PurchaseProduct ( ID , ProductID,ProductName,State,Description,AppID,OrderCount) 
-                                                  values ( {0} , '{1}' , '{2}' , '{3}' , '{4}' ,'{5}','{6}')",
-                product.ID, product.ProductID, product.ProductName, product.State, product.Description, product.AppID, product.OrderCount);
+            sqlText = string.Format(@"insert into PurchaseProduct ( ID , ProductID,ProductName,State,Description,AppID,OrderCount,Gold) 
+                                                  values ( {0} , '{1}' , '{2}' , '{3}' , '{4}' ,'{5}','{6}','{7}')",
+                product.ID, product.ProductID, product.ProductName, product.State, product.Description, product.AppID, product.OrderCount, product.Gold);
             ExecuteSQLiteSql(sqlText);
             return product.ID;
         }
@@ -102,8 +125,8 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
         public bool UpdateProduct(PurchaseProduct product)
         {
             string sqlText = string.Empty;
-            sqlText = string.Format(@"Update PurchaseProduct set ProductName='{1}' , Description='{2}',  State='{3}'  where Id={0}",
-                product.ID, product.ProductName, product.Description, product.State);
+            sqlText = string.Format(@"Update PurchaseProduct set ProductName='{1}' , Description='{2}',  State='{3}',Gold='{4}'  where Id={0}",
+                product.ID, product.ProductName, product.Description, product.State, product.Gold);
             ExecuteSQLiteSql(sqlText);
             return true;
         }
@@ -162,6 +185,8 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
                                                   values ( {0} , '{1}' , '{2}' , '{3}')",
                 order.ProductID, order.UserID, order.CreateDate, order.TransactionID);
             ExecuteSQLiteSql(sqlText);
+            UpdateProductOrder(order.ProductID);
+            new ClientUserBusiness().UpdateClientUserScore(order.UserID, order.ProductID);
             return true;
         }
     }

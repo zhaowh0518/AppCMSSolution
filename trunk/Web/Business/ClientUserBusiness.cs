@@ -132,15 +132,58 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
         /// <param name="userid"></param>
         /// <param name="score"></param>
         /// <returns></returns>
-        public int UpdateClientUserScore(int userid, int score)
+        public int UpdateClientUserScore(int albumid, int userid, int score)
         {
             ClientUser userInfo = GetClientUser(userid);
-            userInfo.Score += score;
+            if (userInfo.Score == null)
+            {
+                userInfo.Score = 0;
+            }
+            userInfo.Score -= score;
             string sqlText = string.Empty;
             sqlText = string.Format(@"update ClientUser set Score={0} where UserId={1}",
                userInfo.Score, userid);
             ExecuteSQLiteSql(sqlText);
+            //记录用户消耗gold的历史
+            AlbumView view = new AlbumView();
+            view.Gold = score;
+            view.UserID = userid;
+            view.AlbumID = albumid;
+            new AlbumBusiness().AddAlbumView(view);
             return (int)userInfo.Score;
+        }
+        /// <summary>
+        /// 购买订单后记录用户的金币量
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="productid"></param>
+        /// <returns></returns>
+        public void UpdateClientUserScore(int userid, string productid)
+        {
+            ClientUser userInfo = GetClientUser(userid);
+            if (userInfo.Score == null)
+            {
+                userInfo.Score = 0;
+            }
+            userInfo.Score += new PurchaseBusiness().GetProduct(productid).Gold;
+            string sqlText = string.Empty;
+            sqlText = string.Format(@"update ClientUser set Score={0} where UserId={1}",
+               userInfo.Score, userid);
+            ExecuteSQLiteSql(sqlText);
+        }
+        /// <summary>
+        /// 更新用户的昵称
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="nickname"></param>
+        /// <returns></returns>
+        public void UpdateNickName(int userid, string nickname)
+        {
+
+            string sqlText = string.Empty;
+            sqlText = string.Format(@"update ClientUser set NickName={0} where UserId={1}",
+              nickname, userid);
+            ExecuteSQLiteSql(sqlText);
         }
     }
 }

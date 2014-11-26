@@ -38,6 +38,7 @@
                         <option>Page</option>
                         <option>AddAlbum</option>
                         <option>UploadImage</option>
+                        <option>UpdateUserScore</option>
                         <option>GetPurchaseProductList</option>
                         <option>AddPurchaseOrder</option>
                     </select>
