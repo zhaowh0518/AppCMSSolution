@@ -37,7 +37,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
             }
         }
         /// <summary>
-        /// 获取一系列的专辑（分页）
+        /// 获取一系列的专辑（分页）,管理后台用
         /// </summary>
         /// <returns></returns>
         public List<Album> GetAlbumList(int pageNum, int pageSize)
@@ -48,10 +48,42 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
             if (c != null && c.Count() > 0)
             {
                 List<Album> albumList = c.Skip((pageNum - 1) * pageSize).Take(pageSize).ToList();
+                return albumList;
+            }
+            else
+            {
+                return new List<Album>();
+            }
+        }
+        /// <summary>
+        /// 获取一系列的专辑（分页），接口用
+        /// </summary>
+        /// <returns></returns>
+        public List<Album> GetAlbumList(int pageNum, int pageSize, int userid)
+        {
+            var c = from p in DBContext.Album
+                    orderby p.Id descending
+                    select p;
+            if (c != null && c.Count() > 0)
+            {
+                List<Album> albumList = c.Skip((pageNum - 1) * pageSize).Take(pageSize).ToList();
+                List<AlbumView> albumViewList = new List<AlbumView>();
+                var v = DBContext.AlbumView.Where(p => p.UserID == userid);
+                if (v != null && v.Count() > 0)
+                {
+                    albumViewList = v.ToList();
+                }
                 foreach (Album album in albumList)
                 {
                     album.PicList = GetAlbumContentList(album.Id);
-                    album.Gold = GetAlbumGold(album.PicList.Count);
+                    if (albumViewList.Where(p => p.AlbumID == album.Id).Count() > 0) //用户看过专辑后Gold就为0
+                    {
+                        album.Gold = 0;
+                    }
+                    else
+                    {
+                        album.Gold = GetAlbumGold(album.PicList.Count);
+                    }
                 }
                 return albumList;
             }
