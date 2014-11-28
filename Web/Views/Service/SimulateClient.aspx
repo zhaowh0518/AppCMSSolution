@@ -41,6 +41,7 @@
                         <option>UpdateUserScore</option>
                         <option>GetPurchaseProductList</option>
                         <option>AddPurchaseOrder</option>
+                        <option>Test</option>
                     </select>
                     &nbsp;&nbsp;
                     <input type="submit" value="请求" />

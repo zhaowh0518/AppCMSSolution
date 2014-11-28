@@ -207,7 +207,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             try
             {
                 Album album = new Album();
-                if (string.IsNullOrEmpty(Request["uid"]))
+                if (!string.IsNullOrEmpty(Request["uid"]))
                 {
                     album.Creator = Convert.ToInt32(Request["uid"]);
                 }
@@ -215,7 +215,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 string imagePath = string.Format("{0}/{1}/{2}.jpg",
                     AppDomain.CurrentDomain.BaseDirectory, AlbumBusiness.Resource_Dir, Guid.NewGuid());
                 int imgWidth = 0;
-                if (string.IsNullOrEmpty(Request["width"]))
+                if (!string.IsNullOrEmpty(Request["width"]))
                 {
                     imgWidth = Convert.ToInt32(Request["width"]);
                 }
@@ -501,7 +501,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                     int uid = Convert.ToInt32(Request["uid"]);
                     int score = Convert.ToInt32(Request["gold"]);
                     int aid = Convert.ToInt32(Request["aid"]);
-                    int resultScore = clientUserBusiness.UpdateClientUserScore(aid, uid, score);
+                    int resultScore = clientUserBusiness.UpdateScoreForViewAlbum(aid, uid, score);
                     data.StrData = resultScore.ToString();
                     data.Code = 1;
                     data.Message = "更新成功！";
@@ -658,6 +658,17 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 ViewData["ServiceResponse"] = str;
             }
             return View();
+        }
+        /// <summary>
+        /// 输出测试
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult Test()
+        {
+            ServiceReturnData<string> data = new ServiceReturnData<string>();
+            string str = string.Format("DateTime.Now={0} & Date.Now.ToShortDateString()={1}", DateTime.Now, DateTime.Now.ToShortDateString());
+            data.Message = str;
+            return ReturnJson<string>(data);
         }
         #endregion
     }

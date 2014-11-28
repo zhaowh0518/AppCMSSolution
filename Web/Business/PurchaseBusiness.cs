@@ -152,7 +152,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
         public bool UpdateProductOrder(string productID)
         {
             var c = DBContext.PurchaseProduct.Where(p => p.ProductID == productID).OrderByDescending(p => p.ID).FirstOrDefault();
-            if (c != null && c.OrderCount != null)
+            if (c != null)
             {
                 int orderCount = c.OrderCount + 1; //用户每产生一次订单，订单数增加1
                 string sqlText = string.Empty;
@@ -186,7 +186,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
                 order.ProductID, order.UserID, order.CreateDate, order.TransactionID);
             ExecuteSQLiteSql(sqlText);
             UpdateProductOrder(order.ProductID);
-            new ClientUserBusiness().UpdateClientUserScore(order.UserID, order.ProductID);
+            new ClientUserBusiness().UpdateScoreForProduct(order.UserID, order.ProductID);
             return true;
         }
     }
