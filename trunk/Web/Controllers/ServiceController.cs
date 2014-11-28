@@ -143,7 +143,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 else
                 {
                     int? state = null;
-                    if (Request["state"] == null)
+                    if (Request["state"] != null)
                     {
                         state = Convert.ToInt32(Request["state"]);
                     }
@@ -426,13 +426,14 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 else
                 {
                     string uid = Request["uid"];
-                    ClientUser userInfo = clientUserBusiness.GetClientUser(uid);
+                    ClientUser userInfo = clientUserBusiness.GetClientUser(Convert.ToInt32(uid));
                     if (userInfo != null)
                     {
-                        data.DictData.Add("headurl", string.Format("{0}/{1}/UserHead/{2}.jpg",
-                        AppDomain.CurrentDomain.BaseDirectory, AlbumBusiness.Resource_Dir, uid));
-                        data.DictData.Add("nickname", userInfo.NickName);
+                        data.DictData.Add("headurl", string.Format("{0}/UserHead/{1}.jpg",
+                        AlbumBusiness.Resource_Dir, uid));
+                        data.DictData.Add("nickname", string.IsNullOrEmpty(userInfo.NickName) ? userInfo.UserName : userInfo.NickName);
                         data.DictData.Add("gold", userInfo.Score == null ? "0" : userInfo.Score.ToString());
+                        data.Code = 1;
                     }
                 }
             }
