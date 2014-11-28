@@ -105,7 +105,12 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 {
                     pageSize = Convert.ToInt32(Request["pagesize"]);
                 }
-                List<Album> albumList = albumBusiness.GetAlbumList(pageNum, pageSize);
+                int uid = 0;
+                if (Request["uid"] != null)
+                {
+                    uid = Convert.ToInt32(Request["uid"]);
+                }
+                List<Album> albumList = albumBusiness.GetAlbumList(pageNum, pageSize, uid);
                 data.Code = 1;
                 if (albumList.Count > 0)
                 {
@@ -222,6 +227,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 if (GetImageInRequest(imagePath, imgWidth))
                 {
                     album.ImageUrl = imagePath.Replace(AppDomain.CurrentDomain.BaseDirectory, string.Empty).Replace("\\", "/");
+                    album.ImageUrl = album.ImageUrl.Replace("//", "/"); //处理地址中的//
                 }
                 else
                 {
