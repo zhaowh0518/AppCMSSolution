@@ -193,18 +193,15 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
             {
                 album.Id = c.Id + 1;
             }
-            if (album.State == null)
-            {
-                album.State = 0;//默认未审核
-            }
+            album.State = 0;//默认未审核
             if (album.Creator == null)
             {
                 album.Creator = 1;
             }
             string sqlText = string.Empty;
-            sqlText = string.Format(@"insert into Album ( Id , Name , ImageUrl ,Url, Description,Creator) 
-                                                  values ( {0} , '{1}' , '{2}' , '{3}' , '{4}' ,'{5}')",
-                album.Id, album.Name, album.ImageUrl, album.Url, album.Description, album.Creator);
+            sqlText = string.Format(@"insert into Album ( Id , Name , ImageUrl ,Url, Description,State,Creator) 
+                                                  values ( {0} , '{1}' , '{2}' , '{3}' , '{4}' ,'{5}','{6}')",
+                album.Id, album.Name, album.ImageUrl, album.Url, album.Description, album.State, album.Creator);
             ExecuteSQLiteSql(sqlText);
             string albumPath = string.Format("{0}/{1}/{2}", AppDomain.CurrentDomain.BaseDirectory, Resource_Dir, album.Id);
             if (!Directory.Exists(albumPath))
