@@ -435,8 +435,13 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                     ClientUser userInfo = clientUserBusiness.GetClientUser(Convert.ToInt32(uid));
                     if (userInfo != null)
                     {
-                        data.DictData.Add("headurl", string.Format("{0}/UserHead/{1}.jpg",
-                        AlbumBusiness.Resource_Dir, uid));
+                        string headurl = string.Format("{0}/UserHead/{1}.jpg", AlbumBusiness.Resource_Dir, uid);
+                        if (!System.IO.File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, headurl)))
+                        {
+                            //头像不存在就不返回
+                            headurl = string.Empty;
+                        }
+                        data.DictData.Add("headurl", headurl);
                         data.DictData.Add("nickname", string.IsNullOrEmpty(userInfo.NickName) ? userInfo.UserName : userInfo.NickName);
                         data.DictData.Add("gold", userInfo.Score == null ? "0" : userInfo.Score.ToString());
                         data.Code = 1;
