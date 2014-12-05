@@ -83,6 +83,7 @@
     <Compile Include="Business\ClientUserBusiness.cs" />
     <Compile Include="Business\PurchaseBusiness.cs" />
     <Compile Include="Business\AppInfoBusiness.cs" />
+    <Compile Include="Business\FeedbackBusiness.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Admin\AdminAlbumController.cs" />
     <Compile Include="Controllers\Admin\AdminImageController.cs" />

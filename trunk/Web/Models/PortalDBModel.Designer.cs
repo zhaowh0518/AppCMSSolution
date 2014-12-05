@@ -253,6 +253,22 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
             }
         }
         private ObjectSet<AlbumView> _AlbumView;
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        public ObjectSet<Feedback> Feedback
+        {
+            get
+            {
+                if ((_Feedback == null))
+                {
+                    _Feedback = base.CreateObjectSet<Feedback>("Feedback");
+                }
+                return _Feedback;
+            }
+        }
+        private ObjectSet<Feedback> _Feedback;
 
         #endregion
 
@@ -352,6 +368,14 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         public void AddToAlbumView(AlbumView albumView)
         {
             base.AddObject("AlbumView", albumView);
+        }
+    
+        /// <summary>
+        /// 用于向 Feedback EntitySet 添加新对象的方法，已弃用。请考虑改用关联的 ObjectSet&lt;T&gt; 属性的 .Add 方法。
+        /// </summary>
+        public void AddToFeedback(Feedback feedback)
+        {
+            base.AddObject("Feedback", feedback);
         }
 
         #endregion
@@ -1454,6 +1478,150 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         private global::System.String _Description;
         partial void OnDescriptionChanging(global::System.String value);
         partial void OnDescriptionChanged();
+
+        #endregion
+
+    
+    }
+    
+    /// <summary>
+    /// 没有元数据文档可用。
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="PortalDBModel", Name="Feedback")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Feedback : EntityObject
+    {
+        #region 工厂方法
+    
+        /// <summary>
+        /// 创建新的 Feedback 对象。
+        /// </summary>
+        /// <param name="id">ID 属性的初始值。</param>
+        /// <param name="userID">UserID 属性的初始值。</param>
+        /// <param name="content">Content 属性的初始值。</param>
+        /// <param name="createDate">CreateDate 属性的初始值。</param>
+        public static Feedback CreateFeedback(global::System.Int32 id, global::System.Int32 userID, global::System.String content, global::System.DateTime createDate)
+        {
+            Feedback feedback = new Feedback();
+            feedback.ID = id;
+            feedback.UserID = userID;
+            feedback.Content = content;
+            feedback.CreateDate = createDate;
+            return feedback;
+        }
+
+        #endregion
+
+        #region 基元属性
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ID
+        {
+            get
+            {
+                return _ID;
+            }
+            set
+            {
+                if (_ID != value)
+                {
+                    OnIDChanging(value);
+                    ReportPropertyChanging("ID");
+                    _ID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ID");
+                    OnIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ID;
+        partial void OnIDChanging(global::System.Int32 value);
+        partial void OnIDChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 UserID
+        {
+            get
+            {
+                return _UserID;
+            }
+            set
+            {
+                if (_UserID != value)
+                {
+                    OnUserIDChanging(value);
+                    ReportPropertyChanging("UserID");
+                    _UserID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("UserID");
+                    OnUserIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _UserID;
+        partial void OnUserIDChanging(global::System.Int32 value);
+        partial void OnUserIDChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Content
+        {
+            get
+            {
+                return _Content;
+            }
+            set
+            {
+                if (_Content != value)
+                {
+                    OnContentChanging(value);
+                    ReportPropertyChanging("Content");
+                    _Content = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("Content");
+                    OnContentChanged();
+                }
+            }
+        }
+        private global::System.String _Content;
+        partial void OnContentChanging(global::System.String value);
+        partial void OnContentChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreateDate
+        {
+            get
+            {
+                return _CreateDate;
+            }
+            set
+            {
+                if (_CreateDate != value)
+                {
+                    OnCreateDateChanging(value);
+                    ReportPropertyChanging("CreateDate");
+                    _CreateDate = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("CreateDate");
+                    OnCreateDateChanged();
+                }
+            }
+        }
+        private global::System.DateTime _CreateDate;
+        partial void OnCreateDateChanging(global::System.DateTime value);
+        partial void OnCreateDateChanged();
 
         #endregion
 

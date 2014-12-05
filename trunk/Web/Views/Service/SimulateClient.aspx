@@ -39,8 +39,10 @@
                         <option>AddAlbum</option>
                         <option>UploadImage</option>
                         <option>UpdateUserScore</option>
+                        <option>UpdateUserNickName</option>
                         <option>GetPurchaseProductList</option>
                         <option>AddPurchaseOrder</option>
+                        <option>AddFeedback</option>
                         <option>Test</option>
                     </select>
                     &nbsp;&nbsp;

@@ -26,6 +26,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         ClientUserBusiness clientUserBusiness = new ClientUserBusiness();
         PurchaseBusiness purchaseBusiness = new PurchaseBusiness();
         AppInfoBusiness appInfoBusiness = new AppInfoBusiness();
+        FeedbackBusiness feedbackBusiness = new FeedbackBusiness();
 
         #region Private
         /// <summary>
@@ -303,6 +304,37 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             result = HttpRuntime.Cache.Get(pageFileName).ToString();
             return result;
         }
+        /// <summary>
+        /// 添加用户反馈
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult AddFeedback()
+        {
+            ServiceReturnData<string> data = new ServiceReturnData<string>();
+            try
+            {
+                if (string.IsNullOrEmpty(Request["uid"]) || string.IsNullOrEmpty(Request["content"]))
+                {
+                    data.Code = 0;
+                    data.Message = "uid和content都不能为空";
+                }
+                else
+                {
+                    Feedback feedback = new Feedback();
+                    feedback.UserID = Convert.ToInt32(Request["uid"]);
+                    feedback.Content = System.Text.UTF8Encoding.UTF8.GetString(System.Text.UTF8Encoding.UTF8.GetBytes(Request["content"]));
+                    feedbackBusiness.AddFeedback(feedback);
+                    data.Code = 1;
+                    data.Message = "添加成功！";
+                }
+            }
+            catch (Exception ex)
+            {
+                data.Code = 0;
+                data.Message = ex.Message;
+            }
+            return ReturnJson<string>(data);
+        }
 
         #region User
 
@@ -543,6 +575,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 {
                     int uid = Convert.ToInt32(Request["uid"]);
                     string nickname = Request["nickname"];
+                    nickname = System.Text.UTF8Encoding.UTF8.GetString(System.Text.UTF8Encoding.UTF8.GetBytes(nickname));
                     clientUserBusiness.UpdateNickName(uid, nickname);
                     data.Code = 1;
                     data.Message = "更新成功！";

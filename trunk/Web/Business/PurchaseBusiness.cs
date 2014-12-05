@@ -181,7 +181,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
         {
             string sqlText = string.Empty;
             sqlText = string.Format(@"insert into PurchaseOrder (ProductID,UserID,CreateDate,TransactionID) 
-                                                  values ( {0} , '{1}' , '{2}' , '{3}')",
+                                                  values ( '{0}' , '{1}' , '{2}' , '{3}')",
                 order.ProductID, order.UserID, DateTime.Now.ToString("s"), order.TransactionID);
             ExecuteSQLiteSql(sqlText);
             UpdateProductOrder(order.ProductID);
