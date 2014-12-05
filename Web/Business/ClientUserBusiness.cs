@@ -99,7 +99,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
         public bool AddClientUserLogin(ClientUserLogin userLogin)
         {
             UpdateScoreForLogin(userLogin.UserID);
-            userLogin.CreateDate = DateTime.Now.ToString();
+            userLogin.CreateDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             string sqlText = string.Empty;
             sqlText = string.Format(@"insert into ClientUserLogin ( UserID , CreateDate , IP ,DeviceNum) 
                                                   values ( {0} , '{1}' , '{2}' , '{3}')",
@@ -205,7 +205,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
         {
 
             string sqlText = string.Empty;
-            sqlText = string.Format(@"update ClientUser set NickName={0} where UserId={1}",
+            sqlText = string.Format(@"update ClientUser set NickName='{0}' where UserId={1}",
               nickname, userid);
             ExecuteSQLiteSql(sqlText);
         }
@@ -216,7 +216,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
         /// <returns></returns>
         private bool IsLoginToday(int userid)
         {
-            string currentDate = DateTime.Now.ToShortDateString();
+            string currentDate = DateTime.Now.ToString("yyyy-MM-dd");
             var c = DBContext.ClientUserLogin.Where(p => p.CreateDate.Contains(currentDate) && p.UserID == userid);
             if (c != null && c.Count() > 0)
             {

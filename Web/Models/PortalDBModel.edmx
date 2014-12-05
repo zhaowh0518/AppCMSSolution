@@ -65,6 +65,14 @@
       [DBDictionary].[Description] AS [Description]
       FROM [DBDictionary] AS [DBDictionary]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="Feedback" EntityType="PortalDBModel.Store.Feedback" store:Type="Tables" store:Name="Feedback">
+            <DefiningQuery>SELECT 
+      [Feedback].[ID] AS [ID], 
+      [Feedback].[UserID] AS [UserID], 
+      [Feedback].[Content] AS [Content], 
+      [Feedback].[CreateDate] AS [CreateDate]
+      FROM [Feedback] AS [Feedback]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="PortalDocument" EntityType="PortalDBModel.Store.PortalDocument" store:Type="Tables" store:Name="PortalDocument">
             <DefiningQuery>SELECT 
       [PortalDocument].[Id] AS [Id], 
@@ -261,6 +269,21 @@
           <Property Name="Description" Type="nvarchar" MaxLength="1024" />
         </EntityType>
         <!--生成过程中发现错误:
+      警告 6002: 表/视图“main.Feedback”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
+      -->
+        <EntityType Name="Feedback">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="Content" />
+            <PropertyRef Name="CreateDate" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Content" Type="nvarchar" Nullable="false" MaxLength="2048" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
       警告 6002: 表/视图“main.PortalDocument”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
       -->
         <EntityType Name="PortalDocument">
@@ -422,6 +445,7 @@
           <EntitySet Name="AppInfo" EntityType="PortalDBModel.AppInfo" />
           <EntitySet Name="PurchaseProduct" EntityType="PortalDBModel.PurchaseProduct" />
           <EntitySet Name="AlbumView" EntityType="PortalDBModel.AlbumView" />
+          <EntitySet Name="Feedback" EntityType="PortalDBModel.Feedback" />
         </EntityContainer>
         <EntityType Name="DBDictionary">
           <Key>
@@ -627,6 +651,18 @@
           <Property Type="Int32" Name="Gold" Nullable="false" />
           <Property Type="String" Name="CreateDate" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="Feedback">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="Content" />
+            <PropertyRef Name="CreateDate" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="Int32" Name="UserID" Nullable="false" />
+          <Property Type="String" Name="Content" Nullable="false" MaxLength="2048" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreateDate" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -815,6 +851,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Feedback">
+            <EntityTypeMapping TypeName="PortalDBModel.Feedback">
+              <MappingFragment StoreEntitySet="Feedback">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -848,6 +894,7 @@
         <EntityTypeShape EntityType="PortalDBModel.AppInfo" Width="1.5" PointX="9.375" PointY="6.75" Height="1.9700325520833353" />
         <EntityTypeShape EntityType="PortalDBModel.PurchaseProduct" Width="1.5" PointX="3.375" PointY="9.75" Height="2.5430916341145817" />
         <EntityTypeShape EntityType="PortalDBModel.AlbumView" Width="1.5" PointX="9.375" PointY="9.75" Height="1.9700325520833317" />
+        <EntityTypeShape EntityType="PortalDBModel.Feedback" Width="1.5" PointX="0.75" PointY="10.75" Height="1.7790128580729174" />
         </Diagram></edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
