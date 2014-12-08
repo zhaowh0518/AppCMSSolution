@@ -89,6 +89,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
                                                   values ( {0} , '{1}' , '{2}' , '{3}' , '{4}' ,'{5}','{6}','{7}')",
                user.UserID, user.UserName, user.Pwd, user.NickName, user.Phone, user.DeviceNum, user.Score, user.CreateDate);
             ExecuteSQLiteSql(sqlText);
+            UpdateScoreForRegister(user.UserID);
             return user.UserID;
         }
         /// <summary>
@@ -163,7 +164,12 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
             {
                 userInfo.Score = 0;
             }
-            userInfo.Score += new PurchaseBusiness().GetProduct(productid).Gold;
+            int? gold = new PurchaseBusiness().GetProduct(productid).Gold;
+            if (gold == null) //产品找不到
+            {
+                gold = 0;
+            }
+            userInfo.Score += gold;
             UpdateScore(userid, (int)userInfo.Score);
         }
         /// <summary>
@@ -180,6 +186,23 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
             if (!IsLoginToday(userid))
             {
                 userInfo.Score += 2;
+                UpdateScore(userid, (int)userInfo.Score);
+            }
+        }
+        /// <summary>
+        /// 注册一个，奖励5个金币
+        /// </summary>
+        /// <param name="userid"></param>
+        public void UpdateScoreForRegister(int userid)
+        {
+            ClientUser userInfo = GetClientUser(userid);
+            if (userInfo.Score == null)
+            {
+                userInfo.Score = 0;
+            }
+            if (!IsLoginToday(userid))
+            {
+                userInfo.Score += 5;
                 UpdateScore(userid, (int)userInfo.Score);
             }
         }

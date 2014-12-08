@@ -380,6 +380,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                                 data.DictData.Add("version", appInfo.Version);
                                 data.DictData.Add("upgrade", appInfo.VersionUpgrade.ToString());
                             }
+                            data.DictData.Add("gold", "5"); //注册成功送5个金币
                             data.Message = "注册成功";
                         }
                         else
@@ -423,6 +424,9 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                     loginInfo.DeviceNum = Request["devicenum"];
                     loginInfo.UserID = Convert.ToInt32(uid);
                     clientUserBusiness.AddClientUserLogin(loginInfo);
+                    //返回用户的金币数
+                    ClientUser userInfo = clientUserBusiness.GetClientUser(Convert.ToInt32(uid));
+                    data.DictData.Add("gold", userInfo.Score == null ? "0" : userInfo.Score.ToString());
                     data.Code = 1;
                     data.Message = "登录成功";
                 }
