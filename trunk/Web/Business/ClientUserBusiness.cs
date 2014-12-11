@@ -82,14 +82,13 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
             {
                 user.UserID = c.UserID + 1;
             }
-            user.Score = 100;
+            user.Score = Convert.ToInt32(MagicNum.GOLDNUM.REGISTER);
             user.CreateDate = DateTime.Now.ToString();
             string sqlText = string.Empty;
             sqlText = string.Format(@"insert into ClientUser ( UserID , UserName , Pwd ,NickName, Phone,DeviceNum,Score,CreateDate) 
                                                   values ( {0} , '{1}' , '{2}' , '{3}' , '{4}' ,'{5}','{6}','{7}')",
                user.UserID, user.UserName, user.Pwd, user.NickName, user.Phone, user.DeviceNum, user.Score, user.CreateDate);
             ExecuteSQLiteSql(sqlText);
-            UpdateScoreForRegister(user.UserID);
             return user.UserID;
         }
         /// <summary>
@@ -185,24 +184,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
             }
             if (!IsLoginToday(userid))
             {
-                userInfo.Score += 2;
-                UpdateScore(userid, (int)userInfo.Score);
-            }
-        }
-        /// <summary>
-        /// 注册一个，奖励5个金币
-        /// </summary>
-        /// <param name="userid"></param>
-        public void UpdateScoreForRegister(int userid)
-        {
-            ClientUser userInfo = GetClientUser(userid);
-            if (userInfo.Score == null)
-            {
-                userInfo.Score = 0;
-            }
-            if (!IsLoginToday(userid))
-            {
-                userInfo.Score += 5;
+                userInfo.Score += Convert.ToInt32(MagicNum.GOLDNUM.LOGIN);
                 UpdateScore(userid, (int)userInfo.Score);
             }
         }
