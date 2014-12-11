@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Disappearwind.PortalSolution.PortalWeb.Business;
 using Disappearwind.PortalSolution.PortalWeb.Models;
 using Disappearwind.PortalSolution.PortalWeb.Utility;
+using Newtonsoft.Json;
 
 namespace Disappearwind.PortalSolution.PortalWeb.Controllers
 {
@@ -65,6 +66,32 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 }
             }
             return false;
+        }
+        /// <summary>
+        /// 验证订单是否合法
+        /// 判断加密的信息中是否包含com.1tuanwang
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        private bool ValidatePurchase(string data)
+        {
+            string str = string.Empty;
+            str = System.Text.UTF8Encoding.UTF8.GetString(Convert.FromBase64String(data));
+            str = str.Replace("=", ":").Replace(";", ",");
+            Dictionary<string, string> list = JsonConvert.DeserializeObject<Dictionary<string, string>>(str);
+            str = list["purchase-info"];
+            str = System.Text.UTF8Encoding.UTF8.GetString(Convert.FromBase64String(str));
+            str = str.Replace("=", ":").Replace(";", ",");
+            list = JsonConvert.DeserializeObject<Dictionary<string, string>>(str);
+            str = list["product-id"];
+            if (str.Contains("com.1tuanwang"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         /// <summary>
         /// 封装返回的数据为Json数据
@@ -635,18 +662,25 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 }
                 else
                 {
-                    PurchaseOrder order = new PurchaseOrder();
-                    order.ProductID = Request["productid"];
-                    order.UserID = Convert.ToInt32(Request["uid"]);
-                    order.TransactionID = Request["transactionid"];
-
-                    if (purchaseBusiness.AddOrder(order))
+                    string receipt = Request["receipt"];
+                    if (ValidatePurchase(receipt))
                     {
-                        data.Code = 1;
-                        data.Message = "订单添加成功！";
-                    }
+                        PurchaseOrder order = new PurchaseOrder();
+                        order.ProductID = Request["productid"];
+                        order.UserID = Convert.ToInt32(Request["uid"]);
+                        order.TransactionID = Request["transactionid"];
 
-                    //需要和苹果服务器做验证
+                        if (purchaseBusiness.AddOrder(order))
+                        {
+                            data.Code = 1;
+                            data.Message = "订单添加成功！";
+                        }
+                    }
+                    else
+                    {
+                        data.Code = 0;
+                        data.Message = "订单不合法！";
+                    }
                 }
             }
             catch (Exception ex)
@@ -714,8 +748,69 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         public JsonResult Test()
         {
             ServiceReturnData<string> data = new ServiceReturnData<string>();
-            string str = string.Format("DateTime.Now={0} & Date.Now.ToShortDateString()={1}", DateTime.Now, DateTime.Now.ToShortDateString());
-            data.Message = str;
+            try
+            {
+                string str = string.Empty;
+                //str = string.Format("DateTime.Now={0} & Date.Now.ToShortDateString()={1}", DateTime.Now, DateTime.Now.ToShortDateString());
+                //str = Convert.ToInt32(MagicNum.GOLDNUM.REGISTER).ToString();
+                str = @"
+ewoJInNpZ25hdHVyZSIgPSAiQWwzUnFsOWRCc1lZanFSN1hGZ20rdWF2bWp3KzQ2VEpEOHh1YWZS
+MmRrOVg2OThlLy9GSDNtRGlHN01LdmdBSjIzakQvNnlzakhtRGNCTm9xZWM1K3RxSVZHK3J5MWhh
+eDh1NmdVWTV5OENJWnZoUkNiM3hhQXliTGk4KzNicVhzZHVHUW5HVHFEbVM1ZkE0Q1Vqb3Q0UVlu
+QjBZd2R3UUNOYXcwZVNsNGpKbkFBQURWekNDQTFNd2dnSTdvQU1DQVFJQ0NCdXA0K1BBaG0vTE1B
+MEdDU3FHU0liM0RRRUJCUVVBTUg4eEN6QUpCZ05WQkFZVEFsVlRNUk13RVFZRFZRUUtEQXBCY0hC
+c1pTQkpibU11TVNZd0pBWURWUVFMREIxQmNIQnNaU0JEWlhKMGFXWnBZMkYwYVc5dUlFRjFkR2h2
+Y21sMGVURXpNREVHQTFVRUF3d3FRWEJ3YkdVZ2FWUjFibVZ6SUZOMGIzSmxJRU5sY25ScFptbGpZ
+WFJwYjI0Z1FYVjBhRzl5YVhSNU1CNFhEVEUwTURZd056QXdNREl5TVZvWERURTJNRFV4T0RFNE16
+RXpNRm93WkRFak1DRUdBMVVFQXd3YVVIVnlZMmhoYzJWU1pXTmxhWEIwUTJWeWRHbG1hV05oZEdV
+eEd6QVpCZ05WQkFzTUVrRndjR3hsSUdsVWRXNWxjeUJUZEc5eVpURVRNQkVHQTFVRUNnd0tRWEJ3
+YkdVZ1NXNWpMakVMTUFrR0ExVUVCaE1DVlZNd2daOHdEUVlKS29aSWh2Y05BUUVCQlFBRGdZMEFN
+SUdKQW9HQkFNbVRFdUxnamltTHdSSnh5MW9FZjBlc1VORFZFSWU2d0Rzbm5hbDE0aE5CdDF2MTk1
+WDZuOTNZTzdnaTNvclBTdXg5RDU1NFNrTXArU2F5Zzg0bFRjMzYyVXRtWUxwV25iMzRucXlHeDlL
+QlZUeTVPR1Y0bGpFMU93QytvVG5STStRTFJDbWVOeE1iUFpoUzQ3VCtlWnRERWhWQjl1c2szK0pN
+MkNvZ2Z3bzdBZ01CQUFHamNqQndNQjBHQTFVZERnUVdCQlNKYUVlTnVxOURmNlpmTjY4RmUrSTJ1
+MjJzc0RBTUJnTlZIUk1CQWY4RUFqQUFNQjhHQTFVZEl3UVlNQmFBRkRZZDZPS2RndElCR0xVeWF3
+N1hRd3VSV0VNNk1BNEdBMVVkRHdFQi93UUVBd0lIZ0RBUUJnb3Foa2lHOTJOa0JnVUJCQUlGQURB
+TkJna3Foa2lHOXcwQkFRVUZBQU9DQVFFQWVhSlYyVTUxcnhmY3FBQWU1QzIvZkVXOEtVbDRpTzRs
+TXV0YTdONlh6UDFwWkl6MU5ra0N0SUl3ZXlOajVVUllISytIalJLU1U5UkxndU5sMG5rZnhxT2Jp
+TWNrd1J1ZEtTcTY5Tkluclp5Q0Q2NlI0Szc3bmI5bE1UQUJTU1lsc0t0OG9OdGxoZ1IvMWtqU1NS
+UWNIa3RzRGNTaVFHS01ka1NscDRBeVhmN3ZuSFBCZTR5Q3dZVjJQcFNOMDRrYm9pSjNwQmx4c0d3
+Vi9abEwyNk0ydWVZSEtZQ3VYaGRxRnd4VmdtNTJoM29lSk9PdC92WTRFY1FxN2VxSG02bTAzWjli
+N1BSellNMktHWEhEbU9Nazd2RHBlTVZsTERQU0dZejErVTNzRHhKemViU3BiYUptVDdpbXpVS2Zn
+Z0VZN3h4ZjRjemZIMHlqNXdOelNHVE92UT09IjsKCSJwdXJjaGFzZS1pbmZvIiA9ICJld29KSW05
+eWFXZHBibUZzTFhCMWNtTm9ZWE5sTFdSaGRHVXRjSE4wSWlBOUlDSXlNREUwTFRFeUxURXdJREl6
+T2pBMU9qQTBJRUZ0WlhKcFkyRXZURzl6WDBGdVoyVnNaWE1pT3dvSkluVnVhWEYxWlMxcFpHVnVk
+R2xtYVdWeUlpQTlJQ0kzTkRnek1XRmxZV1JsWldGaE1XVmpOVEUyWTJaaVltUTBZV05oTURZek1q
+ZGhNRGhsTjJaa0lqc0tDU0p2Y21sbmFXNWhiQzEwY21GdWMyRmpkR2x2YmkxcFpDSWdQU0FpTVRB
+d01EQXdNREV6TlRFNU5qVTFPU0k3Q2draVluWnljeUlnUFNBaU1TNHdJanNLQ1NKMGNtRnVjMkZq
+ZEdsdmJpMXBaQ0lnUFNBaU1UQXdNREF3TURFek5URTVOalUxT1NJN0Nna2ljWFZoYm5ScGRIa2lJ
+RDBnSWpFaU93b0pJbTl5YVdkcGJtRnNMWEIxY21Ob1lYTmxMV1JoZEdVdGJYTWlJRDBnSWpFME1U
+Z3lPREUxTURRMU1qSWlPd29KSW5WdWFYRjFaUzEyWlc1a2IzSXRhV1JsYm5ScFptbGxjaUlnUFNB
+aU56a3dSVFk1TlRRdE1FUXlOeTAwT0RsRExUazROa1l0TURZMlFUYzRRa1U1UWpZMElqc0tDU0p3
+Y205a2RXTjBMV2xrSWlBOUlDSmpiMjB1TVhSMVlXNTNZVzVuTGpFNFEwNVpYekl3TUVkQ0lqc0tD
+U0pwZEdWdExXbGtJaUE5SUNJNU16TXhNekEyTVRjaU93b0pJbUpwWkNJZ1BTQWlZMjl0TGpGMGRX
+RnVkMkZ1Wnk1dFpXbDBkV3QxWVdsaWJ5STdDZ2tpY0hWeVkyaGhjMlV0WkdGMFpTMXRjeUlnUFNB
+aU1UUXhPREk0TVRVd05EVXlNaUk3Q2draWNIVnlZMmhoYzJVdFpHRjBaU0lnUFNBaU1qQXhOQzB4
+TWkweE1TQXdOem93TlRvd05DQkZkR012UjAxVUlqc0tDU0p3ZFhKamFHRnpaUzFrWVhSbExYQnpk
+Q0lnUFNBaU1qQXhOQzB4TWkweE1DQXlNem93TlRvd05DQkJiV1Z5YVdOaEwweHZjMTlCYm1kbGJH
+VnpJanNLQ1NKdmNtbG5hVzVoYkMxd2RYSmphR0Z6WlMxa1lYUmxJaUE5SUNJeU1ERTBMVEV5TFRF
+eElEQTNPakExT2pBMElFVjBZeTlIVFZRaU93cDkiOwoJImVudmlyb25tZW50IiA9ICJTYW5kYm94
+IjsKCSJwb2QiID0gIjEwMCI7Cgkic2lnbmluZy1zdGF0dXMiID0gIjAiOwp9";
+                str = System.Text.UTF8Encoding.UTF8.GetString(Convert.FromBase64String(str));
+                str = str.Replace("=", ":").Replace(";", ",");
+                Dictionary<string, string> list = JsonConvert.DeserializeObject<Dictionary<string, string>>(str);
+                str = list["purchase-info"];
+                str = System.Text.UTF8Encoding.UTF8.GetString(Convert.FromBase64String(str));
+                str = str.Replace("=", ":").Replace(";", ",");
+                list = JsonConvert.DeserializeObject<Dictionary<string, string>>(str);
+                str = list["product-id"];
+                data.Message = str;
+
+            }
+            catch (Exception ex)
+            {
+                data.Message = ex.Message;
+            }
             return ReturnJson<string>(data);
         }
         #endregion

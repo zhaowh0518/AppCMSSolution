@@ -1,0 +1,17 @@
+{
+	"original-purchase-date-pst" = "2014-12-10 23:05:04 America/Los_Angeles";
+	"unique-identifier" = "74831aeadeeaa1ec516cfbbd4aca06327a08e7fd";
+	"original-transaction-id" = "1000000135196559";
+	"bvrs" = "1.0";
+	"transaction-id" = "1000000135196559";
+	"quantity" = "1";
+	"original-purchase-date-ms" = "1418281504522";
+	"unique-vendor-identifier" = "790E6954-0D27-489C-986F-066A78BE9B64";
+	"product-id" = "com.1tuanwang.18CNY_200GB";
+	"item-id" = "933130617";
+	"bid" = "com.1tuanwang.meitukuaibo";
+	"purchase-date-ms" = "1418281504522";
+	"purchase-date" = "2014-12-11 07:05:04 Etc/GMT";
+	"purchase-date-pst" = "2014-12-10 23:05:04 America/Los_Angeles";
+	"original-purchase-date" = "2014-12-11 07:05:04 Etc/GMT";
+}
