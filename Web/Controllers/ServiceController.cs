@@ -672,6 +672,9 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
 
                         if (purchaseBusiness.AddOrder(order))
                         {
+                            string uid = Request["uid"];
+                            ClientUser userInfo = clientUserBusiness.GetClientUser(Convert.ToInt32(uid));
+                            data.DictData.Add("gold", userInfo.Score == null ? "0" : userInfo.Score.ToString());
                             data.Code = 1;
                             data.Message = "订单添加成功！";
                         }
