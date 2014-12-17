@@ -15,8 +15,8 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         /// </summary>
         public enum GOLDNUM
         {
-            REGISTER = 10,   //注册送10个金币
-            LOGIN = 2       //每天登录送2个金币
+            REGISTER = 8,   //注册送的金币数 2014-12-17
+            LOGIN = 2       //每天登录的金币数
         }
     }
 }
