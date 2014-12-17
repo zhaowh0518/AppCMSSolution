@@ -407,7 +407,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                                 data.DictData.Add("version", appInfo.Version);
                                 data.DictData.Add("upgrade", appInfo.VersionUpgrade.ToString());
                             }
-                            data.DictData.Add("gold", "5"); //注册成功送5个金币
+                            data.DictData.Add("gold", Convert.ToInt32(MagicNum.GOLDNUM.REGISTER).ToString()); //注册成功送的金币
                             data.Message = "注册成功";
                         }
                         else
