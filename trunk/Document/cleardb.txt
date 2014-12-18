@@ -1,0 +1,6 @@
+delete from Album;
+delete from AlbumView;
+delete from ClientUser;
+delete from ClientUserLogin;
+delete from Feedback;
+delete from PurchaseOrder;
