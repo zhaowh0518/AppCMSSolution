@@ -62,6 +62,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
         public List<Album> GetAlbumList(int pageNum, int pageSize, int userid)
         {
             var c = from p in DBContext.Album
+                    where p.State == 1 //只取审核通过的专辑
                     orderby p.Id descending
                     select p;
             if (c != null && c.Count() > 0)
