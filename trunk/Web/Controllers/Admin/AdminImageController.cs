@@ -43,27 +43,61 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers.Admin
         public ActionResult Index(string subPath)
         {
             SubDirectory = subPath;
+            ViewData["SubDirectory"] = SubDirectory;
             GetImageList();
             return View();
         }
         [AcceptVerbs(HttpVerbs.Post)]
         [Authorize]
-        public ActionResult Index(FormCollection collection)
+        public ActionResult Index(HttpPostedFileBase[] fileList)
         {
-            if (Request.Files.Count == 0)
+            if (fileList == null || fileList.Length == 0)
             {
                 return View();
             }
-            var c = Request.Files[0];
-            if (c != null && c.ContentLength > 0)
+            string subPath = string.Empty;
+            int lastSlashIndex = 0;
+            string fileName = string.Empty;
+            string dir = CommonUtility.DocImagePath;
+            //ÓÐ×ÓÄ¿Â¼
+            if (!string.IsNullOrEmpty(Request["subpath"]))
             {
-                int lastSlashIndex = c.FileName.LastIndexOf("\\");
-                string fileName = c.FileName.Substring(lastSlashIndex + 1, c.FileName.Length - lastSlashIndex - 1);
-                fileName = Path.Combine(CommonUtility.DocImagePath, fileName);
-                c.SaveAs(fileName);
+                dir = Path.Combine(dir, Request["subpath"]);
+            }
+            foreach (HttpPostedFileBase c in fileList)
+            {
+                if (c != null && c.FileName != null && !string.IsNullOrEmpty(c.FileName))
+                {
+                    lastSlashIndex = c.FileName.LastIndexOf(".");
+                    fileName = c.FileName.Substring(lastSlashIndex + 1, c.FileName.Length - lastSlashIndex - 1);
+                    if (fileName != "exe")
+                    {
+                        fileName = string.Format("{0}.{1}", Guid.NewGuid(), fileName);
+                        fileName = Path.Combine(dir, fileName);
+                        c.SaveAs(fileName);
+                    }
+                }
             }
             GetImageList();
             return View();
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize]
+        public ActionResult Delete()
+        {
+            string selectedImage = Request.Form["selectedImage"];
+            string[] imageList = selectedImage.Split(',');
+            string filePath = string.Empty;
+            for (int i = 0; i < imageList.Length; i++)
+            {
+                filePath = string.Format("{0}\\{1}",AppDomain.CurrentDomain.BaseDirectory, imageList[i]);
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+            return RedirectToAction("Index");
         }
 
         private void GetImageList()
