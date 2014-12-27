@@ -35,8 +35,6 @@
             <p>
                 <input type="submit" value="登录" />
             </p>
-            <p>
-                *注册为本站会员可享受折扣优惠</p>
         </fieldset>
     </div>
     <% } %>

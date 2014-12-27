@@ -67,7 +67,7 @@
         </tr>
         <% } %>
         <tr>
-            <td colspan="7">
+            <td colspan="8">
                 <div class="divPager">
                     <%
                         int pageNum = (int)ViewData[PortalSessionKey.AlbumListPageNum.ToString()]; %>

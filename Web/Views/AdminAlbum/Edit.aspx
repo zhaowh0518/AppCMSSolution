@@ -47,6 +47,13 @@
             <%: Html.TextBoxFor(model => model.State) %>
             <%: Html.ValidationMessageFor(model => model.State) %>
         </div>
+         <div class="editor-label">
+            专辑作者：
+        </div>
+        <div class="editor-field">
+            <%: Html.TextBoxFor(model => model.Creator) %>
+            <%: Html.ValidationMessageFor(model => model.Creator) %>
+        </div>
         <p>
             <input type="submit" value="保存" />
         </p>
