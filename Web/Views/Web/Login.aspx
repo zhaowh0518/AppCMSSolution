@@ -4,30 +4,34 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>登录</title>
+    <script src="../../Scripts/jquery-1.3.2.min.js" type="text/javascript"></script>
+    <script src="../../Scripts/jquery.base64.js" type="text/javascript"></script>
+    <script src="../../Scripts/Web.js" type="text/javascript"></script>
+    <link type="text/css" rel="stylesheet" href="~/Content/Web.css" />
 </head>
 <body>
-    <div>
-        <form action="/Web/Login" method="post">
-        <p>
+    <div id="loginPanel">
+        <form action="/Web/Login" method="post" onsubmit="return doLogin(this)">
+        <div>
+            <h1>
+                欢迎登录！
+            </h1>
             <p>
-                <label for="username" class="lbTitle">
+                <label for="txtUserName" class="lbTitle">
                     用户名:</label>
-                <%= Html.TextBox("username") %>
+                <input type="text" id="txtUserName" name="txtUserName" class="textbox" />
             </p>
             <p>
-                <label for="password" class="lbTitle">
+                <label for="txtPassword" class="lbTitle">
                     密&nbsp;&nbsp;&nbsp;&nbsp;码:</label>
-                <%= Html.Password("password") %>
+                <input type="password" id="txtPassword" name="txtPassword" class="textbox" />
             </p>
-            <p>
-                <%= Html.CheckBox("rememberMe") %>
-                <label class="inline" for="rememberMe">
-                   记住密码？</label>
+            <p class="submit">
+                <input type="submit" value="登  录" />
             </p>
-            <p>
-                <input type="submit" value="登录" />
-            </p>
-        </p>
+            <p class="message" id="message">
+                <%=ViewData["LOGIN_MESSAGE"]%></p>
+        </div>
         </form>
     </div>
 </body>

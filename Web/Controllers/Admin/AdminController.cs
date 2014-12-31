@@ -55,9 +55,9 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         {
             if (System.Web.HttpContext.Current.Session["UserName"] == null)
             {
-                //System.Web.HttpContext.Current.Response.Redirect("/Home/Index");
-                //Redirect("/Home/Index");
-                //return;
+                System.Web.HttpContext.Current.Response.Redirect("/Home/Index");
+                Redirect("/Home/Index");
+                return;
             }
             //PortalInfo
             ViewData["PortalInfo"] = ConfigUtility.PortalInfo;
