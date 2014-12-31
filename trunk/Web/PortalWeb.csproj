@@ -134,16 +134,19 @@
     <Compile Include="Utility\WebAccessUtility.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Web.css" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.4.1.js" />
     <Content Include="Scripts\jquery-1.4.1.min.js" />
+    <Content Include="Scripts\jquery.base64.js" />
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
+    <Content Include="Scripts\Web.js" />
     <Content Include="Views\AdminAlbum\Create.aspx" />
     <Content Include="Views\AdminAlbum\Edit.aspx" />
     <Content Include="Views\AdminAlbum\Index.aspx" />
@@ -156,6 +159,7 @@
     <Content Include="Views\Admin\ClientUser.aspx" />
     <Content Include="Views\Admin\Manager.aspx" />
     <Content Include="Views\Service\SimulateClient.aspx" />
+    <Content Include="Views\Web\Index.aspx" />
     <Content Include="Views\Web\Login.aspx" />
     <Content Include="Web.config" />
     <Content Include="Content\Site.css" />

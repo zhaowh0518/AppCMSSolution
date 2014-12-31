@@ -14,6 +14,11 @@
             }
             document.getElementById("selectedImage").value = selected;
         }
+        function ClickImage(img) {
+            alert("图片地址已经复制到了粘贴板！");
+            window.clipboardData.setData("text", img.title);
+        }
+
     </script>
     <div>
         <div>
@@ -47,7 +52,9 @@
                     { %>
                 <div class="imgListItem">
                     <input type="checkbox" title="<%=imagesList[item] %>" name="chkImage" onclick="selectImage()" />
-                    <img width="50" height="50" alt="<%=item%>" src="<%=imagesList[item] %>" title="<%=imagesList[item] %>" />
+                    <a href="<%=imagesList[item] %>" target="_blank">
+                        <img width="50" height="50" alt="<%=item%>" src="<%=imagesList[item] %>" title="<%=imagesList[item] %>"
+                            onclick="ClickImage(this)" /></a>
                 </div>
                 <% } %>
             </div>
