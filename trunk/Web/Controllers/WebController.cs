@@ -26,7 +26,6 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         /// <param name="album"></param>
         /// <returns></returns>
         [HttpPost]
-        [Authorize]
         public ActionResult Login(FormCollection form)
         {
             try
@@ -75,36 +74,46 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        [Authorize]
         public ActionResult Index(FormCollection forms)
         {
             int aid = 0;
             try
             {
-                aid = Convert.ToInt32(Request["aid"]);
-                List<Album> albumnList = new AlbumBusiness().GetUserAlbumList(Convert.ToInt32(Session["CLIENT_UID"]), null);
-                var c = albumnList.Single(p => p.Id == aid);
-                if (c == null || c.Id == 0) 
+                if (Session["CLIENT_UID"] == null)
                 {
-                    throw new Exception("非法访问的专辑！");
+                    throw new Exception("未授权的用户");
                 }
                 string cmd = Request.Form["cmd"];
-                switch (cmd)
+                if (cmd == "AddAlbum")
                 {
-                    case "UploadCover":
-                        UploadCover(aid);
-                        break;
-                    case "UploadImage":
-                        UploadImages(aid);
-                        break;
-                    case "DeleteImage":
-                        DeleteImages(aid);
-                        break;
-                    case "ViewImage":
-                        GetImageList(aid);
-                        break;
-                    default:
-                        break;
+                    AddAlbum();
+                }
+                else
+                {
+                    aid = Convert.ToInt32(Request["aid"]);
+                    List<Album> albumnList = new AlbumBusiness().GetUserAlbumList(Convert.ToInt32(Session["CLIENT_UID"]), null);
+                    var c = albumnList.Single(p => p.Id == aid);
+                    if (c == null || c.Id == 0)
+                    {
+                        throw new Exception("非法访问的专辑！");
+                    }
+                    switch (cmd)
+                    {
+                        case "UploadCover":
+                            UploadCover(aid);
+                            break;
+                        case "UploadImage":
+                            UploadImages(aid);
+                            break;
+                        case "DeleteImage":
+                            DeleteImages(aid);
+                            break;
+                        case "ViewImage":
+                            GetImageList(aid);
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 Session["INDEX_MESSAGE"] = "操作成功！";
             }
@@ -132,6 +141,19 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 throw new Exception("非法格式的文件！");
             }
             return string.Format("{0}.{1}",  Guid.NewGuid(), extendName);
+        }
+        
+        #region Action
+        /// <summary>
+        /// 添加专辑
+        /// </summary>
+        private void AddAlbum()
+        {
+            Album album = new Album();
+            album.Creator = Convert.ToInt32(Session["CLIENT_UID"]);
+            album.Name = "专辑1";
+            album.State = 0;
+            new AlbumBusiness().AddAlbum(album);
         }
         /// <summary>
         /// 上传封面
@@ -203,5 +225,6 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
             }
             GetImageList(aid);
         }
+        #endregion
     }
 }

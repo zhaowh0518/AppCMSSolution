@@ -32,7 +32,7 @@ function doClickCheck(sender,ctrid,value) {
 */
 function doAction(type) {
     var aid = document.getElementById("aid").value;
-    if (aid == "") {
+    if (aid == "" && type != "AddAlbum") {
         alert("请先选择专辑！");
         return false;
     }
