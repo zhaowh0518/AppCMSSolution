@@ -15,6 +15,7 @@
         <form action="/Web/Index/" method="post" enctype="multipart/form-data">
         <div id="divAction">
             <input type="file" name="fileAlbum" id="fileAlbum" multiple="multiple" />&nbsp;&nbsp;&nbsp;&nbsp;
+             <input type="submit" value="新增专辑" name="btnAddAlbum" id="btnAddAlbum" onclick="return doAction('AddAlbum')" />&nbsp;&nbsp;&nbsp;&nbsp;
             <input type="submit" value="添加封面" name="btnAddCover" id="btnAddCover" onclick="return doAction('UploadCover')" />&nbsp;&nbsp;&nbsp;&nbsp;
             <input type="submit" value="添加图片" name="btnAddImage" id="btnAddImage" onclick="return doAction('UploadImage')" />&nbsp;&nbsp;&nbsp;&nbsp;
             <input type="submit" value="查看图片" name="btnViewImage" id="btnViewImage" onclick="return doAction('ViewImage')" />&nbsp;&nbsp;&nbsp;&nbsp;
@@ -38,9 +39,6 @@
                         <th width="100px">
                             封面
                         </th>
-                        <th width="110px">
-                            专辑名
-                        </th>
                     </tr>
                 </table>
             </div>
@@ -61,16 +59,13 @@
                     %>
                     <tr>
                         <td width="50px">
-                            <input type="checkbox" class="chbList" <%=isChecked %> onclick="doClickCheck(this,'aid',<%: item.Id %>)" /><%: item.Id %>
+                            <input type="checkbox" class="chbList" <%=isChecked %> onclick="doClickCheck(this,'aid',<%: item.Id %>)" />
                         </td>
                         <td width="120px">
                             <%: CommonUtility.ShowAlbumState(item.State)%>
                         </td>
                         <td width="100px">
                             <img alt="" src='<%=Request.Url.GetLeftPart(UriPartial.Authority) %><%: item.ImageUrl.Replace("//","/") %>' />
-                        </td>
-                        <td width="110px">
-                            <%: item.Name %>
                         </td>
                     </tr>
                     <% } %>
