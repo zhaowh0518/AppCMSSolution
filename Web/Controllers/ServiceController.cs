@@ -76,14 +76,17 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
         private bool ValidatePurchase(string data)
         {
             string str = string.Empty;
-            str = System.Text.UTF8Encoding.UTF8.GetString(Convert.FromBase64String(data));
-            str = str.Replace("=", ":").Replace(";", ",");
-            Dictionary<string, string> list = JsonConvert.DeserializeObject<Dictionary<string, string>>(str);
-            str = list["purchase-info"];
-            str = System.Text.UTF8Encoding.UTF8.GetString(Convert.FromBase64String(str));
-            str = str.Replace("=", ":").Replace(";", ",");
-            list = JsonConvert.DeserializeObject<Dictionary<string, string>>(str);
-            str = list["product-id"];
+            if (!string.IsNullOrEmpty(data))
+            {
+                str = System.Text.UTF8Encoding.UTF8.GetString(Convert.FromBase64String(data));
+                str = str.Replace("=", ":").Replace(";", ",");
+                Dictionary<string, string> list = JsonConvert.DeserializeObject<Dictionary<string, string>>(str);
+                str = list["purchase-info"];
+                str = System.Text.UTF8Encoding.UTF8.GetString(Convert.FromBase64String(str));
+                str = str.Replace("=", ":").Replace(";", ",");
+                list = JsonConvert.DeserializeObject<Dictionary<string, string>>(str);
+                str = list["product-id"];
+            }
             if (str.Contains("com.1tuanwang"))
             {
                 return true;

@@ -86,7 +86,8 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
         private string EscapeSQLiteText(string sqlText)
         {
             return sqlText
-                .Replace("/", "//")
+                // .Replace("/", "//")
+                 .Replace("//", "/")
                 .Replace("[", "/[")
                 .Replace("]", "/]")
                 .Replace("%", "/%")

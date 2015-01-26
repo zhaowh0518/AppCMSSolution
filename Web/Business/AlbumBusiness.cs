@@ -237,10 +237,10 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
         public bool UpdateAlbum(Album album)
         {
             string sqlText = string.Empty;
-            sqlText = string.Format(@"Update Album set Name='{1}' , Description='{2}',  ImageUrl='{3}',Url='{4}',State={5},Creator={6} where Id={0}",
-                album.Id, album.Name, album.Description, album.ImageUrl, album.Url, album.State,album.Creator);
+            sqlText = string.Format(@"Update Album set Name='{1}' , Description='{2}',  ImageUrl='{3}',Url='{4}',State={5} where Id={0}",
+                album.Id, album.Name, album.Description, album.ImageUrl, album.Url, album.State);
             ExecuteSQLiteSql(sqlText);
-            DBContext.Refresh(System.Data.Objects.RefreshMode.StoreWins,DBContext.Album);
+            DBContext.Refresh(System.Data.Objects.RefreshMode.StoreWins, DBContext.Album);
             return true;
         }
         /// <summary>

@@ -11,7 +11,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Utility
     /// </summary>
     public static class LogUtility
     {
-        static string logPath = string.Format("{0}\\Log\\{1}.txt", AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.ToShortDateString());
+        static string logPath = string.Format("{0}\\Log\\{1}.txt", AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.ToString("yyyyMMdd"));
         /// <summary>
         /// Write log
         /// </summary>
