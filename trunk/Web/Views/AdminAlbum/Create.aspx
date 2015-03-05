@@ -40,6 +40,20 @@
             <%: Html.TextBoxFor(model => model.Description) %>
             <%: Html.ValidationMessageFor(model => model.Description) %>
         </div>
+        <div class="editor-label">
+            是否收费：
+        </div>
+        <div class="editor-field">
+            <%: Html.TextBoxFor(model => model.Gold) %>
+            <%: Html.ValidationMessageFor(model => model.Gold) %>
+        </div>
+        <div class="editor-label">
+            审核专用：
+        </div>
+        <div class="editor-field">
+            <%: Html.TextBoxFor(model => model.Type) %>
+            <%: Html.ValidationMessageFor(model => model.Type) %>
+        </div>
         <p>
             <input type="submit" value="提交" />
         </p>

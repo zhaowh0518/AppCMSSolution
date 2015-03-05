@@ -82,6 +82,7 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 str = str.Replace("=", ":").Replace(";", ",");
                 Dictionary<string, string> list = JsonConvert.DeserializeObject<Dictionary<string, string>>(str);
                 str = list["purchase-info"];
+                str = str.Replace(":", "=");
                 str = System.Text.UTF8Encoding.UTF8.GetString(Convert.FromBase64String(str));
                 str = str.Replace("=", ":").Replace(";", ",");
                 list = JsonConvert.DeserializeObject<Dictionary<string, string>>(str);
@@ -141,7 +142,17 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 {
                     uid = Convert.ToInt32(Request["uid"]);
                 }
-                List<Album> albumList = albumBusiness.GetAlbumList(pageNum, pageSize, uid);
+                //如果当前版本在审核中，则需要加载审核专用的专辑
+                List<Album> albumList = new List<Album>();
+                AppInfo appInfo = appInfoBusiness.GetAppInfo(APP_ID);
+                if (!string.IsNullOrEmpty(appInfo.Version) && appInfo.Version == Request["version"] && appInfo.State == 0)
+                {
+                    albumList = albumBusiness.GetAlbumList(pageNum, pageSize, uid, 1);
+                }
+                else
+                {
+                    albumList = albumBusiness.GetAlbumList(pageNum, pageSize, uid);
+                }
                 data.Code = 1;
                 if (albumList.Count > 0)
                 {
@@ -759,11 +770,10 @@ namespace Disappearwind.PortalSolution.PortalWeb.Controllers
                 string str = string.Empty;
                 //str = string.Format("DateTime.Now={0} & Date.Now.ToShortDateString()={1}", DateTime.Now, DateTime.Now.ToShortDateString());
                 //str = Convert.ToInt32(MagicNum.GOLDNUM.REGISTER).ToString();
-                str = @"
-ewoJInNpZ25hdHVyZSIgPSAiQWwzUnFsOWRCc1lZanFSN1hGZ20rdWF2bWp3KzQ2VEpEOHh1YWZS
-MmRrOVg2OThlLy9GSDNtRGlHN01LdmdBSjIzakQvNnlzakhtRGNCTm9xZWM1K3RxSVZHK3J5MWhh
-eDh1NmdVWTV5OENJWnZoUkNiM3hhQXliTGk4KzNicVhzZHVHUW5HVHFEbVM1ZkE0Q1Vqb3Q0UVlu
-QjBZd2R3UUNOYXcwZVNsNGpKbkFBQURWekNDQTFNd2dnSTdvQU1DQVFJQ0NCdXA0K1BBaG0vTE1B
+                str = @"ewoJInNpZ25hdHVyZSIgPSAiQWlwRk84TFQ3a1NCa25JMVBmSWZGRzM4YlY0enJOMVRzQUdjQUhX
+S1JWRDNIeUIyL1p3ZTB3WFR4bUJ0UEhwaWVOZ3BDSUhybUZWYzIvN214WnBFK29zUzFiMnhacWkz
+Z1d4TzVTVHB5dnlvWWxpNE5TNGxoL0poY0JPbHVUWDkxNnRWVFpwNGNvTks0OGhYMGJLa0hMM3hZ
+SjR6VGltSk1sK2thdS9VWER3cUFBQURWekNDQTFNd2dnSTdvQU1DQVFJQ0NCdXA0K1BBaG0vTE1B
 MEdDU3FHU0liM0RRRUJCUVVBTUg4eEN6QUpCZ05WQkFZVEFsVlRNUk13RVFZRFZRUUtEQXBCY0hC
 c1pTQkpibU11TVNZd0pBWURWUVFMREIxQmNIQnNaU0JEWlhKMGFXWnBZMkYwYVc5dUlFRjFkR2h2
 Y21sMGVURXpNREVHQTFVRUF3d3FRWEJ3YkdVZ2FWUjFibVZ6SUZOMGIzSmxJRU5sY25ScFptbGpZ
@@ -784,24 +794,25 @@ UWNIa3RzRGNTaVFHS01ka1NscDRBeVhmN3ZuSFBCZTR5Q3dZVjJQcFNOMDRrYm9pSjNwQmx4c0d3
 Vi9abEwyNk0ydWVZSEtZQ3VYaGRxRnd4VmdtNTJoM29lSk9PdC92WTRFY1FxN2VxSG02bTAzWjli
 N1BSellNMktHWEhEbU9Nazd2RHBlTVZsTERQU0dZejErVTNzRHhKemViU3BiYUptVDdpbXpVS2Zn
 Z0VZN3h4ZjRjemZIMHlqNXdOelNHVE92UT09IjsKCSJwdXJjaGFzZS1pbmZvIiA9ICJld29KSW05
-eWFXZHBibUZzTFhCMWNtTm9ZWE5sTFdSaGRHVXRjSE4wSWlBOUlDSXlNREUwTFRFeUxURXdJREl6
-T2pBMU9qQTBJRUZ0WlhKcFkyRXZURzl6WDBGdVoyVnNaWE1pT3dvSkluVnVhWEYxWlMxcFpHVnVk
+eWFXZHBibUZzTFhCMWNtTm9ZWE5sTFdSaGRHVXRjSE4wSWlBOUlDSXlNREUxTFRBeExUSTFJREU0
+T2pRNU9qTTRJRUZ0WlhKcFkyRXZURzl6WDBGdVoyVnNaWE1pT3dvSkluVnVhWEYxWlMxcFpHVnVk
 R2xtYVdWeUlpQTlJQ0kzTkRnek1XRmxZV1JsWldGaE1XVmpOVEUyWTJaaVltUTBZV05oTURZek1q
 ZGhNRGhsTjJaa0lqc0tDU0p2Y21sbmFXNWhiQzEwY21GdWMyRmpkR2x2YmkxcFpDSWdQU0FpTVRB
-d01EQXdNREV6TlRFNU5qVTFPU0k3Q2draVluWnljeUlnUFNBaU1TNHdJanNLQ1NKMGNtRnVjMkZq
-ZEdsdmJpMXBaQ0lnUFNBaU1UQXdNREF3TURFek5URTVOalUxT1NJN0Nna2ljWFZoYm5ScGRIa2lJ
-RDBnSWpFaU93b0pJbTl5YVdkcGJtRnNMWEIxY21Ob1lYTmxMV1JoZEdVdGJYTWlJRDBnSWpFME1U
-Z3lPREUxTURRMU1qSWlPd29KSW5WdWFYRjFaUzEyWlc1a2IzSXRhV1JsYm5ScFptbGxjaUlnUFNB
-aU56a3dSVFk1TlRRdE1FUXlOeTAwT0RsRExUazROa1l0TURZMlFUYzRRa1U1UWpZMElqc0tDU0p3
-Y205a2RXTjBMV2xrSWlBOUlDSmpiMjB1TVhSMVlXNTNZVzVuTGpFNFEwNVpYekl3TUVkQ0lqc0tD
-U0pwZEdWdExXbGtJaUE5SUNJNU16TXhNekEyTVRjaU93b0pJbUpwWkNJZ1BTQWlZMjl0TGpGMGRX
-RnVkMkZ1Wnk1dFpXbDBkV3QxWVdsaWJ5STdDZ2tpY0hWeVkyaGhjMlV0WkdGMFpTMXRjeUlnUFNB
-aU1UUXhPREk0TVRVd05EVXlNaUk3Q2draWNIVnlZMmhoYzJVdFpHRjBaU0lnUFNBaU1qQXhOQzB4
-TWkweE1TQXdOem93TlRvd05DQkZkR012UjAxVUlqc0tDU0p3ZFhKamFHRnpaUzFrWVhSbExYQnpk
-Q0lnUFNBaU1qQXhOQzB4TWkweE1DQXlNem93TlRvd05DQkJiV1Z5YVdOaEwweHZjMTlCYm1kbGJH
-VnpJanNLQ1NKdmNtbG5hVzVoYkMxd2RYSmphR0Z6WlMxa1lYUmxJaUE5SUNJeU1ERTBMVEV5TFRF
-eElEQTNPakExT2pBMElFVjBZeTlIVFZRaU93cDkiOwoJImVudmlyb25tZW50IiA9ICJTYW5kYm94
-IjsKCSJwb2QiID0gIjEwMCI7Cgkic2lnbmluZy1zdGF0dXMiID0gIjAiOwp9";
+d01EQXdNREUwTURNeE1qWXdOaUk3Q2draVluWnljeUlnUFNBaU1TNHdMakFpT3dvSkluUnlZVzV6
+WVdOMGFXOXVMV2xrSWlBOUlDSXhNREF3TURBd01UUXdNekV5TmpBMklqc0tDU0p4ZFdGdWRHbDBl
+U0lnUFNBaU1TSTdDZ2tpYjNKcFoybHVZV3d0Y0hWeVkyaGhjMlV0WkdGMFpTMXRjeUlnUFNBaU1U
+UXlNakkwTURVM09ERTVOQ0k3Q2draWRXNXBjWFZsTFhabGJtUnZjaTFwWkdWdWRHbG1hV1Z5SWlB
+OUlDSTVOVGcyUVRjNFFpMDFOa1ZDTFRSRk9Ea3RPVU5DUmkxRlJFUTJNa0k1TkRJMVJVWWlPd29K
+SW5CeWIyUjFZM1F0YVdRaUlEMGdJbU52YlM0eGRIVmhibmRoYm1jdU1UaERUbGxmTWpBd1IwSWlP
+d29KSW1sMFpXMHRhV1FpSUQwZ0lqa3pNekV6TURZeE55STdDZ2tpWW1sa0lpQTlJQ0pqYjIwdU1Y
+UjFZVzUzWVc1bkxtMWxhWFIxYTNWaGFXSnZJanNLQ1NKd2RYSmphR0Z6WlMxa1lYUmxMVzF6SWlB
+OUlDSXhOREl5TWpRd05UYzRNVGswSWpzS0NTSndkWEpqYUdGelpTMWtZWFJsSWlBOUlDSXlNREUx
+TFRBeExUSTJJREF5T2pRNU9qTTRJRVYwWXk5SFRWUWlPd29KSW5CMWNtTm9ZWE5sTFdSaGRHVXRj
+SE4wSWlBOUlDSXlNREUxTFRBeExUSTFJREU0T2pRNU9qTTRJRUZ0WlhKcFkyRXZURzl6WDBGdVoy
+VnNaWE1pT3dvSkltOXlhV2RwYm1Gc0xYQjFjbU5vWVhObExXUmhkR1VpSUQwZ0lqSXdNVFV0TURF
+dE1qWWdNREk2TkRrNk16Z2dSWFJqTDBkTlZDSTdDbjA9IjsKCSJlbnZpcm9ubWVudCIgPSAiU2Fu
+ZGJveCI7CgkicG9kIiA9ICIxMDAiOwoJInNpZ25pbmctc3RhdHVzIiA9ICIwIjsKfQ==";
+                /*
                 str = System.Text.UTF8Encoding.UTF8.GetString(Convert.FromBase64String(str));
                 str = str.Replace("=", ":").Replace(";", ",");
                 Dictionary<string, string> list = JsonConvert.DeserializeObject<Dictionary<string, string>>(str);
@@ -810,7 +821,8 @@ IjsKCSJwb2QiID0gIjEwMCI7Cgkic2lnbmluZy1zdGF0dXMiID0gIjAiOwp9";
                 str = str.Replace("=", ":").Replace(";", ",");
                 list = JsonConvert.DeserializeObject<Dictionary<string, string>>(str);
                 str = list["product-id"];
-                data.Message = str;
+                 */
+                data.Message = ValidatePurchase(str).ToString();
 
             }
             catch (Exception ex)

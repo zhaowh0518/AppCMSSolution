@@ -47,12 +47,28 @@
             <%: Html.TextBoxFor(model => model.State) %>
             <%: Html.ValidationMessageFor(model => model.State) %>
         </div>
-         <div class="editor-label">
+        <div class="editor-label">
             专辑作者：
         </div>
         <div class="editor-field">
             <%: Html.TextBoxFor(model => model.Creator) %>
             <%: Html.ValidationMessageFor(model => model.Creator) %>
+        </div>
+        <div class="editor-label">
+            是否收费：
+        </div>
+        <div class="editor-field">
+            <%: Html.TextBoxFor(model => model.Gold) %>
+            <%: Html.ValidationMessageFor(model => model.Gold) %>
+            0为免费
+        </div>
+        <div class="editor-label">
+            审核专用：
+        </div>
+        <div class="editor-field">
+            <%: Html.TextBoxFor(model => model.Type) %>
+            <%: Html.ValidationMessageFor(model => model.Type) %>
+            1为用于审核
         </div>
         <p>
             <input type="submit" value="保存" />

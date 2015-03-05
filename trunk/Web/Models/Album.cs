@@ -14,9 +14,5 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         /// 专辑中的图片
         /// </summary>
         public List<string> PicList { get; set; }
-        /// <summary>
-        /// 浏览专辑所消耗的金币
-        /// </summary>
-        public int Gold;
     }
 }

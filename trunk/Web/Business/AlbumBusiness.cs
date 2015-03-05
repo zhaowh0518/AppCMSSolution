@@ -59,10 +59,10 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
         /// 获取一系列的专辑（分页），接口用
         /// </summary>
         /// <returns></returns>
-        public List<Album> GetAlbumList(int pageNum, int pageSize, int userid)
+        public List<Album> GetAlbumList(int pageNum, int pageSize, int userid, int? type = null)
         {
             var c = from p in DBContext.Album
-                    where p.State == 1 //只取审核通过的专辑
+                    where p.State == 1 && (type == null || p.Type == type) //只取审核通过的专辑
                     orderby p.Id descending
                     select p;
             if (c != null && c.Count() > 0)
@@ -76,14 +76,17 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
                 }
                 foreach (Album album in albumList)
                 {
-                    album.PicList = GetAlbumContentList(album.Id);
-                    if (albumViewList.Where(p => p.AlbumID == album.Id).Count() > 0) //用户看过专辑后Gold就为0
+                    if (album.Gold != 0)  //后台可以设置免费
                     {
-                        album.Gold = 0;
-                    }
-                    else
-                    {
-                        album.Gold = GetAlbumGold(album.PicList.Count);
+                        album.PicList = GetAlbumContentList(album.Id);
+                        if (albumViewList.Where(p => p.AlbumID == album.Id).Count() > 0) //用户看过专辑后Gold就为0
+                        {
+                            album.Gold = 0;
+                        }
+                        else
+                        {
+                            album.Gold = GetAlbumGold(album.PicList.Count);
+                        }
                     }
                 }
                 return albumList;
@@ -200,9 +203,9 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
                 album.Creator = 1;
             }
             string sqlText = string.Empty;
-            sqlText = string.Format(@"insert into Album ( Id , Name , ImageUrl ,Url, Description,State,Creator) 
-                                                  values ( {0} , '{1}' , '{2}' , '{3}' , '{4}' ,'{5}','{6}')",
-                album.Id, album.Name, album.ImageUrl, album.Url, album.Description, album.State, album.Creator);
+            sqlText = string.Format(@"insert into Album ( Id , Name , ImageUrl ,Url, Description,Gold,Type,State,Creator) 
+                                                  values ( {0} , '{1}' , '{2}' , '{3}' , '{4}' ,'{5}','{6}','{7}','{8}')",
+                album.Id, album.Name, album.ImageUrl, album.Url, album.Description, album.Gold, album.Type, album.State, album.Creator);
             ExecuteSQLiteSql(sqlText);
             string albumPath = string.Format("{0}/{1}/{2}", AppDomain.CurrentDomain.BaseDirectory, Resource_Dir, album.Id);
             if (!Directory.Exists(albumPath))
@@ -237,8 +240,8 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
         public bool UpdateAlbum(Album album)
         {
             string sqlText = string.Empty;
-            sqlText = string.Format(@"Update Album set Name='{1}' , Description='{2}',  ImageUrl='{3}',Url='{4}',State={5} where Id={0}",
-                album.Id, album.Name, album.Description, album.ImageUrl, album.Url, album.State);
+            sqlText = string.Format(@"Update Album set Name='{1}' , Description='{2}',  ImageUrl='{3}', Url='{4}', State='{5}', Gold='{6}',Type='{7}' where Id={0}",
+                album.Id, album.Name, album.Description, album.ImageUrl, album.Url, album.State, album.Gold, album.Type);
             ExecuteSQLiteSql(sqlText);
             DBContext.Refresh(System.Data.Objects.RefreshMode.StoreWins, DBContext.Album);
             return true;

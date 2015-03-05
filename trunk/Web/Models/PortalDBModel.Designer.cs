@@ -145,22 +145,6 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         /// <summary>
         /// 没有元数据文档可用。
         /// </summary>
-        public ObjectSet<Album> Album
-        {
-            get
-            {
-                if ((_Album == null))
-                {
-                    _Album = base.CreateObjectSet<Album>("Album");
-                }
-                return _Album;
-            }
-        }
-        private ObjectSet<Album> _Album;
-    
-        /// <summary>
-        /// 没有元数据文档可用。
-        /// </summary>
         public ObjectSet<ClientUser> ClientUser
         {
             get
@@ -209,22 +193,6 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         /// <summary>
         /// 没有元数据文档可用。
         /// </summary>
-        public ObjectSet<AppInfo> AppInfo
-        {
-            get
-            {
-                if ((_AppInfo == null))
-                {
-                    _AppInfo = base.CreateObjectSet<AppInfo>("AppInfo");
-                }
-                return _AppInfo;
-            }
-        }
-        private ObjectSet<AppInfo> _AppInfo;
-    
-        /// <summary>
-        /// 没有元数据文档可用。
-        /// </summary>
         public ObjectSet<PurchaseProduct> PurchaseProduct
         {
             get
@@ -269,6 +237,38 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
             }
         }
         private ObjectSet<Feedback> _Feedback;
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        public ObjectSet<Album> Album
+        {
+            get
+            {
+                if ((_Album == null))
+                {
+                    _Album = base.CreateObjectSet<Album>("Album");
+                }
+                return _Album;
+            }
+        }
+        private ObjectSet<Album> _Album;
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        public ObjectSet<AppInfo> AppInfo
+        {
+            get
+            {
+                if ((_AppInfo == null))
+                {
+                    _AppInfo = base.CreateObjectSet<AppInfo>("AppInfo");
+                }
+                return _AppInfo;
+            }
+        }
+        private ObjectSet<AppInfo> _AppInfo;
 
         #endregion
 
@@ -315,14 +315,6 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         }
     
         /// <summary>
-        /// 用于向 Album EntitySet 添加新对象的方法，已弃用。请考虑改用关联的 ObjectSet&lt;T&gt; 属性的 .Add 方法。
-        /// </summary>
-        public void AddToAlbum(Album album)
-        {
-            base.AddObject("Album", album);
-        }
-    
-        /// <summary>
         /// 用于向 ClientUser EntitySet 添加新对象的方法，已弃用。请考虑改用关联的 ObjectSet&lt;T&gt; 属性的 .Add 方法。
         /// </summary>
         public void AddToClientUser(ClientUser clientUser)
@@ -347,14 +339,6 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         }
     
         /// <summary>
-        /// 用于向 AppInfo EntitySet 添加新对象的方法，已弃用。请考虑改用关联的 ObjectSet&lt;T&gt; 属性的 .Add 方法。
-        /// </summary>
-        public void AddToAppInfo(AppInfo appInfo)
-        {
-            base.AddObject("AppInfo", appInfo);
-        }
-    
-        /// <summary>
         /// 用于向 PurchaseProduct EntitySet 添加新对象的方法，已弃用。请考虑改用关联的 ObjectSet&lt;T&gt; 属性的 .Add 方法。
         /// </summary>
         public void AddToPurchaseProduct(PurchaseProduct purchaseProduct)
@@ -376,6 +360,22 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         public void AddToFeedback(Feedback feedback)
         {
             base.AddObject("Feedback", feedback);
+        }
+    
+        /// <summary>
+        /// 用于向 Album EntitySet 添加新对象的方法，已弃用。请考虑改用关联的 ObjectSet&lt;T&gt; 属性的 .Add 方法。
+        /// </summary>
+        public void AddToAlbum(Album album)
+        {
+            base.AddObject("Album", album);
+        }
+    
+        /// <summary>
+        /// 用于向 AppInfo EntitySet 添加新对象的方法，已弃用。请考虑改用关联的 ObjectSet&lt;T&gt; 属性的 .Add 方法。
+        /// </summary>
+        public void AddToAppInfo(AppInfo appInfo)
+        {
+            base.AddObject("AppInfo", appInfo);
         }
 
         #endregion
@@ -533,6 +533,54 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         private global::System.String _Description;
         partial void OnDescriptionChanging(global::System.String value);
         partial void OnDescriptionChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> Gold
+        {
+            get
+            {
+                return _Gold;
+            }
+            set
+            {
+                OnGoldChanging(value);
+                ReportPropertyChanging("Gold");
+                _Gold = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Gold");
+                OnGoldChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _Gold;
+        partial void OnGoldChanging(Nullable<global::System.Int32> value);
+        partial void OnGoldChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> Type
+        {
+            get
+            {
+                return _Type;
+            }
+            set
+            {
+                OnTypeChanging(value);
+                ReportPropertyChanging("Type");
+                _Type = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Type");
+                OnTypeChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _Type;
+        partial void OnTypeChanging(Nullable<global::System.Int32> value);
+        partial void OnTypeChanged();
     
         /// <summary>
         /// 没有元数据文档可用。
@@ -775,19 +823,19 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         /// </summary>
         /// <param name="id">ID 属性的初始值。</param>
         /// <param name="name">Name 属性的初始值。</param>
+        /// <param name="keyword">Keyword 属性的初始值。</param>
         /// <param name="version">Version 属性的初始值。</param>
         /// <param name="versionUpgrade">VersionUpgrade 属性的初始值。</param>
         /// <param name="description">Description 属性的初始值。</param>
-        /// <param name="keyword">Keyword 属性的初始值。</param>
-        public static AppInfo CreateAppInfo(global::System.Int32 id, global::System.String name, global::System.String version, global::System.Int32 versionUpgrade, global::System.String description, global::System.String keyword)
+        public static AppInfo CreateAppInfo(global::System.Int32 id, global::System.String name, global::System.String keyword, global::System.String version, global::System.Int32 versionUpgrade, global::System.String description)
         {
             AppInfo appInfo = new AppInfo();
             appInfo.ID = id;
             appInfo.Name = name;
+            appInfo.Keyword = keyword;
             appInfo.Version = version;
             appInfo.VersionUpgrade = versionUpgrade;
             appInfo.Description = description;
-            appInfo.Keyword = keyword;
             return appInfo;
         }
 
@@ -848,6 +896,33 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Keyword
+        {
+            get
+            {
+                return _Keyword;
+            }
+            set
+            {
+                if (_Keyword != value)
+                {
+                    OnKeywordChanging(value);
+                    ReportPropertyChanging("Keyword");
+                    _Keyword = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("Keyword");
+                    OnKeywordChanged();
+                }
+            }
+        }
+        private global::System.String _Keyword;
+        partial void OnKeywordChanging(global::System.String value);
+        partial void OnKeywordChanged();
     
         /// <summary>
         /// 没有元数据文档可用。
@@ -933,29 +1008,26 @@ namespace Disappearwind.PortalSolution.PortalWeb.Models
         /// <summary>
         /// 没有元数据文档可用。
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String Keyword
+        public Nullable<global::System.Int32> State
         {
             get
             {
-                return _Keyword;
+                return _State;
             }
             set
             {
-                if (_Keyword != value)
-                {
-                    OnKeywordChanging(value);
-                    ReportPropertyChanging("Keyword");
-                    _Keyword = StructuralObject.SetValidValue(value, false);
-                    ReportPropertyChanged("Keyword");
-                    OnKeywordChanged();
-                }
+                OnStateChanging(value);
+                ReportPropertyChanging("State");
+                _State = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("State");
+                OnStateChanged();
             }
         }
-        private global::System.String _Keyword;
-        partial void OnKeywordChanging(global::System.String value);
-        partial void OnKeywordChanged();
+        private Nullable<global::System.Int32> _State;
+        partial void OnStateChanging(Nullable<global::System.Int32> value);
+        partial void OnStateChanged();
 
         #endregion
 
