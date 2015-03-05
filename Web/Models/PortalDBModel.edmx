@@ -13,6 +13,8 @@
       [Album].[ImageUrl] AS [ImageUrl], 
       [Album].[Url] AS [Url], 
       [Album].[Description] AS [Description], 
+      [Album].[Gold] AS [Gold], 
+      [Album].[Type] AS [Type], 
       [Album].[State] AS [State], 
       [Album].[Creator] AS [Creator]
       FROM [Album] AS [Album]</DefiningQuery>
@@ -33,7 +35,8 @@
       [AppInfo].[Keyword] AS [Keyword], 
       [AppInfo].[Version] AS [Version], 
       [AppInfo].[VersionUpgrade] AS [VersionUpgrade], 
-      [AppInfo].[Description] AS [Description]
+      [AppInfo].[Description] AS [Description], 
+      [AppInfo].[State] AS [State]
       FROM [AppInfo] AS [AppInfo]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ClientUser" EntityType="PortalDBModel.Store.ClientUser" store:Type="Tables" store:Name="ClientUser">
@@ -185,6 +188,8 @@
           <Property Name="ImageUrl" Type="nvarchar" MaxLength="1024" />
           <Property Name="Url" Type="nvarchar" MaxLength="1024" />
           <Property Name="Description" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Gold" Type="int" />
+          <Property Name="Type" Type="int" />
           <Property Name="State" Type="int" />
           <Property Name="Creator" Type="int" />
         </EntityType>
@@ -223,6 +228,7 @@
           <Property Name="Version" Type="varchar" Nullable="false" MaxLength="1024" />
           <Property Name="VersionUpgrade" Type="int" Nullable="false" />
           <Property Name="Description" Type="varchar" Nullable="false" MaxLength="2048" />
+          <Property Name="State" Type="int" />
         </EntityType>
         <!--生成过程中发现错误:
       警告 6002: 表/视图“main.ClientUser”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
@@ -438,14 +444,14 @@
           <EntitySet Name="PortalInfo" EntityType="PortalDBModel.PortalInfo" />
           <EntitySet Name="PortalMenu" EntityType="PortalDBModel.PortalMenu" />
           <EntitySet Name="UserInfo" EntityType="PortalDBModel.UserInfo" />
-          <EntitySet Name="Album" EntityType="PortalDBModel.Album" />
           <EntitySet Name="ClientUser" EntityType="PortalDBModel.ClientUser" />
           <EntitySet Name="ClientUserLogin" EntityType="PortalDBModel.ClientUserLogin" />
           <EntitySet Name="PurchaseOrder" EntityType="PortalDBModel.PurchaseOrder" />
-          <EntitySet Name="AppInfo" EntityType="PortalDBModel.AppInfo" />
           <EntitySet Name="PurchaseProduct" EntityType="PortalDBModel.PurchaseProduct" />
           <EntitySet Name="AlbumView" EntityType="PortalDBModel.AlbumView" />
           <EntitySet Name="Feedback" EntityType="PortalDBModel.Feedback" />
+          <EntitySet Name="Album" EntityType="PortalDBModel.Album" />
+          <EntitySet Name="AppInfo" EntityType="PortalDBModel.AppInfo" />
         </EntityContainer>
         <EntityType Name="DBDictionary">
           <Key>
@@ -556,18 +562,6 @@
           <Property Name="Extend7" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" />
         </EntityType>
-        <EntityType Name="Album">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="String" Name="Name" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ImageUrl" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Url" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Description" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="State" />
-          <Property Type="Int32" Name="Creator" />
-        </EntityType>
         <EntityType Name="ClientUser">
           <Key>
             <PropertyRef Name="UserID" />
@@ -601,22 +595,6 @@
           <Property Type="Int32" Name="UserID" Nullable="false" />
           <Property Type="DateTime" Name="CreateDate" Nullable="false" />
           <Property Type="String" Name="TransactionID" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="AppInfo">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="Version" />
-            <PropertyRef Name="VersionUpgrade" />
-            <PropertyRef Name="Description" />
-            <PropertyRef Name="Keyword" />
-          </Key>
-          <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="Version" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="false" />
-          <Property Type="Int32" Name="VersionUpgrade" Nullable="false" />
-          <Property Type="String" Name="Description" Nullable="false" MaxLength="2048" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="Keyword" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="PurchaseProduct">
           <Key>
@@ -662,6 +640,37 @@
           <Property Type="Int32" Name="UserID" Nullable="false" />
           <Property Type="String" Name="Content" Nullable="false" MaxLength="2048" FixedLength="false" Unicode="true" />
           <Property Type="DateTime" Name="CreateDate" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Album">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageUrl" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Url" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="Gold" />
+          <Property Type="Int32" Name="Type" />
+          <Property Type="Int32" Name="State" />
+          <Property Type="Int32" Name="Creator" />
+        </EntityType>
+        <EntityType Name="AppInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Keyword" />
+            <PropertyRef Name="Version" />
+            <PropertyRef Name="VersionUpgrade" />
+            <PropertyRef Name="Description" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Keyword" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Version" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="VersionUpgrade" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="2048" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="State" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -767,19 +776,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Album">
-            <EntityTypeMapping TypeName="PortalDBModel.Album">
-              <MappingFragment StoreEntitySet="Album">
-                <ScalarProperty Name="Creator" ColumnName="Creator" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Url" ColumnName="Url" />
-                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ClientUser">
             <EntityTypeMapping TypeName="PortalDBModel.ClientUser">
               <MappingFragment StoreEntitySet="ClientUser">
@@ -811,18 +807,6 @@
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AppInfo">
-            <EntityTypeMapping TypeName="PortalDBModel.AppInfo">
-              <MappingFragment StoreEntitySet="AppInfo">
-                <ScalarProperty Name="Keyword" ColumnName="Keyword" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="VersionUpgrade" ColumnName="VersionUpgrade" />
-                <ScalarProperty Name="Version" ColumnName="Version" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -861,6 +845,34 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Album">
+            <EntityTypeMapping TypeName="PortalDBModel.Album">
+              <MappingFragment StoreEntitySet="Album">
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Gold" ColumnName="Gold" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AppInfo">
+            <EntityTypeMapping TypeName="PortalDBModel.AppInfo">
+              <MappingFragment StoreEntitySet="AppInfo">
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="VersionUpgrade" ColumnName="VersionUpgrade" />
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="Keyword" ColumnName="Keyword" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -887,14 +899,14 @@
         <EntityTypeShape EntityType="PortalDBModel.PortalInfo" Width="1.5" PointX="4.75" PointY="0.75" Height="2.3648893229166665" IsExpanded="true" />
         <EntityTypeShape EntityType="PortalDBModel.PortalMenu" Width="1.5" PointX="4.75" PointY="4.75" Height="3.5186979166666674" IsExpanded="true" />
         <EntityTypeShape EntityType="PortalDBModel.UserInfo" Width="1.5" PointX="6.75" PointY="0.75" Height="6.0186165364583326" IsExpanded="true" />
-        <EntityTypeShape EntityType="PortalDBModel.Album" Width="1.5" PointX="0.75" PointY="6.75" Height="2.3520719401041656" />
         <EntityTypeShape EntityType="PortalDBModel.ClientUser" Width="1.5" PointX="7.375" PointY="7.75" Height="2.5430916341145817" />
         <EntityTypeShape EntityType="PortalDBModel.ClientUserLogin" Width="1.5" PointX="9.375" PointY="0.75" Height="1.7790128580729174" />
         <EntityTypeShape EntityType="PortalDBModel.PurchaseOrder" Width="1.5" PointX="9.375" PointY="3.75" Height="1.7790128580729174" />
-        <EntityTypeShape EntityType="PortalDBModel.AppInfo" Width="1.5" PointX="9.375" PointY="6.75" Height="1.9700325520833353" />
         <EntityTypeShape EntityType="PortalDBModel.PurchaseProduct" Width="1.5" PointX="3.375" PointY="9.75" Height="2.5430916341145817" />
         <EntityTypeShape EntityType="PortalDBModel.AlbumView" Width="1.5" PointX="9.375" PointY="9.75" Height="1.9700325520833317" />
         <EntityTypeShape EntityType="PortalDBModel.Feedback" Width="1.5" PointX="0.75" PointY="10.75" Height="1.7790128580729174" />
+        <EntityTypeShape EntityType="PortalDBModel.Album" Width="1.5" PointX="0.75" PointY="6.75" Height="2.7341113281250031" />
+        <EntityTypeShape EntityType="PortalDBModel.AppInfo" Width="1.5" PointX="11.375" PointY="0.75" Height="2.3520719401041674" />
         </Diagram></edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

@@ -80,9 +80,10 @@ namespace Disappearwind.PortalSolution.PortalWeb.Business
         public bool UpdateAppInfo(AppInfo appInfo)
         {
             string sqlText = string.Empty;
-            sqlText = string.Format(@"Update AppInfo set Name='{1}' , Description='{2}',  Version='{3}',VersionUpgrade='{4}'  where Id={0}",
-                appInfo.ID, appInfo.Name, appInfo.Description, appInfo.Version, appInfo.VersionUpgrade);
+            sqlText = string.Format(@"Update AppInfo set Name='{1}' , Description='{2}',  Version='{3}',VersionUpgrade='{4}',State='{5}'  where Id={0}",
+                appInfo.ID, appInfo.Name, appInfo.Description, appInfo.Version, appInfo.VersionUpgrade, appInfo.State);
             ExecuteSQLiteSql(sqlText);
+            DBContext.Refresh(System.Data.Objects.RefreshMode.StoreWins, DBContext.AppInfo);
             return true;
         }
         /// <summary>

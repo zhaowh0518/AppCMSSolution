@@ -34,7 +34,7 @@
             <%: Html.ValidationMessageFor(model => model.Version) %>
         </div>
         <div class="editor-label">
-            是否强制升级：
+            强制升级：
         </div>
         <div class="editor-field">
             <%: Html.TextBoxFor(model => model.VersionUpgrade) %>
@@ -46,6 +46,13 @@
         <div class="editor-field">
             <%: Html.TextBoxFor(model => model.Description) %>
             <%: Html.ValidationMessageFor(model => model.Description) %>
+        </div>
+        <div class="editor-label">
+            状态：
+        </div>
+        <div class="editor-field">
+            <%: Html.TextBoxFor(model => model.State) %>
+            <%: Html.ValidationMessageFor(model => model.State) %>&nbsp;默认为空，填0为审核中
         </div>
         <p>
             <input type="submit" value="保存" />
